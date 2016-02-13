@@ -1,19 +1,16 @@
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
+
 
 import java.sql.*;
-		
-public class DBdriver {		
+
+public class DBdriver {
+
 		
     private Connection con;		
     private final String DBNAME="SlowRoastingAuto";		
-    private final String PASSWORD="cs2340team58";		
-    private final String IP = "73.237.37.220";		
+    private final String PASSWORD="cs2340team58";
 		
-    public DBdriver() {		
-		/*		
-		Username: cs4400_Group_45		
-		Password: _YIlgw6W		
-		*/		
+    public DBdriver() {
 		
         System.out.println("Driver created. Lets Connect!");		
 		
@@ -22,7 +19,7 @@ public class DBdriver {
         try {
 
             Class.forName("com.mysql.jdbc.Driver").newInstance();		
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test",
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recommendr",
                     DBNAME,		
                     PASSWORD);		
 
