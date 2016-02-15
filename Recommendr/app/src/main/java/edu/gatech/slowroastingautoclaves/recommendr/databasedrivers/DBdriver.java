@@ -20,11 +20,8 @@ public class DBdriver {
      * Creates a driver to for connections to database
      */
     public DBdriver() {
-
-        Log.i("DBdriver", "Driver created. Lets Connect!");
-		
-        con = null;		
-		
+        Log.i("DBdriver", "Creating Driver");
+        con = null;
         try {
 
             Class.forName("com.mysql.jdbc.Driver").newInstance();		
@@ -33,7 +30,7 @@ public class DBdriver {
                     PASSWORD);		
 
             if(!con.isClosed()) {
-                Log.i("DBdriver", "Successfully connected to " + "MySQL server using TCP/IP...");
+                Log.i("DBdriver", "Successfully connected to MySQL server using TCP/IP...");
             }		
 		
         } catch(Exception e) {		
