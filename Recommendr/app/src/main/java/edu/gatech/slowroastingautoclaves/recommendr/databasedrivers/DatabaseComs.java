@@ -1,5 +1,7 @@
 package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
 
+import java.sql.ResultSet;
+
 /**
  * Created by Joshua Jibilian on 2/14/2016.
  *
@@ -83,6 +85,52 @@ public class DatabaseComs {
         int results;
         dbConnect();
         results = db.sendUpdate(String.format("SELECT * FROM recommendr WHERE UName = '%s' AND password = '%s';", userName, password ));
+        closeDBComs();
+        if (results == 1){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Creates profile for a user
+     * @param userName User to create profile for
+     * @param major users selected major
+     * @return True if profile is added else false.
+     */
+    public boolean createProfile(String userName, String major){
+        int results;
+        dbConnect();
+        results = db.sendUpdate(String.format("INSERT INTO profile VALUES('%s','$s');", userName,major));
+        closeDBComs();
+        if (results == 1){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the profile of specific user
+     * @param userName username of desired profile
+     * @return ResultSet of the users profile
+     */
+    public ResultSet getProfile(String userName){
+        return db.sendQuery(String.format("SELECT * FROM profile WHERE UName = '%s';",
+                userName));
+    }
+
+    /**
+     * Updates a profile of a specific user
+     * @param userName user to update profile for.
+     * @param major new major they want to update to.
+     * @return True if update was successful else false
+     */
+    public boolean updateProfile(String userName, String major){
+        int results;
+        dbConnect();
+        results = db.sendUpdate(String.format("UPDATE profile " +
+                "SET major = '%s' " +
+                "WHERE UName = '%s';", major,userName));
         closeDBComs();
         if (results == 1){
             return true;
