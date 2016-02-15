@@ -3,14 +3,20 @@ package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
 
 import java.sql.*;
 
-public class DBdriver {
+/**
+ * Facilitates connection to database
+ */
+public class DBDriver {
 
 		
     private Connection con;		
     private final String DBNAME="SlowRoastingAuto";		
     private final String PASSWORD="cs2340team58";
-		
-    public DBdriver() {
+
+    /**
+     * Creates a driver to for connections to database
+     */
+    public DBDriver() {
 		
         System.out.println("Driver created. Lets Connect!");		
 		
@@ -31,12 +37,14 @@ public class DBdriver {
             e.printStackTrace();		
             System.err.println("Exception while creating connection: " + e.getMessage());		
         }		
-    }		
-		
+    }
+
+    /**
+     *  Closes the connection to the database
+     */
     public void closeConnection() {		
         try{		
             con.close();
-            SSHDriver.CloseSSHConnection();
             if(con.isClosed()) {		
                 System.out.println("Connection successfully closed.");		
             }		
@@ -47,8 +55,13 @@ public class DBdriver {
             System.err.println("Exception while closing connection: ");		
             e.printStackTrace();		
         }		
-    }		
-		
+    }
+
+    /**
+     * sends query to database
+     * @param query
+     * @return ResultSet Detailed object of data from query
+     */
     public ResultSet sendQuery(String query) {		
         ResultSet results;		
         try{		
@@ -59,8 +72,13 @@ public class DBdriver {
             results = null;		
         }		
         return results;		
-    }		
-		
+    }
+
+    /**
+     * Sends a query to update server
+     * @param query
+     * @return int number of rows affected
+     */
     public int sendUpdate(String query) {		
         int results;		
         try{		
