@@ -3,14 +3,14 @@ package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
 /**
  * Created by Joshua Jibilian on 2/14/2016.
  *
- * Uses DBDriver class and SSHDriver class to facilitate connections to the Database and
+ * Uses DBdriver class and SSHDriver class to facilitate connections to the Database and
  * querries to the database.
  */
 public class DatabaseComs {
     /**
      * Driver to connect to database.
      */
-    private static DBDriver db;
+    private static DBdriver db;
     /**
      * Driver to connect to server via SSH
      */
@@ -28,7 +28,7 @@ public class DatabaseComs {
      * Connects to database, tunnel must be open first
      */
     private void dbConnect(){
-        db = new DBDriver();
+        db = new DBdriver();
     }
 
     /**
