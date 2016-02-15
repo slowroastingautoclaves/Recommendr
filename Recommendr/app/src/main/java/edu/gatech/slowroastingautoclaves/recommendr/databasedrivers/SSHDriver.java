@@ -1,5 +1,8 @@
 /**
- * Created by Blaze on 2/8/2016.
+ *
+ * Created by Joshua Jibilian on 2/8/2016.
+ *
+ * Facilitates connection to server through an ssh tunnel
  */
 package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
 import com.jcraft.jsch.JSch;
@@ -10,7 +13,11 @@ public class SSHDriver {
     static String rhost;
     static int rport;
     static Session session;
-    public static void go() {
+
+    /**
+     * Conects to server via SSH
+     */
+    public static void connectViaSSH() {
         int port = 30;
         lport = 3306;
         rport = 3306;
@@ -31,7 +38,11 @@ public class SSHDriver {
             e.printStackTrace();
         }
     }
-        public static void CloseSSHConnection() {
+
+    /**
+     * Closes SSH connection to server
+     */
+        public static void closeSSHConnection() {
             if (session != null && session.isConnected()) {
                 System.out.println("Closing SSH Connection");
                 session.disconnect();
