@@ -11,7 +11,7 @@ import java.sql.*;
 public class DBdriver {
 
 		
-    private Connection con;		
+    private static Connection con;
     private final String DBNAME="SlowRoastingAuto";		
     private final String PASSWORD="cs2340team58";
 

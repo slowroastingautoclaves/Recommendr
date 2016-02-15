@@ -5,11 +5,12 @@
  * Facilitates connection to server through an ssh tunnel
  */
 package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
-public class SSHDriver {
+public class SSHDriver extends AsyncTask<void, void, void>{
     private static String hostIp = "128.61.105.200";
     private static int lport;
     private static String rhost;
@@ -58,6 +59,11 @@ public class SSHDriver {
     public boolean isConnected(){
         return session.isConnected();
     }
- }
+
+    @Override
+    protected void doInBackground(void... params) {
+
+    }
+}
 
 

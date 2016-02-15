@@ -35,6 +35,7 @@ public class DatabaseComs {
      * Connects to database, tunnel must be open first
      */
     private void dbConnect(){
+
         db = new DBdriver();
     }
 
