@@ -5,6 +5,8 @@
  * Facilitates connection to server through an ssh tunnel
  */
 package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
+import android.util.Log;
+
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 public class SSHDriver {
@@ -30,12 +32,12 @@ public class SSHDriver {
             rport = 3306;
             session.setPassword("slowroasting");
             session.setConfig("StrictHostKeyChecking", "no");
-            System.out.println("Establishing Connection...");
+            Log.d("SSHDriver", "Establishing server Connection...");
             session.connect();
             int assinged_port = session.setPortForwardingL(lport, rhost, rport);
-            System.out.println("localhost:" + assinged_port + " -> " + rhost + ":" + rport);
+            Log.i("SSHDriver", "localhost:" + assinged_port + " -> " + rhost + ":" + rport);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("SSHDriver", e.getMessage());
         }
     }
 
@@ -44,10 +46,18 @@ public class SSHDriver {
      */
         public static void closeSSHConnection() {
             if (session != null && session.isConnected()) {
-                System.out.println("Closing SSH Connection");
+                Log.i("SSHDriver","Closing SSH Connection");
                 session.disconnect();
             }
         }
+
+    /**
+     * checks if tunnel is connected to server
+     * @return returns true if connected else false.
+     */
+    public boolean isConnected(){
+        return session.isConnected();
+    }
  }
 
 
