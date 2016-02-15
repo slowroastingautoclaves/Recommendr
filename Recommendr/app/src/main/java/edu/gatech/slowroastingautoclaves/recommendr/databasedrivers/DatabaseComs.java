@@ -102,6 +102,7 @@ public class DatabaseComs {
         int results;
         dbConnect();
         results = db.sendUpdate(String.format("INSERT INTO profile VALUES('%s','$s');", userName,major));
+        db.commit();
         closeDBComs();
         if (results == 1){
             return true;
@@ -115,8 +116,12 @@ public class DatabaseComs {
      * @return ResultSet of the users profile
      */
     public ResultSet getProfile(String userName){
-        return db.sendQuery(String.format("SELECT * FROM profile WHERE UName = '%s';",
+        ResultSet results;
+        dbConnect();
+        results = db.sendQuery(String.format("SELECT * FROM profile WHERE UName = '%s';",
                 userName));
+        closeDBComs();
+        return results;
     }
 
     /**
@@ -131,8 +136,10 @@ public class DatabaseComs {
         results = db.sendUpdate(String.format("UPDATE profile " +
                 "SET major = '%s' " +
                 "WHERE UName = '%s';", major,userName));
+        db.commit();
         closeDBComs();
         if (results == 1){
+
             return true;
         }
         return false;

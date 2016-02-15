@@ -87,8 +87,15 @@ public class DBdriver {
         } catch(Exception e) {
             Log.e("DBdriver", "Exception while executing Query: " + e.getMessage());
             results = -1;		
-        }		
+        }
         return results;		
-    }		
+    }
+    public void commit(){
+        try {
+            con.commit();
+        } catch (Exception e) {
+            Log.e("DBDriver", e.getMessage());
+        }
+    }
 		
  } 
