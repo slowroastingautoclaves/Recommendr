@@ -14,11 +14,11 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/name"
+        android:id="@+id/username"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="103dp"
-        android:hint="Name" />
+        android:hint="Username" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/email"
-        android:layout_below="@+id/name"
+        android:layout_below="@+id/username"
         android:layout_centerHorizontal="true"
         android:hint="E-mail" />
 

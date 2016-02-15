@@ -26,8 +26,8 @@ public class DBdriver {
 
             Class.forName("com.mysql.jdbc.Driver").newInstance();		
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recommendr",
-                    DBNAME,		
-                    PASSWORD);		
+                    DBNAME,
+                    PASSWORD);
 
             if(!con.isClosed()) {
                 Log.i("DBdriver", "Successfully connected to MySQL server using TCP/IP...");
@@ -43,14 +43,14 @@ public class DBdriver {
      *  Closes the connection to the database
      */
     public void closeConnection() {		
-        try{		
+        try{
             con.close();
             if(con.isClosed()) {
                 Log.i("DBdriver", "Connection successfully closed.");
-            }		
+            }
             else {
                 Log.e("DBdriver", "Failed to close connection.");
-            }		
+            }
         } catch(Exception e) {		
             System.err.println("Exception while closing connection: ");
             Log.e("DBdriver", e.getMessage());

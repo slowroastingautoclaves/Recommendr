@@ -24,8 +24,9 @@ public class DatabaseComs {
     public void connectToServer(){
         if (sshTunnel == null){
             sshTunnel =  new SSHDriver();
-        }
-        if (!sshTunnel.isConnected()) {
+            sshTunnel.connectViaSSH();
+
+        }else if (!sshTunnel.isConnected()) {
             sshTunnel.connectViaSSH();
         }
     }

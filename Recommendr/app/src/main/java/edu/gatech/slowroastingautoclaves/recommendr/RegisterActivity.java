@@ -5,26 +5,25 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import edu.gatech.slowroastingautoclaves.recommendr.databasedrivers.DatabaseComs;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextView mNameView;
+    private TextView mUsernameView;
     private TextView mEmailView;
     private TextView mPasswordView;
+    private DatabaseComs db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        mNameView = (TextView) findViewById(R.id.name);
+        mUsernameView = (TextView) findViewById(R.id.username);
 
         mEmailView = (TextView) findViewById(R.id.email);
 
@@ -37,6 +36,9 @@ public class RegisterActivity extends AppCompatActivity {
                 attemptRegister();
             }
         });
+
+        db = new DatabaseComs();
+        db.connectToServer();
 
         Button mCancelButton = (Button) findViewById(R.id.cancel);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        User currentUser = new User(name, email, password);
+        //User currentUser = new User(name, email, password);
 
         boolean cancel = false;
         focusView = null;
@@ -111,8 +113,8 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             // Show a Toast to alert user that a new user profile was created.
             if (isEmailValid(email) && isPasswordValid(password)) {
-                if (!UserList.getInstance().getUsers().contains(currentUser)) {
-                    UserList.getInstance().addUser(currentUser);
+                if (true) {
+                    db.registerUser(name, password, email);
                     Context context = getApplicationContext();
                     CharSequence text = "New user created.";
                     int duration = Toast.LENGTH_SHORT;

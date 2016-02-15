@@ -4,16 +4,16 @@ package edu.gatech.slowroastingautoclaves.recommendr;
  * Created by Diptodip on 2/15/16.
  */
 public class User {
-    private String name, email, password, major;
+    private String username, email, password, major;
 
     public User(String name, String email, String password) {
-        this.name = name;
+        this.username = name;
         this.email = email;
         this.password = password;
     }
 
-    public String getName() {
-        return this.name;
+    public String getUsername() {
+        return this.username;
     }
 
     public String getEmail() {
