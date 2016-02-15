@@ -1,24 +1,27 @@
 package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
 
 
+import android.util.Log;
+
 import java.sql.*;
 
 /**
  * Facilitates connection to database
  */
-public class DBDriver {
+public class DBdriver {
 
 		
     private Connection con;		
     private final String DBNAME="SlowRoastingAuto";		
     private final String PASSWORD="cs2340team58";
+    Statement statement;
 
     /**
      * Creates a driver to for connections to database
      */
-    public DBDriver() {
-		
-        System.out.println("Driver created. Lets Connect!");		
+    public DBdriver() {
+
+        Log.i("DBdriver", "Driver created. Lets Connect!");
 		
         con = null;		
 		
@@ -29,13 +32,13 @@ public class DBDriver {
                     DBNAME,		
                     PASSWORD);		
 
-            if(!con.isClosed()) {		
-                System.out.println("Successfully connected to " + "MySQL server using TCP/IP...");		
+            if(!con.isClosed()) {
+                Log.i("DBdriver", "Successfully connected to " + "MySQL server using TCP/IP...");
             }		
 		
         } catch(Exception e) {		
-            e.printStackTrace();		
-            System.err.println("Exception while creating connection: " + e.getMessage());		
+            e.printStackTrace();
+            Log.e("DBdriver", "Exception while creating connection: " + e.getMessage());
         }		
     }
 
@@ -45,15 +48,15 @@ public class DBDriver {
     public void closeConnection() {		
         try{		
             con.close();
-            if(con.isClosed()) {		
-                System.out.println("Connection successfully closed.");		
+            if(con.isClosed()) {
+                Log.i("DBdriver", "Connection successfully closed.");
             }		
-            else {		
-                System.out.println("Failed to close connection.");		
+            else {
+                Log.e("DBdriver", "Failed to close connection.");
             }		
         } catch(Exception e) {		
-            System.err.println("Exception while closing connection: ");		
-            e.printStackTrace();		
+            System.err.println("Exception while closing connection: ");
+            Log.e("DBdriver", e.getMessage());
         }		
     }
 
@@ -67,8 +70,8 @@ public class DBDriver {
         try{		
             Statement st = con.createStatement();		
             results = st.executeQuery(query);		
-        } catch(Exception e) {		
-            System.err.println("Exception while executing Query: " + e.getStackTrace());		
+        } catch(Exception e) {
+            Log.e("DBdriver", "Exception while executing Query: " + e.getStackTrace());
             results = null;		
         }		
         return results;		
@@ -84,8 +87,8 @@ public class DBDriver {
         try{		
             Statement st = con.createStatement();		
             results = st.executeUpdate(query);		
-        } catch(Exception e) {		
-            System.err.println("Exception while executing Query: " + e.getMessage());		
+        } catch(Exception e) {
+            Log.e("DBdriver", "Exception while executing Query: " + e.getMessage());
             results = -1;		
         }		
         return results;		
