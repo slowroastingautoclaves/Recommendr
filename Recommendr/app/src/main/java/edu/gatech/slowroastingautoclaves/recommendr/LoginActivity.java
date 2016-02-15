@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static List<String> DUMMY_CREDENTIALS = new ArrayList<String>();
+    //private static List<String> DUMMY_CREDENTIALS = new ArrayList<String>();
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -67,8 +67,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DUMMY_CREDENTIALS.add("foo@example.com:hello");
-        DUMMY_CREDENTIALS.add("bar@example.com:world");
+        //DUMMY_CREDENTIALS.add("foo@example.com:hello");
+        //DUMMY_CREDENTIALS.add("bar@example.com:world");
+        UserList.getInstance().addUser(new User("Foo", "foo@example.com", "hello"));
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -97,7 +98,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptRegister();
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(registerIntent);
+                finish();
             }
         });
 
@@ -201,73 +204,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void attemptRegister() {
-        if (mAuthTask != null) {
-            return;
-        }
 
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a Toast to alert user that a new user profile was created.
-            if (isEmailValid(email) && isPasswordValid(password)) {
-                if (!DUMMY_CREDENTIALS.contains((email + ":" + password))) {
-                    DUMMY_CREDENTIALS.add(email + ":" + password);
-                    Context context = getApplicationContext();
-                    CharSequence text = "New user created.";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                } else {
-                    focusView = mEmailView;
-                    mEmailView.setError("User already exists.");
-                    focusView.requestFocus();
-                }
-
-            } else {
-                if (!isEmailValid(email)) {
-                    mEmailView.setError(getString(R.string.error_invalid_email));
-                    focusView = mEmailView;
-                }
-                if (!isPasswordValid(password)) {
-                    mPasswordView.setError(getString(R.string.error_invalid_password));
-                    focusView = mPasswordView;
-                }
-                focusView.requestFocus();
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -403,11 +340,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
+            for (User u : UserList.getInstance().getUsers()) {
+                if (u.getEmail().equals(mEmail)) {
                     // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                    return u.getPassword().equals(mPassword);
                 }
             }
             return false;
