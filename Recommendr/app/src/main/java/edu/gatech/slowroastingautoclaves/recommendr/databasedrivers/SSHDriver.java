@@ -10,11 +10,11 @@ import android.util.Log;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 public class SSHDriver {
-    static String hostIp = "128.61.105.200";
-    static int lport;
-    static String rhost;
-    static int rport;
-    static Session session;
+    private static String hostIp = "128.61.105.200";
+    private static int lport;
+    private static String rhost;
+    private static int rport;
+    private static Session session;
 
     /**
      * Conects to server via SSH

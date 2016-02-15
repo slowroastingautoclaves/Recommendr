@@ -14,7 +14,7 @@ public class DBdriver {
     private Connection con;		
     private final String DBNAME="SlowRoastingAuto";		
     private final String PASSWORD="cs2340team58";
-    Statement statement;
+
 
     /**
      * Creates a driver to for connections to database
