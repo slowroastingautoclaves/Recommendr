@@ -55,6 +55,25 @@ public class DatabaseComs {
     }
 
     /**
+     * Used to register a user in the database
+     * @param userName Username wanting to be registered
+     * @param password password for new user
+     * @param eMail E-Mail of new User
+     * @return True if user is registered, else false
+     */
+    public boolean registerUser(String userName, String password, String eMail){
+        int results;
+        dbConnect();
+        results = db.sendUpdate(String.format("INSERT INTO users VALUES ('%s', '%s', '%s');",
+                userName, eMail, password ));
+        closeDBComs();
+        if (results == 1){
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Checks for user to log them in
      * @param userName persons username that is attempting to log in
      * @param password Password of person trying to log in
