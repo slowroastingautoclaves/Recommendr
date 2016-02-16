@@ -10,7 +10,10 @@ import android.util.Log;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
-public class SSHDriver extends AsyncTask<void, void, void>{
+
+import java.util.concurrent.Executor;
+
+public class SSHDriver implements Runnable{
     private static String hostIp = "128.61.105.200";
     private static int lport;
     private static String rhost;
@@ -36,9 +39,9 @@ public class SSHDriver extends AsyncTask<void, void, void>{
             Log.d("SSHDriver", "Establishing server Connection...");
             session.connect();
             int assinged_port = session.setPortForwardingL(lport, rhost, rport);
-            Log.i("SSHDriver", "localhost:" + assinged_port + " -> " + rhost + ":" + rport);
+            Log.i("SSHDriver", "localhost:" + assinged_port + " -> " + rhost + ":" + rport + session.isConnected());
         } catch (Exception e) {
-            Log.e("SSHDriver", e.getMessage());
+            Log.e("SSHDriver", "Could not open tunnel: " + e.getMessage());
         }
     }
 
@@ -60,9 +63,9 @@ public class SSHDriver extends AsyncTask<void, void, void>{
         return session.isConnected();
     }
 
-    @Override
-    protected void doInBackground(void... params) {
 
+    public void run(){
+        connectViaSSH();
     }
 }
 

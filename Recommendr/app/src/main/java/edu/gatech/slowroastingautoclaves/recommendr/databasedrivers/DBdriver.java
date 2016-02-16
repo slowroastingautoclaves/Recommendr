@@ -1,6 +1,7 @@
 package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
 
 
+import android.app.Activity;
 import android.util.Log;
 
 import java.sql.*;
@@ -8,41 +9,44 @@ import java.sql.*;
 /**
  * Facilitates connection to database
  */
-public class DBdriver {
+public class DBdriver implements Runnable{
 
-		
+
     private static Connection con;
-    private final String DBNAME="SlowRoastingAuto";		
+    private final String DBNAME="SlowRoastingAuto";
     private final String PASSWORD="cs2340team58";
 
 
     /**
      * Creates a driver to for connections to database
      */
-    public DBdriver() {
+    public boolean connectDBdriver() {
         Log.i("DBdriver", "Creating Driver");
         con = null;
         try {
 
-            Class.forName("com.mysql.jdbc.Driver").newInstance();		
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recommendr",
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection("jdbc:mysql://localhost/recommendr",
                     DBNAME,
                     PASSWORD);
-
+            Log.i("DBdriver", "Hello");
             if(!con.isClosed()) {
                 Log.i("DBdriver", "Successfully connected to MySQL server using TCP/IP...");
-            }		
-		
-        } catch(Exception e) {		
+                return true;
+            }
+
+        } catch(Exception e) {
             e.printStackTrace();
             Log.e("DBdriver", "Exception while creating connection: " + e.getMessage());
-        }		
+        }
+        return false;
     }
+
 
     /**
      *  Closes the connection to the database
      */
-    public void closeConnection() {		
+    public void closeConnection() {
         try{
             con.close();
             if(con.isClosed()) {
@@ -51,10 +55,10 @@ public class DBdriver {
             else {
                 Log.e("DBdriver", "Failed to close connection.");
             }
-        } catch(Exception e) {		
+        } catch(Exception e) {
             System.err.println("Exception while closing connection: ");
             Log.e("DBdriver", e.getMessage());
-        }		
+        }
     }
 
     /**
@@ -62,16 +66,16 @@ public class DBdriver {
      * @param query
      * @return ResultSet Detailed object of data from query
      */
-    public ResultSet sendQuery(String query) {		
-        ResultSet results;		
-        try{		
-            Statement st = con.createStatement();		
-            results = st.executeQuery(query);		
+    public ResultSet sendQuery(String query) {
+        ResultSet results;
+        try{
+            Statement st = con.createStatement();
+            results = st.executeQuery(query);
         } catch(Exception e) {
-            Log.e("DBdriver", "Exception while executing Query: " + e.getStackTrace());
-            results = null;		
-        }		
-        return results;		
+            Log.e("DBdriver", "Exception while executing Query: " + Log.getStackTraceString(new Exception()));
+            results = null;
+        }
+        return results;
     }
 
     /**
@@ -79,16 +83,16 @@ public class DBdriver {
      * @param query
      * @return int number of rows affected
      */
-    public int sendUpdate(String query) {		
-        int results;		
-        try{		
-            Statement st = con.createStatement();		
-            results = st.executeUpdate(query);		
+    public int sendUpdate(String query) {
+        int results;
+        try{
+            Statement st = con.createStatement();
+            results = st.executeUpdate(query);
         } catch(Exception e) {
             Log.e("DBdriver", "Exception while executing Query: " + e.getMessage());
-            results = -1;		
+            results = -1;
         }
-        return results;		
+        return results;
     }
     public void commit(){
         try {
@@ -97,5 +101,16 @@ public class DBdriver {
             Log.e("DBDriver", e.getMessage());
         }
     }
-		
- } 
+    public boolean isConnected(){
+        try {
+            return !con.isClosed();
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public void run() {
+        connectDBdriver();
+    }
+}

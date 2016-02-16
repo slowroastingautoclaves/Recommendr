@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
         View focusView = null;
 
         // Store values at the time of the login attempt.
-        String name = mEmailView.getText().toString();
+        String name = mUsernameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
@@ -114,9 +114,9 @@ public class RegisterActivity extends AppCompatActivity {
             // Show a Toast to alert user that a new user profile was created.
             if (isEmailValid(email) && isPasswordValid(password)) {
                 if (true) {
-                    db.connectToServer();
-                    db.registerUser(name, password, email);
-                    db.closeSSHComs();
+
+                    Boolean x = db.registerUser(name, password, email);
+
                     Context context = getApplicationContext();
                     CharSequence text = "New user created.";
                     int duration = Toast.LENGTH_SHORT;

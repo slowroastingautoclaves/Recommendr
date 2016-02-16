@@ -1,6 +1,9 @@
 package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
 
+import android.util.Log;
+
 import java.sql.ResultSet;
+import java.util.concurrent.Executor;
 
 /**
  * Created by Joshua Jibilian on 2/14/2016.
@@ -8,7 +11,8 @@ import java.sql.ResultSet;
  * Uses DBdriver class and SSHDriver class to facilitate connections to the Database and
  * querries to the database.
  */
-public class DatabaseComs {
+public class DatabaseComs implements Executor{
+    Thread thread;
     /**
      * Driver to connect to database.
      */
@@ -23,20 +27,29 @@ public class DatabaseComs {
      */
     public void connectToServer(){
         if (sshTunnel == null){
-            sshTunnel =  new SSHDriver();
-            sshTunnel.connectViaSSH();
+            sshTunnel = new SSHDriver();
+            execute(sshTunnel);
 
         }else if (!sshTunnel.isConnected()) {
-            sshTunnel.connectViaSSH();
+            execute(sshTunnel);
         }
     }
 
     /**
      * Connects to database, tunnel must be open first
      */
-    private void dbConnect(){
+    private void dbStartConnect(){
 
         db = new DBdriver();
+        execute(db);
+    }
+    private void dbConnect(){
+        dbStartConnect();
+        try {
+            thread.join();
+        } catch (Exception e){
+            Log.e("DatabaseComs", e.getMessage());
+        }
     }
 
     /**
@@ -149,5 +162,11 @@ public class DatabaseComs {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void execute(Runnable command) {
+        thread = new Thread(command);
+        thread.start();
     }
 }
