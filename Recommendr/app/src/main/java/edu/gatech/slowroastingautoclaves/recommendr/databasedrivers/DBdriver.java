@@ -9,6 +9,9 @@ import java.sql.*;
 /**
  * Facilitates connection to database
  */
+
+//TODO: Look up syncronous class Or push connect and query in same thread. MongoDB
+
 public class DBdriver implements Runnable{
 
 
@@ -89,7 +92,8 @@ public class DBdriver implements Runnable{
             Statement st = con.createStatement();
             results = st.executeUpdate(query);
         } catch(Exception e) {
-            Log.e("DBdriver", "Exception while executing Query: " + e.getMessage());
+            Log.e("DBdriver", "Exception while executing Query: " + e.getMessage()
+                    + Log.getStackTraceString(new Exception()));
             results = -1;
         }
         return results;
