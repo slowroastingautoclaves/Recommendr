@@ -1,5 +1,6 @@
 package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.sql.ResultSet;
@@ -25,6 +26,13 @@ public class DatabaseComs implements Executor{
     /**
      * Connects to server via SSH tunnel
      */
+    public DatabaseComs() {
+        db = new DBdriver();
+    }
+
+    /**
+     * Connects to server hosting database.
+     */
     public void connectToServer(){
         if (sshTunnel == null){
             sshTunnel = new SSHDriver();
@@ -39,8 +47,6 @@ public class DatabaseComs implements Executor{
      * Connects to database, tunnel must be open first
      */
     private void dbStartConnect(){
-
-        db = new DBdriver();
         execute(db);
     }
     private void dbConnect(){
@@ -82,13 +88,14 @@ public class DatabaseComs implements Executor{
      * @param eMail E-Mail of new User
      * @return True if user is registered, else false
      */
-    public boolean registerUser(String userName, String password, String eMail){
-        int results;
+    public synchronized boolean registerUser(String userName, String password, String eMail){
+
+        db.setQuery(String.format("INSERT INTO users VALUES ('%s', '%s', '%s');",
+                userName, eMail, password));
         dbConnect();
-        results = db.sendUpdate(String.format("INSERT INTO users VALUES ('%s', '%s', '%s');",
-                userName, eMail, password ));
+        //results = db.sendUpdate();
         closeDBComs();
-        if (results == 1){
+        if (db.getIntResult() == 1){
             return true;
         }
         return false;
@@ -98,14 +105,15 @@ public class DatabaseComs implements Executor{
      * Checks for user to log them in
      * @param userName persons username that is attempting to log in
      * @param password Password of person trying to log in
-     * @return returns true if they are in database, else false
+     * @return True if they are in database, else false
      */
     public boolean logInUser(String userName, String password){
-        int results;
+
+        db.setQuery(String.format("SELECT * FROM recommendr WHERE UName = '%s' AND password = '%s';", userName, password));
         dbConnect();
-        results = db.sendUpdate(String.format("SELECT * FROM recommendr WHERE UName = '%s' AND password = '%s';", userName, password ));
+        //results = db.sendUpdate();
         closeDBComs();
-        if (results == 1){
+        if (db.getIntResult() == 1){
             return true;
         }
         return false;
@@ -118,12 +126,13 @@ public class DatabaseComs implements Executor{
      * @return True if profile is added else false.
      */
     public boolean createProfile(String userName, String major){
-        int results;
+
+        db.setQuery(String.format("INSERT INTO profile VALUES('%s','$s');", userName,major));
         dbConnect();
-        results = db.sendUpdate(String.format("INSERT INTO profile VALUES('%s','$s');", userName,major));
+        //results = db.sendUpdate();
         db.commit();
         closeDBComs();
-        if (results == 1){
+        if (db.getIntResult() == 1){
             return true;
         }
         return false;
@@ -135,12 +144,13 @@ public class DatabaseComs implements Executor{
      * @return ResultSet of the users profile
      */
     public ResultSet getProfile(String userName){
-        ResultSet results;
-        dbConnect();
-        results = db.sendQuery(String.format("SELECT * FROM profile WHERE UName = '%s';",
+
+        db.setQuery(String.format("SELECT * FROM profile WHERE UName = '%s';",
                 userName));
+        dbConnect();
+        //results = db.sendQuery();
         closeDBComs();
-        return results;
+        return db.getResultSet();
     }
 
     /**
@@ -150,20 +160,24 @@ public class DatabaseComs implements Executor{
      * @return True if update was successful else false
      */
     public boolean updateProfile(String userName, String major){
-        int results;
+       db.setQuery(String.format("UPDATE profile " +
+               "SET major = '%s' " +
+               "WHERE UName = '%s';", major,userName));
         dbConnect();
-        results = db.sendUpdate(String.format("UPDATE profile " +
-                "SET major = '%s' " +
-                "WHERE UName = '%s';", major,userName));
+        //results = db.sendUpdate();
         db.commit();
         closeDBComs();
-        if (results == 1){
+        if (db.getIntResult() == 1){
 
             return true;
         }
         return false;
     }
 
+    /**\
+     * Starts a command on new thread
+     * @param command Command to start on new thread
+     */
     @Override
     public void execute(Runnable command) {
         thread = new Thread(command);
