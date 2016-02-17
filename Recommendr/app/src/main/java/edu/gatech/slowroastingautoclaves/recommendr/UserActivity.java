@@ -7,8 +7,11 @@ import android.widget.Button;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+/**
+ * Screen that allows user to access user functions, e.g. editing profile.
+ */
 public class UserActivity extends AppCompatActivity {
-    private String email;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +19,7 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 
         Intent intent = getIntent();
-        this.email = intent.getStringExtra("Email");
+        this.username = intent.getStringExtra("Username");
 
         Button mPlaceholderDone = (Button) findViewById(R.id.placeholder_done);
         mPlaceholderDone.setOnClickListener(new OnClickListener() {
@@ -33,7 +36,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent profileIntent = new Intent(UserActivity.this, ProfileActivity.class);
-                profileIntent.putExtra("Email", UserActivity.this.email);
+                profileIntent.putExtra("Username", UserActivity.this.username);
                 startActivity(profileIntent);
                 finish();
             }

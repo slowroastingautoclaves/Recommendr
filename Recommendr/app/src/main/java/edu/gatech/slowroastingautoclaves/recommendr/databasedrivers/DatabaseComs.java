@@ -109,7 +109,7 @@ public class DatabaseComs implements Executor{
      */
     public boolean logInUser(String userName, String password){
 
-        db.setQuery(String.format("SELECT * FROM recommendr WHERE UName = '%s' AND password = '%s';", userName, password));
+        db.setQuery(String.format("SELECT * FROM users WHERE UName = '%s' AND password = '%s';", userName, password));
         dbConnect();
         //results = db.sendUpdate();
         closeDBComs();
@@ -157,7 +157,7 @@ public class DatabaseComs implements Executor{
      * Updates a profile of a specific user
      * @param userName user to update profile for.
      * @param major new major they want to update to.
-     * @return True if update was successful else false
+     * @return True if update was successful, else false
      */
     public boolean updateProfile(String userName, String major){
        db.setQuery(String.format("UPDATE profile " +

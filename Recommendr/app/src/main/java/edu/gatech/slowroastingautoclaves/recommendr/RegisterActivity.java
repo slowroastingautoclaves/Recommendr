@@ -5,13 +5,15 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.gatech.slowroastingautoclaves.recommendr.databasedrivers.DatabaseComs;
 
+/**
+ * Screen that allows user to register a new account.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private TextView mUsernameView;
@@ -62,16 +64,36 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Checks validity of username.
+     * @param username is username being checked.
+     * @return true if username is valid, else false
+     */
+    private boolean isUsernameValid(String username) {
+        return username.length() > 0;
+    }
+
+    /**
+     * Checks validity of email.
+     * @param email is email being checked.
+     * @return true if email is valid, else false
+     */
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
+    /**
+     * Checks validity of password.
+     * @param password is password being checked.
+     * @return true if password is valid, else false
+     */
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
+    /**
+     * Tries to register by checking username and password.
+     */
     private void attemptRegister() {
         // Reset errors.
         mEmailView.setError(null);
@@ -80,16 +102,9 @@ public class RegisterActivity extends AppCompatActivity {
         View focusView = null;
 
         // Store values at the time of the login attempt.
-        String name = mUsernameView.getText().toString();
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        //User currentUser = new User(name, email, password);
         String username = mUsernameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-
-        User currentUser = new User(username, email, password);
 
         boolean cancel = false;
         focusView = null;
@@ -112,17 +127,27 @@ public class RegisterActivity extends AppCompatActivity {
             cancel = true;
         }
 
+        // Check for a valid username.
+        if (TextUtils.isEmpty(email)) {
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
+            cancel = true;
+        } else if (!isUsernameValid(username)) {
+            mUsernameView.setError("This username is invalid.");
+            focusView = mUsernameView;
+            cancel = true;
+        }
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
         } else {
             // Show a Toast to alert user that a new user profile was created.
-            if (isEmailValid(email) && isPasswordValid(password)) {
-                if (true) {
+            if (isEmailValid(email) && isPasswordValid(password) && isUsernameValid(username)) {
+                boolean userRegistered = db.registerUser(username, password, email);
 
-                    Boolean x = db.registerUser(name, password, email);
-
+                if (userRegistered) {
                     Context context = getApplicationContext();
                     CharSequence text = "New user created.";
                     int duration = Toast.LENGTH_SHORT;
@@ -133,7 +158,6 @@ public class RegisterActivity extends AppCompatActivity {
                     mEmailView.setError("User already exists.");
                     focusView.requestFocus();
                 }
-
             } else {
                 if (!isEmailValid(email)) {
                     mEmailView.setError(getString(R.string.error_invalid_email));
@@ -142,6 +166,10 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!isPasswordValid(password)) {
                     mPasswordView.setError(getString(R.string.error_invalid_password));
                     focusView = mPasswordView;
+                }
+                if (!isUsernameValid(username)) {
+                    mUsernameView.setError("This username is invalid.");
+                    focusView = mUsernameView;
                 }
                 focusView.requestFocus();
             }
