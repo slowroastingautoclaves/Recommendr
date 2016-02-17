@@ -8,11 +8,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class UserActivity extends AppCompatActivity {
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        Intent intent = getIntent();
+        this.email = intent.getStringExtra("Email");
 
         Button mPlaceholderDone = (Button) findViewById(R.id.placeholder_done);
         mPlaceholderDone.setOnClickListener(new OnClickListener() {
@@ -20,6 +24,17 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent userIntent = new Intent(UserActivity.this, LoginActivity.class);
                 startActivity(userIntent);
+                finish();
+            }
+        });
+
+        Button mEditProfile = (Button) findViewById(R.id.edit_profile);
+        mEditProfile.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent profileIntent = new Intent(UserActivity.this, ProfileActivity.class);
+                profileIntent.putExtra("Email", UserActivity.this.email);
+                startActivity(profileIntent);
                 finish();
             }
         });

@@ -32,4 +32,13 @@ public class UserList {
     public void removeUser(User user) {
         this.users.remove(user);
     }
+
+    public User findUserByEmail(String email) {
+        for (User u : this.users) {
+            if (u.getEmail().equals(email)) {
+                return u;
+            }
+        }
+        return null;
+    }
 }

@@ -85,6 +85,11 @@ public class RegisterActivity extends AppCompatActivity {
         String password = mPasswordView.getText().toString();
 
         //User currentUser = new User(name, email, password);
+        String username = mUsernameView.getText().toString();
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
+        User currentUser = new User(username, email, password);
 
         boolean cancel = false;
         focusView = null;
