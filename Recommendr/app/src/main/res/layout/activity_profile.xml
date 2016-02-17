@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/usernamedisplay"
+        android:id="@+id/User"
         android:hint="Username"
         android:inputType="none"
         android:layout_below="@+id/textView8"
@@ -62,9 +62,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Major:"
         android:id="@+id/textView9"
-        android:layout_below="@+id/usernamedisplay"
-        android:layout_alignLeft="@+id/usernamedisplay"
-        android:layout_alignStart="@+id/usernamedisplay" />
+        android:layout_below="@+id/User"
+        android:layout_alignLeft="@+id/User"
+        android:layout_alignStart="@+id/User" />
 
     <Button
         android:layout_width="wrap_content"

@@ -25,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         User u = UserList.getInstance().findUserByEmail(this.email);
 
-        TextView usernameView = (TextView) findViewById(R.id.usernamedisplay);
+        TextView usernameView = (TextView) findViewById(R.id.User);
         TextView majorView = (TextView) findViewById(R.id.major);
         TextView descriptionView = (TextView) findViewById(R.id.description);
 

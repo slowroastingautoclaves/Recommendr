@@ -33,6 +33,17 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        Button viewProfile = (Button) findViewById(R.id.VProfile);
+        viewProfile.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent userIntent = new Intent(UserActivity.this, ProfileActivity2.class);
+                userIntent.putExtra("Email", UserActivity.this.email);
+                startActivity(userIntent);
+                finish();
+            }
+        });
+
         Button mEditProfile = (Button) findViewById(R.id.edit_profile);
         mEditProfile.setOnClickListener(new OnClickListener() {
             @Override

@@ -34,14 +34,24 @@
         android:layout_height="wrap_content"
         android:text="Done"
         android:id="@+id/placeholder_done"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="165dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Profile"
         android:id="@+id/edit_profile"
-        android:layout_above="@+id/placeholder_done"
+        android:layout_above="@+id/VProfile"
+        android:layout_alignLeft="@+id/VProfile"
+        android:layout_alignStart="@+id/VProfile" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Profile"
+        android:id="@+id/VProfile"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
