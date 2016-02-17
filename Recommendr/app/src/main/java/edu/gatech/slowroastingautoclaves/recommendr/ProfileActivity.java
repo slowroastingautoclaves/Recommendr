@@ -15,6 +15,9 @@ import java.sql.ResultSet;
 
 import edu.gatech.slowroastingautoclaves.recommendr.databasedrivers.DatabaseComs;
 
+/**
+ * A profile screen that allows users to edit their profile, e.g. change their major.
+ */
 public class ProfileActivity extends AppCompatActivity {
     private String username;
     private DatabaseComs db;
