@@ -5,17 +5,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextView mNameView;
+    private TextView mUsernameView;
     private TextView mEmailView;
     private TextView mPasswordView;
 
@@ -24,7 +21,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        mNameView = (TextView) findViewById(R.id.name);
+        mUsernameView = (TextView) findViewById(R.id.username);
 
         mEmailView = (TextView) findViewById(R.id.email);
 
@@ -77,11 +74,11 @@ public class RegisterActivity extends AppCompatActivity {
         View focusView = null;
 
         // Store values at the time of the login attempt.
-        String name = mEmailView.getText().toString();
+        String username = mUsernameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        User currentUser = new User(name, email, password);
+        User currentUser = new User(username, email, password);
 
         boolean cancel = false;
         focusView = null;
