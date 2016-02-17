@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -209,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute((Void) null);
+            mAuthTask.execute();
         }
     }
 
@@ -361,8 +362,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            } catch (InterruptedException e) {
 //                return false;
 //            }
+            boolean x = db.logInUser(mUsername, mPassword);
+            Log.d("LoginActivity", "" + x);
 
-            return LoginActivity.this.db.logInUser(mUsername, mPassword);
+            return x;
         }
 
         @Override

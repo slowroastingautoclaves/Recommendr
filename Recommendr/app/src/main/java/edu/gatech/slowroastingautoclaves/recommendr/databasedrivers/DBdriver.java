@@ -18,8 +18,10 @@ public class DBdriver implements Runnable {
     private final String DBNAME="SlowRoastingAuto";
     private final String PASSWORD="cs2340team58";
     private String query;
-    private int result;
-    private ResultSet resultSet;
+    private static int result;
+    private int fetchedSize;
+    private static ResultSet resultSet;
+    private Statement statement;
 
 
     /**
@@ -40,12 +42,19 @@ public class DBdriver implements Runnable {
 
             }
 
-            Statement statement = con.createStatement();
-            if (statement.execute(query)){
-                resultSet = statement.getResultSet();
-            } else {
-                result = statement.getUpdateCount();
+            statement = con.createStatement();
+            try{
+            resultSet = statement.executeQuery(query);
+            } catch (Exception e){
+
             }
+            try{
+                result = statement.executeUpdate(query);
+            } catch (Exception e){
+
+            }
+
+
 
             query = null;
 
@@ -61,6 +70,8 @@ public class DBdriver implements Runnable {
     }
     public int getIntResult() {
         return result;
+    }
+    public int getFetchedSize() {return fetchedSize;
     }
     public void setQuery(String query){
         this.query = query;

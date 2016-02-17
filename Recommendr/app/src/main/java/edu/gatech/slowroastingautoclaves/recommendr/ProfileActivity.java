@@ -85,6 +85,11 @@ public class ProfileActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         } else {
+            try {
+                db.createProfile(u.getUsername(), u.getMajor());
+            } catch (Exception e){
+
+            }
             Context context = getApplicationContext();
             CharSequence text = "Something went wrong, profile not updated.";
             int duration = Toast.LENGTH_SHORT;

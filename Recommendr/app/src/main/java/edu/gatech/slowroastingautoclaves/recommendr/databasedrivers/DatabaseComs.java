@@ -109,14 +109,35 @@ public class DatabaseComs implements Executor{
      */
     public boolean logInUser(String userName, String password){
 
-        db.setQuery(String.format("SELECT * FROM users WHERE UName = '%s' AND password = '%s';", userName, password));
+        db.setQuery(String.format("SELECT Count(UName)FROM users WHERE UName = '%s' AND Password = '%s';", userName, password));
         dbConnect();
         //results = db.sendUpdate();
-        closeDBComs();
-        if (db.getIntResult() == 1){
-            return true;
+
+        ResultSet r  = db.getResultSet();
+        String y = "HAHAHAHa   ";
+        /*try {
+            y="";
+            y = r.getNString(1);
+        }catch (Exception e){
+            Log.e("DatabaseComs", "FML");
+        }*/
+        Log.d("DatabaseComs", "" + db.getFetchedSize() + " " + y);
+        ResultSet result = db.getResultSet();
+        try {
+            result.next();
+            if (result.getInt(1) == 1){
+                closeDBComs();
+                return true;
+            }
+            closeDBComs();
+            return false;
+        } catch (Exception e){
+            closeDBComs();
+            Log.e("DatabaseComs", "Error with result Set" + e.getMessage() + " \n" + Log.getStackTraceString(new Exception()));
+
         }
         return false;
+
     }
 
     /**
@@ -127,10 +148,9 @@ public class DatabaseComs implements Executor{
      */
     public boolean createProfile(String userName, String major){
 
-        db.setQuery(String.format("INSERT INTO profile VALUES('%s','$s');", userName,major));
+        db.setQuery(String.format("INSERT INTO profile VALUES('%s','%s');", userName,major));
         dbConnect();
         //results = db.sendUpdate();
-        db.commit();
         closeDBComs();
         if (db.getIntResult() == 1){
             return true;
@@ -165,7 +185,6 @@ public class DatabaseComs implements Executor{
                "WHERE UName = '%s';", major,userName));
         dbConnect();
         //results = db.sendUpdate();
-        db.commit();
         closeDBComs();
         if (db.getIntResult() == 1){
 
