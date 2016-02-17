@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Screen that allows user to register a new account.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private TextView mUsernameView;
@@ -18,6 +21,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Get buttons and text fields.
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
@@ -56,16 +61,36 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Checks validity of username.
+     * @param username is username being checked.
+     * @return true if username is valid, else false
+     */
+    private boolean isUsernameValid(String username) {
+        return username.length() > 0;
+    }
+
+    /**
+     * Checks validity of email.
+     * @param email is email being checked.
+     * @return true if email is valid, else false
+     */
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
+    /**
+     * Checks validity of password.
+     * @param password is password being checked.
+     * @return true if password is valid, else false
+     */
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
+    /**
+     * Tries to register by checking username, email, and password and whether user exists.
+     */
     private void attemptRegister() {
         // Reset errors.
         mEmailView.setError(null);
@@ -101,13 +126,24 @@ public class RegisterActivity extends AppCompatActivity {
             cancel = true;
         }
 
+        //Check for a valid username.
+        if (TextUtils.isEmpty(email)) {
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
+            cancel = true;
+        } else if (!isUsernameValid(username)) {
+            mUsernameView.setError("This username is invalid.");
+            focusView = mUsernameView;
+            cancel = true;
+        }
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a Toast to alert user that a new user profile was created.
-            if (isEmailValid(email) && isPasswordValid(password)) {
+            // Show a Toast to alert user that a new user profile was created (or not).
+            if (isEmailValid(email) && isPasswordValid(password) && isUsernameValid(username)) {
                 if (!UserList.getInstance().getUsers().contains(currentUser)) {
                     UserList.getInstance().addUser(currentUser);
                     Context context = getApplicationContext();
@@ -129,6 +165,10 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!isPasswordValid(password)) {
                     mPasswordView.setError(getString(R.string.error_invalid_password));
                     focusView = mPasswordView;
+                }
+                if (!isUsernameValid(username)) {
+                    mUsernameView.setError("This username is invalid.");
+                    focusView = mUsernameView;
                 }
                 focusView.requestFocus();
             }

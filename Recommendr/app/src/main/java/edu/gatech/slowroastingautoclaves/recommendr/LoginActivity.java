@@ -52,7 +52,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    //private static List<String> DUMMY_CREDENTIALS = new ArrayList<String>();
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -66,9 +65,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Get buttons and text fields.
+
         super.onCreate(savedInstanceState);
-        //DUMMY_CREDENTIALS.add("foo@example.com:hello");
-        //DUMMY_CREDENTIALS.add("bar@example.com:world");
+        //Make hardcoded dummy user.
         UserList.getInstance().addUser(new User("Foo", "foo@example.com", "hello"));
         setContentView(R.layout.activity_login);
         // Set up the login form.
@@ -208,6 +208,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void onBackPressed() {
+        //Checks if authentication is running and cancels it, otherwise exits app as in super.
         if (mAuthTask != null) {
             mAuthTask.cancel(true);
         } else {
@@ -215,13 +216,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    /**
+     * Checks validity of email.
+     * @param email is email being checked.
+     * @return true if email is valid, else false
+     */
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
+    /**
+     * Checks validity of password.
+     * @param password is password being checked.
+     * @return true if password is valid, else false
+     */
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -295,6 +304,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
+    /**
+     * Adds emails to autocomplete.
+     * @param emailAddressCollection is list of emails
+     */
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -357,6 +370,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Intent userIntent = new Intent(LoginActivity.this, UserActivity.class); 
 
             if (success) {
+                //Send email to UserActivity and start UserActivity.
                 userIntent.putExtra("Email",this.mEmail);
                 startActivity(userIntent);
                 finish();
