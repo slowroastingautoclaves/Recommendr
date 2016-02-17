@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,10 +32,10 @@ public class ProfileActivity extends AppCompatActivity {
         this.username = intent.getStringExtra("Username");
 
         u = new User(this.username, "", "");
-        ResultSet userResult = db.getProfile(username);
         try {
-            if (userResult.next()) {
-                u.setMajor(userResult.getNString("major"));
+            if (db.getProfile(this.username).next()) {
+                u.setMajor(db.getProfile(this.username).getNString("major"));
+                Log.i("PLS: ", u.getMajor());
             }
         } catch(Exception e) {
         }
@@ -76,8 +77,18 @@ public class ProfileActivity extends AppCompatActivity {
     private void editProfile() {
         TextView majorView = (TextView) findViewById(R.id.major);
         u.setMajor(majorView.getText().toString());
-        boolean success = this.db.updateProfile(u.getUsername(), u.getMajor());
+        boolean profileExists = false;
+        try {
+            profileExists = this.db.getProfile(u.getUsername()).next();
+        } catch(Exception e) {
+        }
+        //check if user already has profile, if not then make one in database
+        if (!profileExists) {
+            this.db.createProfile(u.getUsername(), u.getMajor());
+        }
 
+        boolean success = this.db.updateProfile(u.getUsername(), u.getMajor());
+        //if profile is updated then display update message, else display error message
         if (success) {
             Context context = getApplicationContext();
             CharSequence text = "Profile updated.";
@@ -85,11 +96,6 @@ public class ProfileActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         } else {
-            try {
-                db.createProfile(u.getUsername(), u.getMajor());
-            } catch (Exception e){
-
-            }
             Context context = getApplicationContext();
             CharSequence text = "Something went wrong, profile not updated.";
             int duration = Toast.LENGTH_SHORT;
