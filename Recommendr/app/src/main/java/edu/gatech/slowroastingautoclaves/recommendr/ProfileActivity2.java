@@ -57,22 +57,4 @@ public class ProfileActivity2 extends AppCompatActivity {
             }
         });
     }
-
-    /**
-     * Attempts to update profile with information entered by user.
-     */
-    private void editProfile() {
-        TextView majorView = (TextView) findViewById(R.id.major);
-        TextView descriptionView = (TextView) findViewById(R.id.description);
-        User u = UserList.getInstance().findUserByEmail(this.email);
-        u.setMajor(majorView.getText().toString());
-        u.setDescription(descriptionView.getText().toString());
-
-        //Display alert to user that profile has been updated successfully.
-        Context context = getApplicationContext();
-        CharSequence text = "Profile updated.";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
 }

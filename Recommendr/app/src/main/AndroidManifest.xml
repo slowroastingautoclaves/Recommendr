@@ -24,10 +24,33 @@
         </activity>
         <activity android:name=".UserActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".ProfileActivity"/>
-            <activity android:name=".ProfileActivity2">
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".ProfileActivity2" />
+        <activity
+            android:name=".MovieListActivity"
+            android:label="@string/title_movie_list"
+            android:parentActivityName=".UserActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.gatech.slowroastingautoclaves.recommendr.UserActivity" />
         </activity>
-
+        <activity
+            android:name=".MovieDetailActivity"
+            android:label="@string/title_movie_detail"
+            android:parentActivityName=".MovieListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.gatech.slowroastingautoclaves.recommendr.MovieListActivity" />
+        </activity>
+        <activity android:name=".SearchMovieActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
     </application>
 
 </manifest>
