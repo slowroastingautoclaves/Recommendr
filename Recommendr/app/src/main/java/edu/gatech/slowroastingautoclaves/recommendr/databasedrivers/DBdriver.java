@@ -153,9 +153,9 @@ public class DBdriver implements Runnable {
         int results;
         try{
             Statement st = con.createStatement();
-            st.execute(query);
             results = st.executeUpdate(query);
         } catch(Exception e) {
+            e.printStackTrace();
             Log.e("DBdriver", "Exception while executing Query: " + Log.getStackTraceString(new Exception()));
             results = -1;
         }
