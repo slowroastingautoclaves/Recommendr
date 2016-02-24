@@ -74,6 +74,12 @@ public class SearchMovieActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Gets movies matching search query from RottenTomatoes REST API and displays them in a
+     * Master/Detail list.
+     *
+     * @return true if search completed (does not return false, throws Exception)
+     */
     @Override
     public boolean onSearchRequested() {
         String url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=yedukp76ffytfuy24zsqk7f5";
@@ -139,6 +145,10 @@ public class SearchMovieActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Changes view to Master/Detail list with given list of movies.
+     * @param movies
+     */
     public void changeView(ArrayList<Movie> movies) {
         Intent viewResultsIntent = new Intent(this, MovieListActivity.class);
         viewResultsIntent.putExtra("movies", movies);
@@ -148,12 +158,16 @@ public class SearchMovieActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //Go back to UserActivity instead of closing app.
         Intent userIntent = new Intent(this, UserActivity.class);
         userIntent.putExtra("Email", SearchMovieActivity.this.email);
         startActivity(userIntent);
         finish();
     }
 
+    /**
+     * Gets recent releases from RottenTomatoes REST API and displays them in a Master/Detail list.
+     */
     public void getRecentReleases() {
         String url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json?apikey=yedukp76ffytfuy24zsqk7f5";
 
@@ -217,6 +231,9 @@ public class SearchMovieActivity extends AppCompatActivity {
         queue.add(jsObjRequest);
     }
 
+    /**
+     * Gets recent DVDs from RottenTomatoes REST API and displays them in a Master/Detail list.
+     */
     public void getRecentDVDs() {
         String url = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?apikey=yedukp76ffytfuy24zsqk7f5";
 

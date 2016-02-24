@@ -57,7 +57,7 @@ public class ProfileActivity2 extends AppCompatActivity {
         }
 
 
-
+        //Exit button.
         Button mExitButton = (Button) findViewById(R.id.exit);
         mExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
