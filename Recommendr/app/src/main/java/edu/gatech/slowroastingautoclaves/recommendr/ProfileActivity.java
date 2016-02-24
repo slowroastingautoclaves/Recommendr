@@ -41,9 +41,10 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.i("PLS: ", u.getMajor());
             }
         } catch(Exception e) {
+            Log.e("ProfileActivity", "Error in on create: " + e.getMessage() + "\n" + Log.getStackTraceString(new Exception()));
         }
 
-        TextView usernameView = (TextView) findViewById(R.id.usernamedisplay);
+        TextView usernameView = (TextView) findViewById(R.id.username);
         TextView majorView = (TextView) findViewById(R.id.major);
 
         if (u != null) {
@@ -84,6 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
         try {
             profileExists = this.db.getProfile(u.getUsername()).next();
         } catch(Exception e) {
+            Log.e("ProfileActivity", "Error in edit profile: " + e.getMessage() + "\n" + Log.getStackTraceString(new Exception()));
         }
         //check if user already has profile, if not then make one in database
         if (!profileExists) {

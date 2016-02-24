@@ -38,7 +38,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent userIntent = new Intent(UserActivity.this, ProfileActivity2.class);
-                userIntent.putExtra("Email", UserActivity.this.email);
+                userIntent.putExtra("Username", UserActivity.this.username);
                 startActivity(userIntent);
                 finish();
             }
@@ -61,7 +61,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent searchIntent = new Intent(UserActivity.this, SearchMovieActivity.class);
-                searchIntent.putExtra("Email", UserActivity.this.email);
+                searchIntent.putExtra("Username", UserActivity.this.username);
                 startActivity(searchIntent);
                 finish();
             }
