@@ -5,11 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +15,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import edu.gatech.slowroastingautoclaves.recommendr.dummy.DummyContent;
 import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movie;
 import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movies;
 
@@ -40,6 +36,9 @@ public class MovieListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
+    /**
+     * List of Movie objects
+     */
     private List<Movie> movies;
 
     @Override
@@ -77,6 +76,7 @@ public class MovieListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //Go back to SearchMovieActivity instead of closing app.
         Movies.clear();
         Intent searchIntent = new Intent(MovieListActivity.this, SearchMovieActivity.class);
         startActivity(searchIntent);
@@ -88,11 +88,7 @@ public class MovieListActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            // activity, the Up button is not shown. The back button is used to go up one level.
             //
             NavUtils.navigateUpFromSameTask(this);
             return true;
@@ -100,10 +96,18 @@ public class MovieListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Sets up RecyclerView scrolling list.
+     * @param recyclerView view to set up with correct items from list
+     */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(Movies.ITEMS));
     }
 
+    /**
+     * This is an Adapter for RecyclerView that can show objects in a scrolling list. This sets up
+     * the View with the correct objects.
+     */
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
@@ -154,6 +158,9 @@ public class MovieListActivity extends AppCompatActivity {
             return mValues.size();
         }
 
+        /**
+         * Container for a View in RecyclerView.
+         */
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mIdView;
