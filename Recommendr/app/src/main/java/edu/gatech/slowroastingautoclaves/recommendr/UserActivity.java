@@ -55,5 +55,15 @@ public class UserActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Button mStartSearchButton = (Button) findViewById(R.id.startSearchButton);
+        mStartSearchButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent searchIntent = new Intent(UserActivity.this, SearchMovieActivity.class);
+                startActivity(searchIntent);
+                finish();
+            }
+        });
     }
 }

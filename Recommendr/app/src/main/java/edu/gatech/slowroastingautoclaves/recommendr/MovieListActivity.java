@@ -20,6 +20,7 @@ import android.view.MenuItem;
 
 import edu.gatech.slowroastingautoclaves.recommendr.dummy.DummyContent;
 import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movie;
+import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movies;
 
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class MovieListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
+    private List<Movie> movies;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,18 +51,10 @@ public class MovieListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(false);
         }
 
         View recyclerView = findViewById(R.id.movie_list);
@@ -73,6 +68,19 @@ public class MovieListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        movies = (List<Movie>) getIntent().getSerializableExtra("movies");
+        for (Movie s : movies) {
+            Movies.addItem(s);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Movies.clear();
+        Intent searchIntent = new Intent(MovieListActivity.this, SearchMovieActivity.class);
+        startActivity(searchIntent);
+        finish();
     }
 
     @Override
@@ -93,7 +101,7 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(Movies.ITEMS));
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -116,14 +124,15 @@ public class MovieListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).toString());
-            holder.mContentView.setText(mValues.get(position).content);
+            //holder.mContentView.setText(mValues.get(position).getRating());
+            holder.mContentView.setText("");
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        arguments.putString(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.getTitle());
                         MovieDetailFragment fragment = new MovieDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -132,7 +141,7 @@ public class MovieListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, MovieDetailActivity.class);
-                        intent.putExtra(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        intent.putExtra(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.toString());
 
                         context.startActivity(intent);
                     }
@@ -149,7 +158,7 @@ public class MovieListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public Movie mItem;
 
             public ViewHolder(View view) {
                 super(view);

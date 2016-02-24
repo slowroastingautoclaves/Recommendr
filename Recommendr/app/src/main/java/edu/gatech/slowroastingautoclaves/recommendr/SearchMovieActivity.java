@@ -125,8 +125,8 @@ public class SearchMovieActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         response = "JSon Request Failed!!";
                         //show error on phone
-                        TextView view = (TextView) findViewById(R.id.textView2);
-                        view.setText(response);
+                        //TextView view = (TextView) findViewById(R.id.textView2);
+                        //view.setText(response);
                     }
                 });
         //this actually queues up the async response with Volley
@@ -171,11 +171,13 @@ public class SearchMovieActivity extends AppCompatActivity {
                             try {
                                 //for each array element, we have to create an object
                                 JSONObject jsonObject = array.getJSONObject(i);
+                                JSONObject ratingsJSON = jsonObject.getJSONObject("ratings");
                                 Movie m = new Movie();
                                 assert jsonObject != null;
                                 m.setTitle(jsonObject.optString("title"));
                                 m.setYear(jsonObject.optString("year"));
                                 m.setDescription(jsonObject.optString("synopsis"));
+                                m.setRating(ratingsJSON.optString("critics_rating"));
                                 //save the object for later
                                 movies.add(m);
 
@@ -194,8 +196,8 @@ public class SearchMovieActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         response = "JSon Request Failed!!";
                         //show error on phone
-                        TextView view = (TextView) findViewById(R.id.textView2);
-                        view.setText(response);
+                        //TextView view = (TextView) findViewById(R.id.textView2);
+                        //view.setText(response);
                     }
                 });
         //this actually queues up the async response with Volley
@@ -255,8 +257,8 @@ public class SearchMovieActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         response = "JSon Request Failed!!";
                         //show error on phone
-                        TextView view = (TextView) findViewById(R.id.textView2);
-                        view.setText(response);
+                        //TextView view = (TextView) findViewById(R.id.textView2);
+                        //view.setText(response);
                     }
                 });
         //this actually queues up the async response with Volley

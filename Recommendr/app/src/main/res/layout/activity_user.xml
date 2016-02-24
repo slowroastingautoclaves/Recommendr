@@ -34,24 +34,34 @@
         android:layout_height="wrap_content"
         android:text="Done"
         android:id="@+id/placeholder_done"
-        android:layout_below="@+id/textView2"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="165dp" />
+        android:layout_marginBottom="61dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Profile"
         android:id="@+id/edit_profile"
-        android:layout_above="@+id/VProfile"
-        android:layout_alignLeft="@+id/VProfile"
-        android:layout_alignStart="@+id/VProfile" />
+        android:layout_alignTop="@+id/VProfile"
+        android:layout_toLeftOf="@+id/placeholder_done"
+        android:layout_toStartOf="@+id/placeholder_done" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View Profile"
         android:id="@+id/VProfile"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/textView2"
+        android:layout_toRightOf="@+id/placeholder_done"
+        android:layout_toEndOf="@+id/placeholder_done"
+        android:layout_marginTop="51dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search Movies"
+        android:id="@+id/startSearchButton"
+        android:layout_below="@+id/edit_profile"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

@@ -13,12 +13,17 @@ public class Movies {
 
     public static final Map<String, Movie> ITEM_MAP = new HashMap<>();
 
-    public static void add(Movie item) {
+    public static void addItem(Movie item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.toString(), item);
     }
 
     private static String makeDetails(int position) {
         return ITEMS.get(position).getDescription();
+    }
+
+    public static void clear() {
+        ITEMS.clear();
+        ITEM_MAP.clear();
     }
 }
