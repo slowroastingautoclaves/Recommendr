@@ -86,15 +86,16 @@ public class SearchMovieActivity extends AppCompatActivity {
                         //view.setText(response.substring(0, 500));
 
                         //Now we parse the information.  Looking at the format, everything encapsulated in RestResponse object
-                        JSONObject obj1 = null;
+                        JSONArray array = null;
                         try {
-                            obj1 = resp.getJSONObject("RestResponse");
+                            array = resp.getJSONArray("movies");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        assert obj1 != null;
+                        assert array != null;
                         //From that object, we extract the array of actual data labeled result
-                        JSONArray array = obj1.optJSONArray("result");
+                        // (NOT IN ROTTEN TOMATOES)
+                        //JSONArray array = obj1.optJSONArray("result");
                         ArrayList<Movie> movies = new ArrayList<>();
                         for(int i=0; i < array.length(); i++) {
 
@@ -154,15 +155,16 @@ public class SearchMovieActivity extends AppCompatActivity {
                         //view.setText(response.substring(0, 500));
 
                         //Now we parse the information.  Looking at the format, everything encapsulated in RestResponse object
-                        JSONObject obj1 = null;
+                        JSONArray array = null;
                         try {
-                            obj1 = resp.getJSONObject("RestResponse");
+                            array = resp.getJSONArray("movies");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        assert obj1 != null;
+                        assert array != null;
                         //From that object, we extract the array of actual data labeled result
-                        JSONArray array = obj1.optJSONArray("result");
+                        // (NOT IN ROTTEN TOMATOES)
+                        //JSONArray array = obj1.optJSONArray("result");
                         ArrayList<Movie> movies = new ArrayList<>();
                         for(int i=0; i < array.length(); i++) {
 
@@ -214,15 +216,16 @@ public class SearchMovieActivity extends AppCompatActivity {
                         //view.setText(response.substring(0, 500));
 
                         //Now we parse the information.  Looking at the format, everything encapsulated in RestResponse object
-                        JSONObject obj1 = null;
+                        JSONArray array = null;
                         try {
-                            obj1 = resp.getJSONObject("RestResponse");
+                            array = resp.getJSONArray("movies");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        assert obj1 != null;
+                        assert array != null;
                         //From that object, we extract the array of actual data labeled result
-                        JSONArray array = obj1.optJSONArray("result");
+                        // (NOT IN ROTTEN TOMATOES)
+                        //JSONArray array = obj1.optJSONArray("result");
                         ArrayList<Movie> movies = new ArrayList<>();
                         for(int i=0; i < array.length(); i++) {
 
