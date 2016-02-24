@@ -30,21 +30,24 @@ public class ProfileActivity extends AppCompatActivity {
 
         this.db = new DatabaseComs();
         db.connectToServer();
+        Log.d("ProfileActivity", db.getProfile(this.username).equals("") + "");
 
         Intent intent = getIntent();
         this.username = intent.getStringExtra("Username");
 
         u = new User(this.username, "", "");
         try {
-            if (db.getProfile(this.username).next()) {
-                u.setMajor(db.getProfile(this.username).getNString("major"));
+
+            if (db.getProfile(this.username).equals("")) {
                 Log.i("PLS: ", u.getMajor());
+            } else {
+                u.setMajor(db.getProfile(this.username));
             }
         } catch(Exception e) {
             Log.e("ProfileActivity", "Error in on create: " + e.getMessage() + "\n" + Log.getStackTraceString(new Exception()));
         }
 
-        TextView usernameView = (TextView) findViewById(R.id.username);
+        TextView usernameView = (TextView) findViewById(R.id.User);
         TextView majorView = (TextView) findViewById(R.id.major);
 
         if (u != null) {
@@ -69,7 +72,6 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent userIntent = new Intent(ProfileActivity.this, UserActivity.class);
                 userIntent.putExtra("Username", ProfileActivity.this.username);
                 startActivity(userIntent);
-                db.closeAll();
                 finish();
             }
         });
@@ -83,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
         u.setMajor(majorView.getText().toString());
         boolean profileExists = false;
         try {
-            profileExists = this.db.getProfile(u.getUsername()).next();
+            profileExists = this.db.updateProfile(u.getUsername(), u.getMajor());
         } catch(Exception e) {
             Log.e("ProfileActivity", "Error in edit profile: " + e.getMessage() + "\n" + Log.getStackTraceString(new Exception()));
         }

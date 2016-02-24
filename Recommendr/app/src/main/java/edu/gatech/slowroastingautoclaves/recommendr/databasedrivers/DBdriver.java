@@ -2,32 +2,34 @@ package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
 
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 import java.sql.*;
-
+//TODO: volley
 /**
  * Facilitates connection to database
  */
 public class DBdriver implements Runnable {
 
 
-    private static Connection con;
+    private Connection con;
     private final String DBNAME="SlowRoastingAuto";
     private final String PASSWORD="cs2340team58";
     private String query;
     private static int result;
     private int fetchedSize;
-    private static ResultSet resultSet;
+    private ResultSet resultSet;
     private Statement statement;
+    private int op;
 
 
     /**
      * Creates a driver to for connections to database
      */
-    public void connectDBdriver(){
+    public void connectDBdriver(int opt){
         Log.i("DBdriver", "Creating Driver");
         con = null;
         try {
@@ -42,14 +44,19 @@ public class DBdriver implements Runnable {
 
             }
 
-            statement = con.createStatement();
+
             try{
-            resultSet = statement.executeQuery(query);
+                if (opt == 0) {
+
+                    resultSet = sendQuery(query);
+                }
             } catch (Exception e){
 
             }
             try{
-                result = statement.executeUpdate(query);
+                if (opt == 1) {
+                    result = sendUpdate(query);
+                }
             } catch (Exception e){
 
             }
@@ -73,10 +80,12 @@ public class DBdriver implements Runnable {
     }
     public int getFetchedSize() {return fetchedSize;
     }
-    public void setQuery(String query){
+    public void setQuery(String query, int op){
         this.query = query;
+        this.op = op;
 
     }
+
 
 
     /**
@@ -114,15 +123,15 @@ public class DBdriver implements Runnable {
     @Override
     public void run() {
 
-        connectDBdriver();
+        connectDBdriver(op);
 
     }
 
-   /*//**
+    /**
      * sends query to database
      * @param query
-     * @return ResultSet Detailed object of data from query
-     *//*
+     * @return ResultSet Detailed object of data from query**/
+
     public ResultSet sendQuery(String query) {
         ResultSet results;
         try{
@@ -135,11 +144,11 @@ public class DBdriver implements Runnable {
         return results;
     }
 
-    //**
+    /**
      * Sends a query to update server
      * @param query
-     * @return int number of rows affected
-     *//*
+     * @return int number of rows affected**/
+
     public int sendUpdate(String query) {
         int results;
         try{
@@ -151,6 +160,6 @@ public class DBdriver implements Runnable {
             results = -1;
         }
         return results;
-    }*/
+    }
 
 }

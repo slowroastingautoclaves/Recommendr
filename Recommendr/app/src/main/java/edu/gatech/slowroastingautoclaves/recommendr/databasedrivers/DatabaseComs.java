@@ -91,7 +91,7 @@ public class DatabaseComs implements Executor{
     public synchronized boolean registerUser(String userName, String password, String eMail){
 
         db.setQuery(String.format("INSERT INTO users VALUES ('%s', '%s', '%s');",
-                userName, eMail, password));
+                userName, eMail, password), 1);
         dbConnect();
         //results = db.sendUpdate();
         closeDBComs();
@@ -109,7 +109,7 @@ public class DatabaseComs implements Executor{
      */
     public boolean logInUser(String userName, String password){
 
-        db.setQuery(String.format("SELECT Count(UName)FROM users WHERE UName = '%s' AND Password = '%s';", userName, password));
+        db.setQuery(String.format("SELECT Count(UName)FROM users WHERE UName = '%s' AND Password = '%s';", userName, password), 0);
         dbConnect();
         //results = db.sendUpdate();
 
@@ -148,7 +148,7 @@ public class DatabaseComs implements Executor{
      */
     public boolean createProfile(String userName, String major){
 
-        db.setQuery(String.format("INSERT INTO profile VALUES('%s','%s');", userName,major));
+        db.setQuery(String.format("INSERT INTO profile VALUES('%s','%s');", userName, major), 1);
         dbConnect();
         //results = db.sendUpdate();
         closeDBComs();
@@ -163,14 +163,24 @@ public class DatabaseComs implements Executor{
      * @param userName username of desired profile
      * @return ResultSet of the users profile
      */
-    public ResultSet getProfile(String userName){
-
-        db.setQuery(String.format("SELECT * FROM profile WHERE UName = '%s';",
-                userName));
+    public String getProfile(String userName){
+        String toReturn = "";
+        ResultSet re;
+        db.setQuery(String.format("SELECT UName,major FROM profile WHERE UName = '%s';",
+                userName), 0);
         dbConnect();
-        //results = db.sendQuery();
+        re = db.getResultSet();
+        try {
+            if(re.next()){
+                toReturn = re.getString("major");
+            }
+
+        } catch (Exception e) {
+            Log.e("DBCOMS", " " + e.getMessage() +Log.getStackTraceString(new Exception()));
+        }
+
         closeDBComs();
-        return db.getResultSet();
+        return toReturn;
     }
 
     /**
@@ -180,9 +190,9 @@ public class DatabaseComs implements Executor{
      * @return True if update was successful, else false
      */
     public boolean updateProfile(String userName, String major){
-       db.setQuery(String.format("UPDATE profile " +
-               "SET major = '%s' " +
-               "WHERE UName = '%s';", major,userName));
+        db.setQuery(String.format("UPDATE profile " +
+                "SET major = '%s' " +
+                "WHERE UName = '%s';", major,userName), 1);
         dbConnect();
         //results = db.sendUpdate();
         closeDBComs();
