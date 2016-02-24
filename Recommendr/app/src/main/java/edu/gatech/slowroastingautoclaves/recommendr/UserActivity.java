@@ -61,6 +61,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent searchIntent = new Intent(UserActivity.this, SearchMovieActivity.class);
+                searchIntent.putExtra("Email", UserActivity.this.email);
                 startActivity(searchIntent);
                 finish();
             }

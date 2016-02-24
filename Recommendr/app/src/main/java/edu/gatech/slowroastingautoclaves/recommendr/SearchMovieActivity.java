@@ -37,11 +37,16 @@ public class SearchMovieActivity extends AppCompatActivity {
     private Button mRecentReleaseButton;
     private Button mRecentDVDsButton;
     private ImageButton mMovieSearchButton;
+    private String email;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        this.email = intent.getStringExtra("Email");
+
         setContentView(R.layout.activity_search_movie);
         queue = Volley.newRequestQueue(this);
 
@@ -138,6 +143,14 @@ public class SearchMovieActivity extends AppCompatActivity {
         Intent viewResultsIntent = new Intent(this, MovieListActivity.class);
         viewResultsIntent.putExtra("movies", movies);
         startActivity(viewResultsIntent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent userIntent = new Intent(this, UserActivity.class);
+        userIntent.putExtra("Email", SearchMovieActivity.this.email);
+        startActivity(userIntent);
         finish();
     }
 
