@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import edu.gatech.slowroastingautoclaves.recommendr.dummy.DummyContent;
+import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movie;
 
 import java.util.List;
 
@@ -98,9 +99,9 @@ public class MovieListActivity extends AppCompatActivity {
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<Movie> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public SimpleItemRecyclerViewAdapter(List<Movie> items) {
             mValues = items;
         }
 
