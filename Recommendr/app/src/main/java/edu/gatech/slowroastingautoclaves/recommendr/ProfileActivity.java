@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         this.db = new DatabaseComs();
         db.connectToServer();
-        Log.d("ProfileActivity", db.getProfile(this.username).equals("") + "");
+        //Log.d("ProfileActivity", db.getProfile(this.username).equals("") + "");
 
         Intent intent = getIntent();
         this.username = intent.getStringExtra("Username");
@@ -44,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
                 u.setMajor(db.getProfile(this.username));
             }
         } catch(Exception e) {
+            e.printStackTrace();
             Log.e("ProfileActivity", "Error in on create: " + e.getMessage() + "\n" + Log.getStackTraceString(new Exception()));
         }
 

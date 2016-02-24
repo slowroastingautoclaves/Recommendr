@@ -40,16 +40,14 @@ public class ProfileActivity2 extends AppCompatActivity {
         usernameView.setText(this.username);
 
         u = new User(this.username, "", "");
-        try {
+
 
             if (db.getProfile(this.username).equals("")) {
-                Log.i("PLS: ", u.getMajor());
+                Log.i("PLS: ", u.getMajor() + "mess " + db.getProfile(this.username).equals(""));
             } else {
                 u.setMajor(db.getProfile(this.username));
             }
-        } catch(Exception e) {
-            Log.e("ProfileActivity", "Error in on create: " + e.getMessage() + "\n" + Log.getStackTraceString(new Exception()));
-        }
+
 
         if (u != null) {
             usernameView.setText(u.getUsername());
@@ -65,7 +63,7 @@ public class ProfileActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent userIntent = new Intent(ProfileActivity2.this, UserActivity.class);
-                userIntent.putExtra("Email", ProfileActivity2.this.username);
+                userIntent.putExtra("Username", ProfileActivity2.this.username);
                 startActivity(userIntent);
                 finish();
             }
