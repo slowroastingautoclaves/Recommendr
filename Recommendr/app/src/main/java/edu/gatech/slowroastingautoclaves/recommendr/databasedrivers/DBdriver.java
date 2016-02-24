@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 import java.sql.*;
 //TODO: volley
