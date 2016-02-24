@@ -15,6 +15,8 @@ public class UserActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Get buttons and text fields.
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
@@ -31,13 +33,36 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        Button viewProfile = (Button) findViewById(R.id.VProfile);
+        viewProfile.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent userIntent = new Intent(UserActivity.this, ProfileActivity2.class);
+                userIntent.putExtra("Email", UserActivity.this.email);
+                startActivity(userIntent);
+                finish();
+            }
+        });
+
         Button mEditProfile = (Button) findViewById(R.id.edit_profile);
         mEditProfile.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Send email to ProfileActivity and start ProfileActivity.
                 Intent profileIntent = new Intent(UserActivity.this, ProfileActivity.class);
                 profileIntent.putExtra("Username", UserActivity.this.username);
                 startActivity(profileIntent);
+                finish();
+            }
+        });
+
+        Button mStartSearchButton = (Button) findViewById(R.id.startSearchButton);
+        mStartSearchButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent searchIntent = new Intent(UserActivity.this, SearchMovieActivity.class);
+                searchIntent.putExtra("Email", UserActivity.this.email);
+                startActivity(searchIntent);
                 finish();
             }
         });
