@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import edu.gatech.slowroastingautoclaves.recommendr.dummy.DummyContent;
 import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movie;
 import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movies;
 
@@ -27,7 +26,7 @@ public class MovieDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "Title";
 
     /**
-     * The dummy content this fragment is presenting.
+     * The Movie content this fragment is presenting.
      */
     private Movie mItem;
 

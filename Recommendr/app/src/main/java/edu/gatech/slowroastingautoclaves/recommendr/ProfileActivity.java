@@ -39,6 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
 
+        //Get buttons.
         Button mSaveButton = (Button) findViewById(R.id.save);
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
