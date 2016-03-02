@@ -43,6 +43,8 @@ public class MovieListActivity extends AppCompatActivity {
      */
     private List<Movie> movies;
 
+    private String email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,9 @@ public class MovieListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        Intent intent = getIntent();
+        email = intent.getStringExtra("Email");
 
         movies = (List<Movie>) getIntent().getSerializableExtra("movies");
         for (Movie s : movies) {
@@ -148,6 +153,7 @@ public class MovieListActivity extends AppCompatActivity {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, MovieDetailActivity.class);
                         intent.putExtra(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.toString());
+                        intent.putExtra("Email", MovieListActivity.this.email);
 
                         context.startActivity(intent);
                     }

@@ -151,6 +151,7 @@ public class SearchMovieActivity extends AppCompatActivity {
     public void changeView(ArrayList<Movie> movies) {
         Intent viewResultsIntent = new Intent(this, MovieListActivity.class);
         viewResultsIntent.putExtra("movies", movies);
+        viewResultsIntent.putExtra("Email", SearchMovieActivity.this.email);
         startActivity(viewResultsIntent);
         finish();
     }

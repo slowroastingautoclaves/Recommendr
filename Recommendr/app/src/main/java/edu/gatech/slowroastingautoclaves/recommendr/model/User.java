@@ -1,15 +1,19 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model;
 
+import java.util.ArrayList;
+
 /**
  * Represents a user that has a username, an email, and a password.
  */
 public class User {
     private String username, email, password, major, description;
+    private ArrayList<Rating> userRatings;
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.userRatings = new ArrayList<>();
     }
 
     /**
@@ -66,6 +70,27 @@ public class User {
      */
     public String getDescription() {
         return this.description;
+    }
+
+    public void addRating(Rating r) {
+        this.userRatings.add(r);
+    }
+
+    public void removeRating(Rating r) {
+        this.userRatings.remove(r);
+    }
+
+    public ArrayList<Rating> getRatings() {
+        return this.userRatings;
+    }
+
+    public String getRating(String identifier) {
+        for (Rating r : this.userRatings) {
+            if (r.getIdentifier().equals(identifier)) {
+                return "Your Rating: " + Double.toString(r.getRating());
+            }
+        }
+        return "Your Rating: No rating found";
     }
 
     @Override

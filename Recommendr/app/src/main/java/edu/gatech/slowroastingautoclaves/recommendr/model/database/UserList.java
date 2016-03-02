@@ -14,7 +14,7 @@ public class UserList {
     private ArrayList<User> users;
 
     private UserList() {
-        users = new ArrayList<User>();
+        users = new ArrayList<>();
     }
 
     public static UserList getInstance() {
@@ -30,18 +30,18 @@ public class UserList {
 
     /**
      * Adds user to this list of users.
-     * @param user is user to be added.
+     * @param u is user to be added.
      */
-    public void addUser(User user) {
-        this.users.add(user);
+    public void addUser(User u) {
+        this.users.add(u);
     }
 
     /**
      * Removes user from this list of users.
-     * @param user is user to be removed.
+     * @param u is user to be removed.
      */
-    public void removeUser(User user) {
-        this.users.remove(user);
+    public void removeUser(User u) {
+        this.users.remove(u);
     }
 
     /**
