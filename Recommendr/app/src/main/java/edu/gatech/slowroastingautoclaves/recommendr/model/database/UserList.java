@@ -1,6 +1,8 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.model.database;
 
 import java.util.ArrayList;
+
+import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 
 /**
  * A singleton list of users used to store user data locally so that all activities have access.

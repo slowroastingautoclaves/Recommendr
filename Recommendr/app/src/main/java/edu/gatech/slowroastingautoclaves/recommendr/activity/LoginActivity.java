@@ -1,4 +1,4 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -16,8 +16,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.content.Intent;
-import android.content.Context;
-import android.widget.Toast;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +33,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

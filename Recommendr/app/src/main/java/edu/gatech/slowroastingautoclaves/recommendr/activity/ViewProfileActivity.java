@@ -1,18 +1,20 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
  * A profile screen that allows users to edit their profile, e.g. change their major.
  */
-public class ProfileActivity2 extends AppCompatActivity {
+public class ViewProfileActivity extends AppCompatActivity {
     private String email;
 
     @Override
@@ -50,8 +52,8 @@ public class ProfileActivity2 extends AppCompatActivity {
         mExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent userIntent = new Intent(ProfileActivity2.this, UserActivity.class);
-                userIntent.putExtra("Email", ProfileActivity2.this.email);
+                Intent userIntent = new Intent(ViewProfileActivity.this, UserActivity.class);
+                userIntent.putExtra("Email", ViewProfileActivity.this.email);
                 startActivity(userIntent);
                 finish();
             }

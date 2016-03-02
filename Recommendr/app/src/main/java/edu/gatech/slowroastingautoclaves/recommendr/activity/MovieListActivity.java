@@ -1,4 +1,4 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,8 +15,10 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movie;
-import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movies;
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Movies;
+import edu.gatech.slowroastingautoclaves.recommendr.presenter.MovieDetailFragment;
 
 import java.util.List;
 

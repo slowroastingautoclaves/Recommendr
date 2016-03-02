@@ -1,4 +1,4 @@
-package edu.gatech.slowroastingautoclaves.recommendr.dummy;
+package edu.gatech.slowroastingautoclaves.recommendr.model;
 
 import java.io.Serializable;
 
