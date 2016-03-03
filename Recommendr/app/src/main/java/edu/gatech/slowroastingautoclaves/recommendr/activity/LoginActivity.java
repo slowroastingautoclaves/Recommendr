@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
@@ -191,7 +192,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        }
+        }// check user status
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -358,7 +359,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             for (User u : UserList.getInstance().getUsers()) {
                 if (u.getEmail().equals(mEmail)) {
                     // Account exists, return true if the password matches.
-                    return u.getPassword().equals(mPassword);
+                    return u.getPassword().equals(mPassword)
+                            && (u.getCondition()!= Condition.LOCKED
+                            || u.getCondition() != Condition.BANNED);
                 }
             }
             return false;

@@ -1,15 +1,17 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model;
 
 /**
- * Represents a user that has a username, an email, and a password.
+ * Represents a user that has a username, an email, a password, and a condition.
  */
 public class User {
     private String username, email, password, major, description;
+    private Condition condition;
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, Condition condition) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.condition = condition;
     }
 
     /**
@@ -66,6 +68,21 @@ public class User {
      */
     public String getDescription() {
         return this.description;
+    }
+
+    /**
+     * Get's the user's condition
+     * @return the condition of the user
+     */
+    public Condition getCondition() {
+        return this.condition;
+    }
+
+    /*
+     * Set condition for the user
+     */
+    public void setCondition(Condition condition) {
+        this.condition = condition;
     }
 
     @Override
