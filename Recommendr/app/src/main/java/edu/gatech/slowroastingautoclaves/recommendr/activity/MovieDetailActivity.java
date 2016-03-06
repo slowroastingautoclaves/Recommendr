@@ -89,20 +89,21 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String identifier = MovieDetailActivity.this.identifier;
-                String message = "Enter an integer rating from 0 to 100 for the movie.";
+                String message = "Enter an integer rating from 0 to 100 for the movie.\n";
+                message += RatingList.getInstance().getRating(identifier);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
 
-                //final EditText textInput = new EditText(MovieDetailActivity.this);
-                final RatingBar input = new RatingBar(MovieDetailActivity.this);
-                //input.getLayoutParams().width = 250;
-                input.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT));
-                input.setStepSize(0.5f);
-                input.setMax(5);
-                input.setNumStars(5);
-                input.setRating(2.0f);
-                input.setId(0);
+                final EditText input = new EditText(MovieDetailActivity.this);
+//                final RatingBar input = new RatingBar(MovieDetailActivity.this);
+//                input.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT));
+//                input.setStepSize(0.5f);
+//                input.setMax(5);
+//                input.setNumStars(5);
+//                input.setRating(2.0f);
+//                input.setId(0);
 
-                //input.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
+                input.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
+                input.setHint("Type rating from 0.0 - 100.0");
 
                 builder.setMessage(message)
                        .setTitle("Rate Movie")
@@ -113,7 +114,11 @@ public class MovieDetailActivity extends AppCompatActivity {
 //                               if (Integer.parseInt(input.getRating().toString()) > 100) {
 //                                   input.setText("100");
 //                               }
-                               Rating currentRate = new Rating(identifier, MovieDetailActivity.this.user.getEmail(), MovieDetailActivity.this.user.getMajor(), input.getRating());
+                               double rateValue = 0;
+                               if (Double.parseDouble(input.getText().toString()) > 0) {
+                                   rateValue = Double.parseDouble(input.getText().toString());
+                               }
+                               Rating currentRate = new Rating(identifier, MovieDetailActivity.this.user.getEmail(), MovieDetailActivity.this.user.getMajor(), rateValue);
                                if (!RatingList.getInstance().getRatings().contains(currentRate)) {
                                    RatingList.getInstance().addRating(currentRate);
                                    MovieDetailActivity.this.user.addRating(currentRate);
@@ -123,7 +128,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                                    MovieDetailActivity.this.user.removeRating(currentRate);
                                    MovieDetailActivity.this.user.addRating(currentRate);
                                }
-                               Log.i("RATING: ", String.valueOf(input.getRating()));
                                return;
                            }
                        })
