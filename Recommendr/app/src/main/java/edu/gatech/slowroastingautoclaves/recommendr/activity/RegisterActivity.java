@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
@@ -107,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        User currentUser = new User(username, email, password);
+        User currentUser = new User(username, email, password, Condition.UNLOCKED);
 
         boolean cancel = false;
         focusView = null;
