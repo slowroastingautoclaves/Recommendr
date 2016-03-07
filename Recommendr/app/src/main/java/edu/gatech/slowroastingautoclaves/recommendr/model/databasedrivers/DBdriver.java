@@ -1,4 +1,4 @@
-package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
+package edu.gatech.slowroastingautoclaves.recommendr.model.databasedrivers;
 
 
 import android.app.Activity;

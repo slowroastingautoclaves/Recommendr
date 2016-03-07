@@ -1,25 +1,25 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import edu.gatech.slowroastingautoclaves.recommendr.databasedrivers.DBdriver;
-import edu.gatech.slowroastingautoclaves.recommendr.databasedrivers.DatabaseComs;
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.UserActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
+import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 
 /**
  * A profile screen that allows users to edit their profile, e.g. change their major.
  */
-public class ProfileActivity2 extends AppCompatActivity {
+public class ViewProfileActivity extends AppCompatActivity {
     private String username;
-    private DatabaseComs db;
+    private RInfo db;
     private User u;
 
     @Override
@@ -28,7 +28,7 @@ public class ProfileActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_profile2);
 
         db = new DatabaseComs();
-        db.connectToServer();
+        db.start();
 
         Intent intent = getIntent();
         this.username = intent.getStringExtra("Username");
@@ -39,7 +39,7 @@ public class ProfileActivity2 extends AppCompatActivity {
 
         usernameView.setText(this.username);
 
-        u = new User(this.username, "", "");
+        u = new User(this.username, "", "", null);
 
 
             if (db.getProfile(this.username).equals("")) {
@@ -62,8 +62,8 @@ public class ProfileActivity2 extends AppCompatActivity {
         mExitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent userIntent = new Intent(ProfileActivity2.this, UserActivity.class);
-                userIntent.putExtra("Username", ProfileActivity2.this.username);
+                Intent userIntent = new Intent(ViewProfileActivity.this, UserActivity.class);
+                userIntent.putExtra("Username", ViewProfileActivity.this.username);
                 startActivity(userIntent);
                 finish();
             }

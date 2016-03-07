@@ -1,4 +1,4 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.LoginActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.ProfileActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.SearchMovieActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.ViewProfileActivity;
 
 /**
  * Screen that allows user to access user functions, e.g. editing profile.
@@ -37,7 +43,7 @@ public class UserActivity extends AppCompatActivity {
         viewProfile.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent userIntent = new Intent(UserActivity.this, ProfileActivity2.class);
+                Intent userIntent = new Intent(UserActivity.this, ViewProfileActivity.class);
                 userIntent.putExtra("Username", UserActivity.this.username);
                 startActivity(userIntent);
                 finish();

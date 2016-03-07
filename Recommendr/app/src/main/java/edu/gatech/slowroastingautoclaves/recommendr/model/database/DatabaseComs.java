@@ -1,10 +1,13 @@
-package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
+package edu.gatech.slowroastingautoclaves.recommendr.model.database;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.sql.ResultSet;
 import java.util.concurrent.Executor;
+
+import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
+import edu.gatech.slowroastingautoclaves.recommendr.model.databasedrivers.DBdriver;
+import edu.gatech.slowroastingautoclaves.recommendr.model.databasedrivers.SSHDriver;
 
 /**
  * Created by Joshua Jibilian on 2/14/2016.
@@ -12,7 +15,7 @@ import java.util.concurrent.Executor;
  * Uses DBdriver class and SSHDriver class to facilitate connections to the Database and
  * querries to the database.
  */
-public class DatabaseComs implements Executor{
+public class DatabaseComs implements Executor, RInfo{
     Thread thread;
     /**
      * Driver to connect to database.
@@ -33,7 +36,7 @@ public class DatabaseComs implements Executor{
     /**
      * Connects to server hosting database.
      */
-    public void connectToServer(){
+    public void start(){
         if (sshTunnel == null){
             sshTunnel = new SSHDriver();
             execute(sshTunnel);
@@ -69,14 +72,18 @@ public class DatabaseComs implements Executor{
     /**
      * Closes SSH tunnel
      */
-    public void closeSSHComs(){
+    private void closeSSHComs(){
         sshTunnel.closeSSHConnection();
+    }
+
+    public void complete() {
+        closeSSHComs();
     }
 
     /**
      * Closes connection to database and SSH Tunnel in proper order.
      */
-    public void closeAll(){
+    private void closeAll(){
         db.closeConnection();
         sshTunnel.closeSSHConnection();
     }

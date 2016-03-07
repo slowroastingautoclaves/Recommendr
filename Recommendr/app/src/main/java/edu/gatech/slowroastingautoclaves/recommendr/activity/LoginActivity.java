@@ -1,4 +1,4 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -35,7 +35,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.gatech.slowroastingautoclaves.recommendr.databasedrivers.DatabaseComs;
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.RegisterActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.UserActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -64,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private DatabaseComs db;
+    private RInfo db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
 
         db = new DatabaseComs();
-        db.connectToServer();
+        db.start();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -373,7 +377,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            Intent userIntent = new Intent(LoginActivity.this, UserActivity.class); 
+            Intent userIntent = new Intent(LoginActivity.this, UserActivity.class);
 
             if (success) {
                 userIntent.putExtra("Username",this.mUsername);

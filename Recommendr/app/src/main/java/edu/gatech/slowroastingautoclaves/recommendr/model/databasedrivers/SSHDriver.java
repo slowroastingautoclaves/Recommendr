@@ -4,7 +4,7 @@
  *
  * Facilitates connection to server through an ssh tunnel
  */
-package edu.gatech.slowroastingautoclaves.recommendr.databasedrivers;
+package edu.gatech.slowroastingautoclaves.recommendr.model.databasedrivers;
 import android.os.AsyncTask;
 import android.util.Log;
 

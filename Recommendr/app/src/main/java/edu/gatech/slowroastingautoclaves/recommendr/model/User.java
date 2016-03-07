@@ -1,6 +1,7 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.Condition;
 
 /**
  * Represents a user that has a username, an email, a password, and a condition.

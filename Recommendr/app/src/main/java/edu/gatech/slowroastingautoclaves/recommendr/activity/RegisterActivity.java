@@ -1,4 +1,4 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import edu.gatech.slowroastingautoclaves.recommendr.databasedrivers.DatabaseComs;
+
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.LoginActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 
 /**
  * Screen that allows user to register a new account.
@@ -19,7 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView mUsernameView;
     private TextView mEmailView;
     private TextView mPasswordView;
-    private DatabaseComs db;
+    private RInfo db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         db = new DatabaseComs();
-        db.connectToServer();
+        db.start();
 
         Button mCancelButton = (Button) findViewById(R.id.cancel);
         mCancelButton.setOnClickListener(new View.OnClickListener() {

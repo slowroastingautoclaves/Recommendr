@@ -1,8 +1,7 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,16 +10,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.ResultSet;
-
-import edu.gatech.slowroastingautoclaves.recommendr.databasedrivers.DatabaseComs;
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.UserActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
+import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 
 /**
  * A profile screen that allows users to edit their profile, e.g. change their major.
  */
 public class ProfileActivity extends AppCompatActivity {
     private String username;
-    private DatabaseComs db;
+    private RInfo db;
     private User u;
 
     @Override
@@ -29,13 +30,13 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         this.db = new DatabaseComs();
-        db.connectToServer();
+        db.start();
         //Log.d("ProfileActivity", db.getProfile(this.username).equals("") + "");
 
         Intent intent = getIntent();
         this.username = intent.getStringExtra("Username");
 
-        u = new User(this.username, "", "");
+        u = new User(this.username, "", "", null);
         try {
 
             if (db.getProfile(this.username).equals("")) {
