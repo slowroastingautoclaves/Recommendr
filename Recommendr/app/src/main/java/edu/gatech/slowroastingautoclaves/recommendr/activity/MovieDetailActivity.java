@@ -23,8 +23,10 @@ import android.widget.RatingBar;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
+import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Rating;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 import edu.gatech.slowroastingautoclaves.recommendr.presenter.MovieDetailFragment;
@@ -39,6 +41,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private String identifier;
     private User user;
+    private RInfo db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
+        db = new DatabaseComs();
         Intent intent = getIntent();
         String email = intent.getStringExtra("Email");
         user = UserList.getInstance().findUserByEmail(email);

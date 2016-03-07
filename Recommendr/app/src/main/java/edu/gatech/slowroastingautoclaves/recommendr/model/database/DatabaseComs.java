@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.util.concurrent.Executor;
 
 import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
-import edu.gatech.slowroastingautoclaves.recommendr.model.databasedrivers.DBdriver;
-import edu.gatech.slowroastingautoclaves.recommendr.model.databasedrivers.SSHDriver;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrivers.DBdriver;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrivers.SSHDriver;
 
 /**
  * Created by Joshua Jibilian on 2/14/2016.

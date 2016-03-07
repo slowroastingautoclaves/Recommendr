@@ -1,4 +1,4 @@
-package edu.gatech.slowroastingautoclaves.recommendr.model.databasedrivers;
+package edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrivers;
 
 
 import android.app.Activity;
@@ -7,14 +7,14 @@ import android.util.Log;
 
 
 import java.sql.*;
-//TODO: volley
+
 /**
  * Facilitates connection to database
  */
 public class DBdriver implements Runnable {
 
 
-    private Connection con;
+    private static Connection con;
     private final String DBNAME="SlowRoastingAuto";
     private final String PASSWORD="cs2340team58";
     private String query;
