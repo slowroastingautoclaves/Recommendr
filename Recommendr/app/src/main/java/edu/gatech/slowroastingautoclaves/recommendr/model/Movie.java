@@ -1,12 +1,15 @@
-package edu.gatech.slowroastingautoclaves.recommendr.dummy;
+package edu.gatech.slowroastingautoclaves.recommendr.model;
 
 import java.io.Serializable;
+
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
  * Represents a Movie object.
  */
 public class Movie implements Serializable {
-    String title, year, description, rating;
+    String title, year, description, rating, userRating;
 
     /**
      * Sets Movie title.
@@ -33,6 +36,10 @@ public class Movie implements Serializable {
             this.rating = "Rating: " + rating;
         }
         this.rating = "No rating found.";
+    }
+
+    public void getUserRating() {
+        RatingList.getInstance().getRating(this.toString());
     }
 
     /**

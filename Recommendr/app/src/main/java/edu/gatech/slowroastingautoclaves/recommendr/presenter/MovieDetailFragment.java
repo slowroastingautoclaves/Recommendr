@@ -1,4 +1,4 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.presenter;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movie;
-import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movies;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.MovieDetailActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.activity.MovieListActivity;
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Movies;
 
 /**
  * A fragment representing a single Movie detail screen.

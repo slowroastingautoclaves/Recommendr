@@ -1,7 +1,6 @@
-package edu.gatech.slowroastingautoclaves.recommendr;
+package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,7 +22,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import edu.gatech.slowroastingautoclaves.recommendr.dummy.Movie;
+import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
 
 public class SearchMovieActivity extends AppCompatActivity {
 
@@ -152,6 +151,7 @@ public class SearchMovieActivity extends AppCompatActivity {
     public void changeView(ArrayList<Movie> movies) {
         Intent viewResultsIntent = new Intent(this, MovieListActivity.class);
         viewResultsIntent.putExtra("movies", movies);
+        viewResultsIntent.putExtra("Email", SearchMovieActivity.this.email);
         startActivity(viewResultsIntent);
         finish();
     }

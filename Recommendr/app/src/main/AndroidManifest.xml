@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,29 +23,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".ProfileActivity2" />
+        <activity android:name=".activity.UserActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.ViewProfileActivity" />
         <activity
-            android:name=".MovieListActivity"
+            android:name=".activity.MovieListActivity"
             android:label="@string/title_movie_list"
-            android:parentActivityName=".UserActivity"
+            android:parentActivityName=".activity.UserActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.gatech.slowroastingautoclaves.recommendr.UserActivity" />
+                android:value=".activity.UserActivity" />
         </activity>
         <activity
-            android:name=".MovieDetailActivity"
+            android:name=".activity.MovieDetailActivity"
             android:label="@string/title_movie_detail"
-            android:parentActivityName=".MovieListActivity"
+            android:parentActivityName=".activity.MovieListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.gatech.slowroastingautoclaves.recommendr.MovieListActivity" />
+                android:value=".activity.MovieListActivity" />
         </activity>
-        <activity android:name=".SearchMovieActivity">
+        <activity android:name=".activity.SearchMovieActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
