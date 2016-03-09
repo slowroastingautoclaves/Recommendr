@@ -39,8 +39,12 @@ public class Movie implements Serializable, Comparable<Movie> {
         this.rating = "No rating found.";
     }
 
-    public void getUserRating() {
-        RatingList.getInstance().getRating(this.toString());
+    /**
+     * Gets rating for this movie as found in {@Code RatingList}.
+     * @return
+     */
+    public String getUserRating() {
+        return RatingList.getInstance().getRating(this.toString());
     }
 
     /**
@@ -51,6 +55,10 @@ public class Movie implements Serializable, Comparable<Movie> {
         this.description = description;
     }
 
+    /**
+     * Set the user score (used by {@code RatingList}
+     * @param score is score to set
+     */
     public void setUserScore(double score) {
         this.userScore = score;
     }
@@ -87,6 +95,10 @@ public class Movie implements Serializable, Comparable<Movie> {
         return this.description;
     }
 
+    /**
+     * Gets user score for this movie as set by {@code RatingList}.
+     * @return the score
+     */
     public double getScore() {
         return this.userScore;
     }

@@ -12,7 +12,7 @@ import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
- * A profile screen that allows users to edit their profile, e.g. change their major.
+ * A profile screen that allows users to view their profile, e.g. change their major.
  */
 public class ViewProfileActivity extends AppCompatActivity {
     private String email;

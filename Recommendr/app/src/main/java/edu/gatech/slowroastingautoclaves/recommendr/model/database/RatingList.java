@@ -90,6 +90,12 @@ public class RatingList {
         return "Average User Rating: " + Double.toString(rating);
     }
 
+    /**
+     * Gets the top movies sorted by user ratings (ratings from the Recommendr system only).
+     * @param filter is filter to use
+     * @param parameter is filter parameter
+     * @return an ArrayList<Movie> that is sorted by ratings
+     */
     public ArrayList<Movie> getTopMovies(String filter, String parameter) {
         if (filter.equals("null")) {
             ArrayList<Movie> out = new ArrayList<>();
@@ -97,13 +103,16 @@ public class RatingList {
                 double rating = 0;
                 int counter = 0;
                 for (Rating r : this.ratings) {
-                    if (r.getIdentifier().equals(m)) {
+                    if (r.getIdentifier().equals(m.toString())) {
                         counter++;
                         rating = ((r.getRating()) + rating) / counter;
                     }
                 }
                 m.setUserScore(rating);
                 out.add(m);
+            }
+            if (out.size() == 0) {
+                return null;
             }
             Collections.sort(out);
             return out;
@@ -111,21 +120,26 @@ public class RatingList {
             ArrayList<Movie> out = new ArrayList<>();
             for (Movie m : this.movies) {
                 double rating = 0;
+                boolean valid = false;
                 int counter = 0;
                 for (Rating r : this.ratings) {
                     if (r.getIdentifier().equals(m.toString()) && r.getMajor().equals(parameter)) {
+                        valid = true;
                         counter++;
                         rating = ((r.getRating()) + rating) / counter;
                     }
                 }
                 m.setUserScore(rating);
-                out.add(m);
+                if (valid) {
+                    out.add(m);
+                }
+            }
+            if (out.size() == 0) {
+                return null;
             }
             Collections.sort(out);
             return out;
         }
         return null;
     }
-
-
 }

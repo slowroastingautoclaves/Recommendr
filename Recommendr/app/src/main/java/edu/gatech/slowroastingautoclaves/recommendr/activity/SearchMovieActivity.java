@@ -321,7 +321,7 @@ public class SearchMovieActivity extends AppCompatActivity {
     public void getTopMovies(String filter) {
         if (filter.equals("null")) {
             ArrayList<Movie> out = RatingList.getInstance().getTopMovies("null", "null");
-            if (out != null) {
+            if (out == null) {
                 Context context = getApplicationContext();
                 CharSequence text = "No rated movies found matching criteria.";
                 int duration = Toast.LENGTH_SHORT;
@@ -350,7 +350,7 @@ public class SearchMovieActivity extends AppCompatActivity {
                                 return;
                             }
                             ArrayList<Movie> out = RatingList.getInstance().getTopMovies("major", userIn);
-                            if (out != null) {
+                            if (out == null) {
                                 Context context = getApplicationContext();
                                 CharSequence text = "No rated movies found matching criteria.";
                                 int duration = Toast.LENGTH_SHORT;

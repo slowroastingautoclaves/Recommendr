@@ -86,14 +86,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .add(R.id.movie_detail_container, fragment)
                     .commit();
         }
-        //Fragment current = MovieDetailActivity.this.getFragmentManager().findFragmentById(R.id.movie_detail_container);
         this.movie = Movies.ITEM_MAP.get(intent.getStringExtra("Movie"));
         this.identifier = this.movie.toString();
 
-        Log.i("USER EXISTS", this.user.getEmail());
-
-        Log.i("MOVIE EXISTS", movie.toString());
-        Log.i("IDENTIFIER EXISTS", identifier);
+//        Log.i("USER EXISTS", this.user.getEmail());
+//
+//        Log.i("MOVIE EXISTS", movie.toString());
+//        Log.i("IDENTIFIER EXISTS", identifier);
 
         //Make button to show ratings.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
