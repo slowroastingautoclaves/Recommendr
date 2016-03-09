@@ -8,8 +8,9 @@ import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 /**
  * Represents a Movie object.
  */
-public class Movie implements Serializable {
-    String title, year, description, rating, userRating;
+public class Movie implements Serializable, Comparable<Movie> {
+    private String title, year, description, rating, userRating;
+    private double userScore;
 
     /**
      * Sets Movie title.
@@ -50,6 +51,10 @@ public class Movie implements Serializable {
         this.description = description;
     }
 
+    public void setUserScore(double score) {
+        this.userScore = score;
+    }
+
     /**
      * Gets Movie title.
      * @return the title.
@@ -82,11 +87,37 @@ public class Movie implements Serializable {
         return this.description;
     }
 
+    public double getScore() {
+        return this.userScore;
+    }
+
     /**
      * Gets Movie identifier as title and year.
      * @return a string that identifies the Movie.
      */
     public String toString() {
         return (getTitle() + " (" + getYear() + ")");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Movie compare = (Movie) o;
+        if (compare.toString().equals(this.toString())) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
+    @Override
+    public int compareTo(Movie m) {
+        if (m.getScore() - this.getScore() == 0.0) {
+            return this.getTitle().compareTo(m.getTitle());
+        }
+        return (int)m.getScore() - (int)this.getScore();
     }
 }

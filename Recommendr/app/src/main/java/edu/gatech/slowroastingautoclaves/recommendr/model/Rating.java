@@ -4,13 +4,13 @@ package edu.gatech.slowroastingautoclaves.recommendr.model;
  * Represents a rating for a movie that tracks the user and major that made the rating.
  */
 public class Rating {
-    private String identifier, user, major;
+    private String identifier;
+    private User user;
     private double rating;
 
-    public Rating(String identifier, String user, String major, double rating) {
+    public Rating(String identifier, User user, double rating) {
         this.identifier = identifier;
         this.user = user;
-        this.major = major;
         this.rating = rating;
     }
 
@@ -27,7 +27,7 @@ public class Rating {
      * @return the major
      */
     public String getMajor() {
-        return this.major;
+        return this.user.getMajor();
     }
 
     /**
@@ -43,13 +43,13 @@ public class Rating {
      * @return the user identifier
      */
     public String getUser() {
-        return this.user;
+        return this.user.getEmail();
     }
 
     @Override
     public boolean equals(Object o) {
         Rating compare = (Rating) o;
-        if (compare.getUser().equals(this.user)) {
+        if (compare.getUser().equals(this.user.getEmail()) && compare.getIdentifier().equals(this.identifier)) {
             return true;
         }
         return false;
@@ -57,6 +57,6 @@ public class Rating {
 
     @Override
     public int hashCode() {
-        return this.user.hashCode();
+        return this.user.hashCode() + this.identifier.hashCode();
     }
 }

@@ -37,7 +37,7 @@ public class ViewProfileActivity extends AppCompatActivity {
             if (u.getMajor() != null) {
                 textView11.setText(u.getMajor());
                 textView11.clearComposingText();
-                textView11.append(u.getUsername());
+//                textView11.append(u.getUsername());
             }
             if (u.getDescription() != null) {
                 textView12.setText(u.getDescription());

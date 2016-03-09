@@ -1,13 +1,19 @@
 package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,6 +30,7 @@ import java.util.ArrayList;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
 
 public class SearchMovieActivity extends AppCompatActivity {
 
@@ -35,6 +42,8 @@ public class SearchMovieActivity extends AppCompatActivity {
     private SearchView mMovieSearchView;
     private Button mRecentReleaseButton;
     private Button mRecentDVDsButton;
+    private Button mTopMoviesButton;
+    private Button mTopMoviesMajorButton;
     private ImageButton mMovieSearchButton;
     private String email;
 
@@ -69,6 +78,20 @@ public class SearchMovieActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getRecentDVDs();
+            }
+        });
+        this.mTopMoviesButton = (Button) findViewById(R.id.topMoviesButton);
+        mTopMoviesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getTopMovies("null");
+            }
+        });
+        this.mTopMoviesMajorButton = (Button) findViewById(R.id.topMoviesMajorButton);
+        mTopMoviesMajorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getTopMovies("major");
             }
         });
     }
@@ -293,5 +316,66 @@ public class SearchMovieActivity extends AppCompatActivity {
                 });
         //this actually queues up the async response with Volley
         queue.add(jsObjRequest);
+    }
+
+    public void getTopMovies(String filter) {
+        if (filter.equals("null")) {
+            ArrayList<Movie> out = RatingList.getInstance().getTopMovies("null", "null");
+            if (out != null) {
+                Context context = getApplicationContext();
+                CharSequence text = "No rated movies found matching criteria.";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            } else {
+                changeView(out);
+            }
+        } else if (filter.equals("major")) {
+            String message = "Enter a major to filter movie recommendations by.\n";
+            AlertDialog.Builder builder = new AlertDialog.Builder(SearchMovieActivity.this);
+
+            final EditText input = new EditText(SearchMovieActivity.this);
+
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            input.setHint("Type in major to restrict search.");
+
+            builder.setMessage(message)
+                    .setTitle("Filter Major")
+                    .setView(input)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String userIn = input.getText().toString();
+                            if (userIn.length() < 1) {
+                                return;
+                            }
+                            ArrayList<Movie> out = RatingList.getInstance().getTopMovies("major", userIn);
+                            if (out != null) {
+                                Context context = getApplicationContext();
+                                CharSequence text = "No rated movies found matching criteria.";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                                return;
+                            }
+                            changeView(out);
+                            return;
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
     }
 }

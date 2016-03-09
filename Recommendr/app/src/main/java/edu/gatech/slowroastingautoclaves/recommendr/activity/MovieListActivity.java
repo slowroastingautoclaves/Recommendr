@@ -86,6 +86,7 @@ public class MovieListActivity extends AppCompatActivity {
         //Go back to SearchMovieActivity instead of closing app.
         Movies.clear();
         Intent searchIntent = new Intent(MovieListActivity.this, SearchMovieActivity.class);
+        searchIntent.putExtra("Email", MovieListActivity.this.email);
         startActivity(searchIntent);
         finish();
     }
@@ -154,6 +155,7 @@ public class MovieListActivity extends AppCompatActivity {
                         Intent intent = new Intent(context, MovieDetailActivity.class);
                         intent.putExtra(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.toString());
                         intent.putExtra("Email", MovieListActivity.this.email);
+                        intent.putExtra("Movie", holder.mItem.toString());
 
                         context.startActivity(intent);
                     }

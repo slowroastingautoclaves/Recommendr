@@ -7,14 +7,13 @@ import java.util.ArrayList;
  */
 public class User {
     private String username, email, password, major, description;
-    private Condition condition;
+    //private Condition condition;
     private ArrayList<Rating> userRatings;
 
-    public User(String username, String email, String password, Condition condition) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.condition = condition;
         this.userRatings = new ArrayList<>();
     }
 
@@ -99,16 +98,16 @@ public class User {
      * Get's the user's condition
      * @return the condition of the user
      */
-    public Condition getCondition() {
-        return this.condition;
-    }
+//    public Condition getCondition() {
+//        return this.condition;
+//    }
 
     /*
      * Set condition for the user
      */
-    public void setCondition(Condition condition) {
-        this.condition = condition;
-    }
+//    public void setCondition(Condition condition) {
+//        this.condition = condition;
+//    }
 
     @Override
     public boolean equals(Object o) {
