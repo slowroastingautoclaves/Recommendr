@@ -7,13 +7,24 @@ import java.util.ArrayList;
  */
 public class User {
     private String username, email, password, major, description;
+    private Condition condition;
     //private Condition condition;
     private ArrayList<Rating> userRatings;
 
+    // constructor for creating new user
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.userRatings = new ArrayList<>();
+        condition = Condition.UNLOCKED;
+    }
+
+    public User(String username, String email, String password, Condition condition) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.condition = condition;
         this.userRatings = new ArrayList<>();
     }
 
@@ -33,6 +44,20 @@ public class User {
         return this.email;
     }
 
+    /**
+     * Gets this user's condition
+     * @return the conditino
+     */
+    public Condition getCondition() {
+        return this.condition;
+    }
+
+    /**
+     * sets the user's condition
+     */
+    public void setCondition(Condition condition) {
+        this.condition = condition;
+    }
     /**
      * Gets this user's password.
      * @return the password.

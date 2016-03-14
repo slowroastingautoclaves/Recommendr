@@ -36,6 +36,7 @@ import java.util.List;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 //import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
@@ -65,6 +66,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    // record login attemts
+    private short attempts;
+    private User prevAttempt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        }// check user status
+        } // check user status
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -204,6 +209,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+
+            // lock account if tried too many times
+            if (attempts == 3) {
+                prevAttempt.setCondition(Condition.LOCKED);
+            }
         }
     }
 
@@ -358,8 +368,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             for (User u : UserList.getInstance().getUsers()) {
                 if (u.getEmail().equals(mEmail)) {
+                    // see if tried logging into this user before
+                    if (prevAttempt != null || !prevAttempt.equals(u)) {
+                        attempts++;
+                    } else {
+                        prevAttempt = u;
+                        attempts = 0;
+                    }
+
                     // Account exists, return true if the password matches.
-                    return u.getPassword().equals(mPassword);
+                    if (u.getPassword().equals(mPassword)) {
+                        // password matches, does the account have access to app?
+                        return u.getCondition().equals(Condition.UNLOCKED);
+                    }
+
                 }
             }
             return false;
