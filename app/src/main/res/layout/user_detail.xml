@@ -13,37 +13,51 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="userName"
         android:textSize="20sp"
-        android:width="200dp"
-        android:textColor="black"
+        android:width="175dp"
+        android:textColor="@color/black"
         android:singleLine="true" />
 
     <RadioGroup
-        android:layout_width="match_parent"
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_toRightOf="@id/textView15"
         android:orientation="horizontal"
         android:weightSum="3"
-        android:scrollIndicators="none"
         android:showDividers="middle|beginning|end">
 
         <RadioButton
             android:id="@+id/radio"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-
             android:layout_weight="1"/>
 
         <RadioButton
             android:id="@+id/radio2"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
         <RadioButton
             android:id="@+id/radio3"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
     </RadioGroup>
+
+    <RadioButton
+        android:id="@+id/radio4"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_toRightOf="@id/radio_group"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/radio_group"
+        android:id="@+id/textview_divider"
+        android:background="@color/black"
+        />
 
 </RelativeLayout>

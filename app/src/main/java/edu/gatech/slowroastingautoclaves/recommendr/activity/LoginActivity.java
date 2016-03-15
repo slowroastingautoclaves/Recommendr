@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        } // check user status
+        }
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -392,13 +392,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            Intent userIntent = new Intent(LoginActivity.this, UserActivity.class); 
+            Intent userIntent;
 
             if (success) {
-                //Send email to UserActivity and start UserActivity.
-                userIntent.putExtra("Email",this.mEmail);
-                startActivity(userIntent);
-                finish();
+                if (!prevAttempt.getAdminStatus()) {
+                    //Send email to UserActivity and start UserActivity.
+                    userIntent = new Intent(LoginActivity.this, UserActivity.class);
+                    userIntent.putExtra("Email", this.mEmail);
+                    startActivity(userIntent);
+                    finish();
+                } else {
+                    userIntent = new Intent(LoginActivity.this, AdminActivity.class);
+                    userIntent.putExtra("Email", this.mEmail);
+                    startActivity(userIntent);
+                    finish();
+                }
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

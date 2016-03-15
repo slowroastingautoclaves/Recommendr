@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class User {
     private String username, email, password, major, description;
     private Condition condition;
+    private boolean adminStatus;
     //private Condition condition;
     private ArrayList<Rating> userRatings;
 
@@ -17,6 +18,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.userRatings = new ArrayList<>();
+        adminStatus = false;
         condition = Condition.UNLOCKED;
     }
 
@@ -26,6 +28,7 @@ public class User {
         this.password = password;
         this.condition = condition;
         this.userRatings = new ArrayList<>();
+        this.adminStatus = false;
     }
 
     /**
@@ -57,6 +60,22 @@ public class User {
      */
     public void setCondition(Condition condition) {
         this.condition = condition;
+    }
+
+    /**
+     * check admin status of user
+     * @return the admin status of the user
+     */
+    public boolean getAdminStatus() {
+        return adminStatus;
+    }
+
+    /**
+     * change the admin status of the user
+     * @param adminStatus new admin status
+     */
+    public void setAdminStatus(boolean adminStatus) {
+        this.adminStatus = adminStatus;
     }
     /**
      * Gets this user's password.
