@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
-    // record login attemts
+    // record login attempts
     private short attempts;
     private User prevAttempt;
 
@@ -370,7 +370,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             for (User u : UserList.getInstance().getUsers()) {
                 if (u.getEmail().equals(mEmail)) {
                     // see if tried logging into this user before
-                    if (prevAttempt != null || !prevAttempt.equals(u)) {
+                    if (prevAttempt != null && prevAttempt.equals(u)) {
                         attempts++;
                     } else {
                         prevAttempt = u;
@@ -395,17 +395,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Intent userIntent;
 
             if (success) {
-                //if (!prevAttempt.getAdminStatus()) {
+                if (!prevAttempt.getAdminStatus()) {
                     //Send email to UserActivity and start UserActivity.
                     userIntent = new Intent(LoginActivity.this, UserActivity.class);
-                //} else {
-                //    userIntent = new Intent(LoginActivity.this, UserActivity.class);
-                    /*
+                } else {
                     userIntent = new Intent(LoginActivity.this, AdminActivity.class);
-                    userIntent.putExtra("Email", this.mEmail);
-                    startActivity(userIntent);
-                    finish();*/
-                //}
+                }
                 userIntent.putExtra("Email", this.mEmail);
                 startActivity(userIntent);
                 finish();

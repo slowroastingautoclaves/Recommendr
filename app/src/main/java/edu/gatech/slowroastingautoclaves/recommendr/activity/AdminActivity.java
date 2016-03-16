@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +45,10 @@ public class AdminActivity extends Activity{
 
     private void populateListView() {
         // create list of items
-        ArrayList<User> users = new ArrayList<User>();
+        this.users = new ArrayList<User>();
 
         for (User u : UserList.getInstance().getUsers()) {
+            Log.i("PLS", u.getEmail());
             if (!u.getEmail().equals(email)) {
                 users.add(u);
             }

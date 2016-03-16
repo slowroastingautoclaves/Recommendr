@@ -18,8 +18,8 @@ public class User {
         this.email = email;
         this.password = password;
         this.userRatings = new ArrayList<>();
-        adminStatus = false;
-        condition = Condition.UNLOCKED;
+        this.adminStatus = false;
+        this.condition = Condition.UNLOCKED;
     }
 
     public User(String username, String email, String password, Condition condition) {
