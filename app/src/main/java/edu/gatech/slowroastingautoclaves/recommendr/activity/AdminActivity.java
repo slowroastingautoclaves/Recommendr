@@ -43,7 +43,10 @@ public class AdminActivity extends Activity{
         title.setText(email);
 
         populateListView();
-        registerClickCallback();
+        // create listener
+        //Log.i("Create", "Listener");
+        //registerClickCallback();
+        //Log.i("Created", "hopefully");
 
         Button mPlaceholderDone = (Button) findViewById(R.id.admin_logout);
         mPlaceholderDone.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +96,7 @@ public class AdminActivity extends Activity{
                 users.add(u);
             }
         }
-        //build adapterLovissa
+        //build adapter
         ArrayAdapter<User> adapter = new ArrayAdapterItem<User>(this, R.layout.user_detail);
 
         //configure listview
@@ -131,7 +134,7 @@ public class AdminActivity extends Activity{
                 }
                 rb.setChecked(true);
             }
-/*
+
             final int pos = position;
             RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -149,7 +152,7 @@ public class AdminActivity extends Activity{
                     }
                 }
             });
-*/
+
             return convertView;
         }
 
