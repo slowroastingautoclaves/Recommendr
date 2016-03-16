@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -38,11 +39,32 @@ public class AdminActivity extends Activity{
 
         Intent intent = getIntent();
         this.email = intent.getStringExtra("Email");
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText(email);
 
         populateListView();
-        //registerClickCallback();
+        registerClickCallback();
 
+        Button mPlaceholderDone = (Button) findViewById(R.id.admin_logout);
+        mPlaceholderDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent userIntent = new Intent(AdminActivity.this, LoginActivity.class);
+                startActivity(userIntent);
+                finish();
+            }
+        });
 
+    }
+
+    private void registerClickCallback() {
+        ListView list = (ListView) findViewById(R.id.listView);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(view.toString(), Long.toString(id));
+            }
+        });
     }
 
     private void populateListView() {
@@ -92,7 +114,7 @@ public class AdminActivity extends Activity{
                 }
                 rb.setChecked(true);
             }
-
+/*
             final int pos = position;
             RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -110,7 +132,7 @@ public class AdminActivity extends Activity{
                     }
                 }
             });
-
+*/
             return convertView;
         }
 
