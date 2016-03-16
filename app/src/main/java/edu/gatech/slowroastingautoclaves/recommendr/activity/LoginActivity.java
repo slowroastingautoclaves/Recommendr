@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //Make hardcoded dummy user.
         UserList.getInstance().addUser(new User("Foo", "foo@example.com", "hello"));
         UserList.getInstance().addUser(new User("admin", "user@admin.com","12345", Condition.UNLOCKED, true));
+        UserList.getInstance().addUser(new User("admin", "user@admin.com","12345", Condition.LOCKED, false));
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);

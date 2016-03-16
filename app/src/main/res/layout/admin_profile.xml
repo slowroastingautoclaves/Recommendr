@@ -64,11 +64,6 @@
             android:singleLine="true" />
     </LinearLayout>
 
-    <!--<include-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--layout="@layout/user_detail_list" />-->
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

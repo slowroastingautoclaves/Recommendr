@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class AdminActivity extends Activity{
                 users.add(u);
             }
         }
-        //build adapter
+        //build adapterLovissa
         ArrayAdapter<User> adapter = new ArrayAdapterItem<User>(this, R.layout.user_detail);
 
         //configure listview
@@ -73,7 +74,7 @@ public class AdminActivity extends Activity{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Log.i("GETVIEW","CALLED");
+            Log.i("GETVIEW", "CALLED");
             if (convertView == null) {
                 // inflate the layout
                 LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
@@ -92,7 +93,23 @@ public class AdminActivity extends Activity{
                 rb.setChecked(true);
             }
 
+            final int pos = position;
+            RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+            {
 
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    final User u = users.get(pos);
+                    if (checkedId == R.id.radio) {
+                        u.setCondition(Condition.UNLOCKED);
+                    } else if (checkedId == R.id.radio2) {
+                        u.setCondition(Condition.LOCKED);
+                    } else if (checkedId == R.id.radio3) {
+                        u.setCondition(Condition.BANNED);
+                    }
+                }
+            });
 
             return convertView;
         }
@@ -102,15 +119,4 @@ public class AdminActivity extends Activity{
             return users.size();
         }
     }
-/*
-    private void registerClickCallback() {
-        ListView list = (ListView) findViewById(R.id.listView);
-        list.setOnItemClickListener(new AdapterView.OnClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position,
-                                    long id) {
-
-            }
-        });
-    }*/
 }
