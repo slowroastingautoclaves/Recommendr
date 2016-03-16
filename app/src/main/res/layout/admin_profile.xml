@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -63,9 +64,19 @@
             android:singleLine="true" />
     </LinearLayout>
 
-    <include
+    <!--<include-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--layout="@layout/user_detail_list" />-->
+
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/user_detail_list" />
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:divider="@color/black"
+        android:dividerHeight="5dp"
+        android:fastScrollEnabled="true"
+        tools:listitem="@layout/user_detail"
+        />
 
 </LinearLayout>

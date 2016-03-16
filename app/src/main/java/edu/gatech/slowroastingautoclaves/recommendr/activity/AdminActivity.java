@@ -33,6 +33,7 @@ public class AdminActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_profile);
+        this.users = new ArrayList<>();
 
         Intent intent = getIntent();
         this.email = intent.getStringExtra("Email");
@@ -45,7 +46,6 @@ public class AdminActivity extends Activity{
 
     private void populateListView() {
         // create list of items
-        this.users = new ArrayList<User>();
 
         for (User u : UserList.getInstance().getUsers()) {
             Log.i("PLS", u.getEmail());
@@ -73,6 +73,7 @@ public class AdminActivity extends Activity{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            Log.i("GETVIEW","CALLED");
             if (convertView == null) {
                 // inflate the layout
                 LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
@@ -88,13 +89,17 @@ public class AdminActivity extends Activity{
                 } else {
                     rb = (RadioButton) convertView.findViewById(R.id.radio3);
                 }
-
                 rb.setChecked(true);
             }
 
 
 
             return convertView;
+        }
+
+        @Override
+        public int getCount() {
+            return users.size();
         }
     }
 /*
