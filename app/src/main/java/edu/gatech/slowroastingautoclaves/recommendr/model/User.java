@@ -31,6 +31,15 @@ public class User {
         this.adminStatus = false;
     }
 
+    public User(String username, String email, String password, Condition condition, boolean adminStatus) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.condition = condition;
+        this.userRatings = new ArrayList<>();
+        this.adminStatus = adminStatus;
+    }
+
     /**
      * Gets this user's username.
      * @return the username.

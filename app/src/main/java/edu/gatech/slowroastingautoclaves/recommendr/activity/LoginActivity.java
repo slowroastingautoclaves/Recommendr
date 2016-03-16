@@ -78,12 +78,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         //Make hardcoded dummy user.
         UserList.getInstance().addUser(new User("Foo", "foo@example.com", "hello"));
+        UserList.getInstance().addUser(new User("admin", "user@admin.com","12345", Condition.UNLOCKED, true));
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+                mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -190,7 +191,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            mEmailView.setError("This password is too short or incorrect");
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
@@ -381,7 +382,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         // password matches, does the account have access to app?
                         return u.getCondition().equals(Condition.UNLOCKED);
                     }
-
                 }
             }
             return false;
@@ -395,18 +395,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Intent userIntent;
 
             if (success) {
-                if (!prevAttempt.getAdminStatus()) {
+                //if (!prevAttempt.getAdminStatus()) {
                     //Send email to UserActivity and start UserActivity.
                     userIntent = new Intent(LoginActivity.this, UserActivity.class);
-                    userIntent.putExtra("Email", this.mEmail);
-                    startActivity(userIntent);
-                    finish();
-                } else {
+                //} else {
+                //    userIntent = new Intent(LoginActivity.this, UserActivity.class);
+                    /*
                     userIntent = new Intent(LoginActivity.this, AdminActivity.class);
                     userIntent.putExtra("Email", this.mEmail);
                     startActivity(userIntent);
-                    finish();
-                }
+                    finish();*/
+                //}
+                userIntent.putExtra("Email", this.mEmail);
+                startActivity(userIntent);
+                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

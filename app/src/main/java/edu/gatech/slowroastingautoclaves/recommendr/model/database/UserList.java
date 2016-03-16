@@ -2,6 +2,7 @@ package edu.gatech.slowroastingautoclaves.recommendr.model.database;
 
 import java.util.ArrayList;
 
+import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 
 /**
