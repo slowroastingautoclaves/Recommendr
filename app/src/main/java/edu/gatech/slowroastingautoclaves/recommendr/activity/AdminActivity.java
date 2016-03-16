@@ -62,6 +62,23 @@ public class AdminActivity extends Activity{
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final int pos = position;
+                RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+                {
+
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        final User u = users.get(pos);
+                        if (checkedId == R.id.radio) {
+                            u.setCondition(Condition.UNLOCKED);
+                        } else if (checkedId == R.id.radio2) {
+                            u.setCondition(Condition.LOCKED);
+                        } else if (checkedId == R.id.radio3) {
+                            u.setCondition(Condition.BANNED);
+                        }
+                    }
+                });
                 Log.i(view.toString(), Long.toString(id));
             }
         });
