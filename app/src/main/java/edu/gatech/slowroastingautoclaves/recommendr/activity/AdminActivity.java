@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,10 +44,6 @@ public class AdminActivity extends Activity{
         title.setText(email);
 
         populateListView();
-        // create listener
-        //Log.i("Create", "Listener");
-        //registerClickCallback();
-        //Log.i("Created", "hopefully");
 
         Button mPlaceholderDone = (Button) findViewById(R.id.admin_logout);
         mPlaceholderDone.setOnClickListener(new View.OnClickListener() {
@@ -58,33 +55,6 @@ public class AdminActivity extends Activity{
             }
         });
 
-    }
-
-    private void registerClickCallback() {
-        ListView list = (ListView) findViewById(R.id.listView);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final int pos = position;
-                RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
-                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-                {
-
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        final User u = users.get(pos);
-                        if (checkedId == R.id.radio) {
-                            u.setCondition(Condition.UNLOCKED);
-                        } else if (checkedId == R.id.radio2) {
-                            u.setCondition(Condition.LOCKED);
-                        } else if (checkedId == R.id.radio3) {
-                            u.setCondition(Condition.BANNED);
-                        }
-                    }
-                });
-                Log.i(view.toString(), Long.toString(id));
-            }
-        });
     }
 
     private void populateListView() {
@@ -116,7 +86,6 @@ public class AdminActivity extends Activity{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Log.i("GETVIEW", "CALLED");
             if (convertView == null) {
                 // inflate the layout
                 LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
@@ -133,26 +102,28 @@ public class AdminActivity extends Activity{
                     rb = (RadioButton) convertView.findViewById(R.id.radio3);
                 }
                 rb.setChecked(true);
-            }
 
-            final int pos = position;
-            RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
-            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-            {
+                // create radio group listener to record any changes
+                final int pos = position;
+                RadioGroup radioGroup = (RadioGroup) convertView.findViewById(R.id.radio_group);
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    final User u = users.get(pos);
-                    if (checkedId == R.id.radio) {
-                        u.setCondition(Condition.UNLOCKED);
-                    } else if (checkedId == R.id.radio2) {
-                        u.setCondition(Condition.LOCKED);
-                    } else if (checkedId == R.id.radio3) {
-                        u.setCondition(Condition.BANNED);
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        Log.i("inside", "method");
+                        final User u = users.get(pos);
+                        if (checkedId == R.id.radio) {
+                            u.setCondition(Condition.UNLOCKED);
+                        } else if (checkedId == R.id.radio2) {
+                            u.setCondition(Condition.LOCKED);
+                        } else if (checkedId == R.id.radio3) {
+                            u.setCondition(Condition.BANNED);
+                        }
                     }
-                }
-            });
-
+                });
+            }
+            Log.i("GETVIEW", "CALLED");
+//
             return convertView;
         }
 
