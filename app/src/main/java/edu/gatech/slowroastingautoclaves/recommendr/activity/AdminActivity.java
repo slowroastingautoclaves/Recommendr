@@ -26,7 +26,7 @@ import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
- * Created by Christian Girala on 3/14/2016.
+ * Represents a screen that shows admin activities, only opens for admin users.
  */
 public class AdminActivity extends Activity{
     private String email;
@@ -57,6 +57,9 @@ public class AdminActivity extends Activity{
 
     }
 
+    /**
+     * Adds User items to the list of Users.
+     */
     private void populateListView() {
         // create list of items
 
@@ -74,6 +77,10 @@ public class AdminActivity extends Activity{
         list.setAdapter(adapter);
     }
 
+    /**
+     * Adapter for list of users.
+     * @param <E> is User object type
+     */
     public class ArrayAdapterItem<E> extends ArrayAdapter<E> {
 
         Context mContext;
