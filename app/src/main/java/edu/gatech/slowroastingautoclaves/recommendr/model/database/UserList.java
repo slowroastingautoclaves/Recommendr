@@ -18,6 +18,10 @@ public class UserList {
         users = new ArrayList<>();
     }
 
+    /**
+     * Gets singleton instance, making a new one if necessary.
+     * @return the instance of UserList
+     */
     public static UserList getInstance() {
         if (ourInstance == null) {
             ourInstance = new UserList();

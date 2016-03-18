@@ -58,7 +58,7 @@ public class User {
 
     /**
      * Gets this user's condition
-     * @return the conditino
+     * @return the condition
      */
     public Condition getCondition() {
         return this.condition;
