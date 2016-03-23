@@ -6,14 +6,18 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
+import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
  * Screen that allows user to access user functions, e.g. editing profile.
  */
 public class UserActivity extends AppCompatActivity {
     private String email;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,18 @@ public class UserActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         this.email = intent.getStringExtra("Email");
+
+        for (User u: UserList.getInstance().getUsers()) {
+            if (u.getEmail().equals(email)) {
+                user = u;
+            }
+        }
+
+        TextView name = (TextView) findViewById(R.id.name);
+        name.setText(user.getUsername());
+
+        TextView major = (TextView) findViewById(R.id.major);
+        major.setText(user.getMajor());
 
         Button mPlaceholderDone = (Button) findViewById(R.id.placeholder_done);
         mPlaceholderDone.setOnClickListener(new OnClickListener() {

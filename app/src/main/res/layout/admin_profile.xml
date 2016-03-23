@@ -12,7 +12,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="adminName"
             android:id="@+id/title"
             android:layout_gravity="center_horizontal"
@@ -30,7 +29,9 @@
     <SearchView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/searchView" />
+        android:queryHint="search by username"
+        android:iconifiedByDefault="false"
+        android:id="@+id/adminsearchView" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -68,6 +69,13 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Banned"
             android:id="@+id/textView19" />
+
+        <TextView
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/titleRB_divider"
+            android:background="@color/black"
+            />
 
         <TextView
             android:layout_width="wrap_content"

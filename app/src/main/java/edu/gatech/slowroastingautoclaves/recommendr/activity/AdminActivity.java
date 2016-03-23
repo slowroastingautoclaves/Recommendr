@@ -129,7 +129,6 @@ public class AdminActivity extends Activity{
                     }
                 });
             }
-            Log.i("GETVIEW", "CALLED");
 //
             return convertView;
         }
