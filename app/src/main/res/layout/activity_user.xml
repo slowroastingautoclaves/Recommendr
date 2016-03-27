@@ -13,22 +13,28 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".activity.UserActivity">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log\nout"
+            android:id="@+id/placeholder_done"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Welcome"
-            android:textSize="55sp"
+            android:textSize="45sp"
             android:textStyle="bold"
-            android:id="@+id/textView"
+            android:id="@+id/tvWelcome"
             android:textColor="@color/oldGold"
             android:layout_centerHorizontal="true" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_below="@id/textView"
-            android:textSize="55sp"
+            android:layout_below="@id/tvWelcome"
+            android:textSize="45sp"
             android:textStyle="bold"
             android:id="@+id/name"
             android:textColor="@color/oldGold"
@@ -39,41 +45,48 @@
             android:textSize="20sp"
             android:layout_below="@id/name"
             android:text="major"
-            android:layout_centerHorizontal="true"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Done"
-            android:id="@+id/placeholder_done"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="61dp" />
+            android:id="@+id/tvMajor"/>
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/options"
+            android:layout_below="@id/tvMajor">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Profile"
+                android:id="@+id/VProfile"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Profile"
+                android:id="@+id/edit_profile"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search Movie"
+                android:id="@+id/startSearchButton"/>
+
+
+        </LinearLayout>
+
+        <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit Profile"
-            android:id="@+id/edit_profile"
-            android:layout_alignTop="@+id/VProfile"
-            android:layout_toLeftOf="@+id/placeholder_done"/>
+            android:layout_below="@id/options"
+            android:scrollbars="none"
+            android:id="@+id/listView2"
+            android:divider="@color/oldGold"
+            android:dividerHeight="5dp"
+            tools:listitem="@layout/movie_list_content"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View Profile"
-            android:id="@+id/VProfile"
-            android:layout_toRightOf="@+id/placeholder_done"
-            android:layout_toEndOf="@+id/placeholder_done"
-            android:layout_marginTop="51dp"
-            android:layout_below="@+id/textView" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Search Movies"
-            android:id="@+id/startSearchButton"
-            android:layout_below="@+id/edit_profile"
-            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </ScrollView>

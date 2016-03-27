@@ -35,10 +35,12 @@ public class UserActivity extends AppCompatActivity {
             }
         }
 
+        populateListView();
+
         TextView name = (TextView) findViewById(R.id.name);
         name.setText(user.getUsername());
 
-        TextView major = (TextView) findViewById(R.id.major);
+        TextView major = (TextView) findViewById(R.id.tvMajor);
         major.setText(user.getMajor());
 
         Button mPlaceholderDone = (Button) findViewById(R.id.placeholder_done);
@@ -84,5 +86,9 @@ public class UserActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void populateListView() {
+
     }
 }

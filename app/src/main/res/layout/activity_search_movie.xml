@@ -16,7 +16,8 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:iconifiedByDefault="false"
-        android:queryHint="Search movies" />
+        android:queryHint="Search movies"
+        />
 
     <TextView
         android:layout_width="309dp"
