@@ -35,8 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
-//import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
-import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
+//import edu.gatech.slowroastingautoclaves.recommendr.model.Conditions;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Conditions;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
@@ -206,7 +206,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             // lock account if tried too many times
             if (attempts == 3) {
-                prevAttempt.setCondition(Condition.LOCKED);
+                prevAttempt.setCondition(Conditions.LOCKED);
             }
         }
     }
@@ -373,7 +373,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     // Account exists, return true if the password matches.
                     if (u.getPassword().equals(mPassword)) {
                         // password matches, does the account have access to app?
-                        return u.getCondition().equals(Condition.UNLOCKED);
+                        return u.getCondition().equals(Conditions.UNLOCKED);
                     }
                 }
             }
@@ -398,7 +398,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(userIntent);
                 finish();
             } else {
-                if (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.LOCKED)) {
+                if (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Conditions.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Conditions.LOCKED)) {
                     mPasswordView.setError("This user is banned/locked.");
                     mPasswordView.requestFocus();
                 } else {

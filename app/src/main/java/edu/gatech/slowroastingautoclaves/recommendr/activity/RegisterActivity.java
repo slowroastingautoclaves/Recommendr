@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
-//import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
+//import edu.gatech.slowroastingautoclaves.recommendr.model.Conditions;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 

@@ -1,16 +1,16 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.Condition;
+
 
 /**
  * Represents a user that has a username, an email, a password, and a condition.
  */
 public class User {
     private String username, email, password, major, description;
-    private Condition condition;
+    private Conditions condition;
     private boolean adminStatus;
-    //private Condition condition;
+    //private Conditions condition;
     private ArrayList<Rating> userRatings;
 
     // constructor for creating new user
@@ -20,10 +20,10 @@ public class User {
         this.password = password;
         this.userRatings = new ArrayList<>();
         this.adminStatus = false;
-        this.condition = Condition.UNLOCKED;
+        this.condition = Conditions.UNLOCKED;
     }
 
-    public User(String username, String email, String password, Condition condition) {
+    public User(String username, String email, String password, Conditions condition) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -32,11 +32,11 @@ public class User {
         this.adminStatus = false;
     }
 
-    public User(String username, String email, String password, Condition condition, boolean adminStatus) {
+    public User(String username, String email, String password, Conditions conditions, boolean adminStatus) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.condition = condition;
+        this.condition = conditions;
         this.userRatings = new ArrayList<>();
         this.adminStatus = adminStatus;
     }
@@ -61,15 +61,15 @@ public class User {
      * Gets this user's condition
      * @return the condition
      */
-    public Condition getCondition() {
+    public Conditions getCondition() {
         return this.condition;
     }
 
     /**
-     * sets the user's condition
+     * sets the user's conditions
      */
-    public void setCondition(Condition condition) {
-        this.condition = condition;
+    public void setCondition(Conditions conditions) {
+        this.condition = conditions;
     }
 
     /**
@@ -149,14 +149,14 @@ public class User {
      * Get's the user's condition
      * @return the condition of the user
      */
-//    public Condition getCondition() {
+//    public Conditions getCondition() {
 //        return this.condition;
 //    }
 
     /*
      * Set condition for the user
      */
-//    public void setCondition(Condition condition) {
+//    public void setCondition(Conditions condition) {
 //        this.condition = condition;
 //    }
 

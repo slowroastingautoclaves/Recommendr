@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -21,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
-import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Conditions;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
@@ -101,9 +99,9 @@ public class AdminActivity extends Activity{
                 User u = users.get(position);
                 username.setText(u.getUsername());
                 RadioButton rb;
-                if (u.getCondition() == Condition.UNLOCKED) {
+                if (u.getCondition() == Conditions.UNLOCKED) {
                     rb = (RadioButton) convertView.findViewById(R.id.radio);
-                } else if (u.getCondition() == Condition.LOCKED) {
+                } else if (u.getCondition() == Conditions.LOCKED) {
                     rb = (RadioButton) convertView.findViewById(R.id.radio2);
                 } else {
                     rb = (RadioButton) convertView.findViewById(R.id.radio3);
@@ -120,11 +118,11 @@ public class AdminActivity extends Activity{
                         Log.i("inside", "method");
                         final User u = users.get(pos);
                         if (checkedId == R.id.radio) {
-                            u.setCondition(Condition.UNLOCKED);
+                            u.setCondition(Conditions.UNLOCKED);
                         } else if (checkedId == R.id.radio2) {
-                            u.setCondition(Condition.LOCKED);
+                            u.setCondition(Conditions.LOCKED);
                         } else if (checkedId == R.id.radio3) {
-                            u.setCondition(Condition.BANNED);
+                            u.setCondition(Conditions.BANNED);
                         }
                     }
                 });

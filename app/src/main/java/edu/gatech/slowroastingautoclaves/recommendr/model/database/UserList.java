@@ -2,7 +2,7 @@ package edu.gatech.slowroastingautoclaves.recommendr.model.database;
 
 import java.util.ArrayList;
 
-import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Conditions;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 
 /**
@@ -27,8 +27,8 @@ public class UserList {
             ourInstance = new UserList();
             // make dummy users
             ourInstance.addUser(new User("Foo", "foo@example.com", "hello"));
-            ourInstance.addUser(new User("admin", "user@admin.com", "12345", Condition.UNLOCKED, true));
-            ourInstance.addUser(new User("bad", "user@ban.com","12345", Condition.BANNED, false));
+            ourInstance.addUser(new User("admin", "user@admin.com", "12345", Conditions.UNLOCKED, true));
+            ourInstance.addUser(new User("bad", "user@ban.com","12345", Conditions.BANNED, false));
         }
         return ourInstance;
     }
