@@ -3,7 +3,15 @@ package edu.gatech.slowroastingautoclaves.recommendr.model.database;
 import android.util.Log;
 
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.concurrent.Executor;
+
+import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Rating;
+import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.presenter.MovieInterface;
+
+import edu.gatech.slowroastingautoclaves.recommendr.presenter.UserInterface;
 
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrivers.DBdriver;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrivers.SSHDriver;
@@ -14,7 +22,7 @@ import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrive
  * Uses DBdriver class and SSHDriver class to facilitate connections to the Database and
  * querries to the database.
  */
-public class DatabaseComs implements Executor{
+public class DatabaseComs implements Executor, MovieInterface, UserInterface{
     Thread thread;
     /**
      * Driver to connect to database.
@@ -217,5 +225,70 @@ public class DatabaseComs implements Executor{
     public void execute(Runnable command) {
         thread = new Thread(command);
         thread.start();
+    }
+
+    @Override
+    public Movie getMovie(String identifier) {
+        return null;
+    }
+
+    @Override
+    public void addMovie(Movie m) {
+
+    }
+
+    @Override
+    public void addRating(Rating r) {
+
+    }
+
+    @Override
+    public void removeRating(Rating r) {
+
+    }
+
+    @Override
+    public String getMovieRating(String identifier) {
+        return null;
+    }
+
+    @Override
+    public List<Movie> getTopMovies(String filter, String parameter) {
+        return null;
+    }
+
+    @Override
+    public User getUser(String identifier) {
+        return null;
+    }
+
+    @Override
+    public void addUser(User u) {
+
+    }
+
+    @Override
+    public void removeUser(String identifier) {
+
+    }
+
+    @Override
+    public void lock(String identifier) {
+
+    }
+
+    @Override
+    public void ban(String identifier) {
+
+    }
+
+    @Override
+    public void unlock(String identifier) {
+
+    }
+
+    @Override
+    public void unban(String identifier) {
+
     }
 }
