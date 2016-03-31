@@ -9,7 +9,19 @@ import java.util.concurrent.locks.Condition;
 public class User {
     private String username, email, password, major, description;
     private Condition condition;
+    private boolean adminStatus;
+    //private Condition condition;
     private ArrayList<Rating> userRatings;
+
+    // constructor for creating new user
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.userRatings = new ArrayList<>();
+        this.adminStatus = false;
+        this.condition = Condition.UNLOCKED;
+    }
 
     public User(String username, String email, String password, Condition condition) {
         this.username = username;
@@ -17,6 +29,16 @@ public class User {
         this.password = password;
         this.condition = condition;
         this.userRatings = new ArrayList<>();
+        this.adminStatus = false;
+    }
+
+    public User(String username, String email, String password, Condition condition, boolean adminStatus) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.condition = condition;
+        this.userRatings = new ArrayList<>();
+        this.adminStatus = adminStatus;
     }
 
     /**
@@ -35,6 +57,36 @@ public class User {
         return this.email;
     }
 
+    /**
+     * Gets this user's condition
+     * @return the condition
+     */
+    public Condition getCondition() {
+        return this.condition;
+    }
+
+    /**
+     * sets the user's condition
+     */
+    public void setCondition(Condition condition) {
+        this.condition = condition;
+    }
+
+    /**
+     * check admin status of user
+     * @return the admin status of the user
+     */
+    public boolean getAdminStatus() {
+        return adminStatus;
+    }
+
+    /**
+     * change the admin status of the user
+     * @param adminStatus new admin status
+     */
+    public void setAdminStatus(boolean adminStatus) {
+        this.adminStatus = adminStatus;
+    }
     /**
      * Gets this user's password.
      * @return the password.
@@ -97,16 +149,16 @@ public class User {
      * Get's the user's condition
      * @return the condition of the user
      */
-    public Condition getCondition() {
-        return this.condition;
-    }
+//    public Condition getCondition() {
+//        return this.condition;
+//    }
 
     /*
      * Set condition for the user
      */
-    public void setCondition(Condition condition) {
-        this.condition = condition;
-    }
+//    public void setCondition(Condition condition) {
+//        this.condition = condition;
+//    }
 
     @Override
     public boolean equals(Object o) {

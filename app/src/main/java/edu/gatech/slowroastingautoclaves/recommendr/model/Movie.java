@@ -8,8 +8,9 @@ import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 /**
  * Represents a Movie object.
  */
-public class Movie implements Serializable {
-    String title, year, description, rating, userRating;
+public class Movie implements Serializable, Comparable<Movie> {
+    private String title, year, description, rating, userRating;
+    private double userScore;
 
     /**
      * Sets Movie title.
@@ -38,8 +39,12 @@ public class Movie implements Serializable {
         this.rating = "No rating found.";
     }
 
-    public void getUserRating() {
-        RatingList.getInstance().getRating(this.toString());
+    /**
+     * Gets rating for this movie as found in {@Code RatingList}.
+     * @return
+     */
+    public String getUserRating() {
+        return RatingList.getInstance().getRating(this.toString());
     }
 
     /**
@@ -48,6 +53,14 @@ public class Movie implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * Set the user score (used by {@code RatingList}
+     * @param score is score to set
+     */
+    public void setUserScore(double score) {
+        this.userScore = score;
     }
 
     /**
@@ -83,10 +96,40 @@ public class Movie implements Serializable {
     }
 
     /**
+     * Gets user score for this movie as set by {@code RatingList}.
+     * @return the score
+     */
+    public double getScore() {
+        return this.userScore;
+    }
+
+    /**
      * Gets Movie identifier as title and year.
      * @return a string that identifies the Movie.
      */
     public String toString() {
         return (getTitle() + " (" + getYear() + ")");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Movie compare = (Movie) o;
+        if (compare.toString().equals(this.toString())) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
+    @Override
+    public int compareTo(Movie m) {
+        if (m.getScore() - this.getScore() == 0.0) {
+            return this.getTitle().compareTo(m.getTitle());
+        }
+        return (int)m.getScore() - (int)this.getScore();
     }
 }

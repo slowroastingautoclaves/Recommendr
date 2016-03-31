@@ -4,58 +4,42 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
-import edu.gatech.slowroastingautoclaves.recommendr.activity.UserActivity;
-import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
-import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
  * A profile screen that allows users to edit their profile, e.g. change their major.
  */
 public class ProfileActivity extends AppCompatActivity {
-    private String username;
-    private RInfo db;
-    private User u;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        this.db = new DatabaseComs();
-        db.start();
-        //Log.d("ProfileActivity", db.getProfile(this.username).equals("") + "");
-
         Intent intent = getIntent();
-        this.username = intent.getStringExtra("Username");
+        this.email = intent.getStringExtra("Email");
 
-        u = new User(this.username, "", "", null);
-        try {
-
-            if (db.getProfile(this.username).equals("")) {
-                Log.i("PLS: ", u.getMajor());
-            } else {
-                u.setMajor(db.getProfile(this.username));
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-            Log.e("ProfileActivity", "Error in on create: " + e.getMessage() + "\n" + Log.getStackTraceString(new Exception()));
-        }
+        User u = UserList.getInstance().findUserByEmail(this.email);
 
         TextView usernameView = (TextView) findViewById(R.id.User);
         TextView majorView = (TextView) findViewById(R.id.major);
+        TextView descriptionView = (TextView) findViewById(R.id.description);
 
         if (u != null) {
             usernameView.setText(u.getUsername());
             if (u.getMajor() != null) {
                 majorView.setText(u.getMajor());
+            }
+            if (u.getDescription() != null) {
+                descriptionView.setText(u.getDescription());
             }
         }
 
@@ -73,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent userIntent = new Intent(ProfileActivity.this, UserActivity.class);
-                userIntent.putExtra("Username", ProfileActivity.this.username);
+                userIntent.putExtra("Email", ProfileActivity.this.email);
                 startActivity(userIntent);
                 finish();
             }
@@ -85,32 +69,16 @@ public class ProfileActivity extends AppCompatActivity {
      */
     private void editProfile() {
         TextView majorView = (TextView) findViewById(R.id.major);
+        TextView descriptionView = (TextView) findViewById(R.id.description);
+        User u = UserList.getInstance().findUserByEmail(this.email);
         u.setMajor(majorView.getText().toString());
-        boolean profileExists = false;
-        try {
-            profileExists = this.db.updateProfile(u.getUsername(), u.getMajor());
-        } catch(Exception e) {
-            Log.e("ProfileActivity", "Error in edit profile: " + e.getMessage() + "\n" + Log.getStackTraceString(new Exception()));
-        }
-        //check if user already has profile, if not then make one in database
-        if (!profileExists) {
-            this.db.createProfile(u.getUsername(), u.getMajor());
-        }
+        u.setDescription(descriptionView.getText().toString());
 
-        boolean success = this.db.updateProfile(u.getUsername(), u.getMajor());
-        //if profile is updated then display update message, else display error message
-        if (success) {
-            Context context = getApplicationContext();
-            CharSequence text = "Profile updated.";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        } else {
-            Context context = getApplicationContext();
-            CharSequence text = "Something went wrong, profile not updated.";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
+        //Display alert to user that profile has been updated successfully.
+        Context context = getApplicationContext();
+        CharSequence text = "Profile updated.";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }

@@ -16,7 +16,8 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:iconifiedByDefault="false"
-        android:queryHint="Search movies" />
+        android:queryHint="Search movies"
+        />
 
     <TextView
         android:layout_width="309dp"
@@ -61,5 +62,23 @@
         android:layout_below="@+id/movieSearchView"
         android:layout_centerHorizontal="true"
         android:background="@android:drawable/ic_menu_search" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Top Movies"
+        android:id="@+id/topMoviesButton"
+        android:layout_below="@+id/releasesButton"
+        android:layout_alignLeft="@+id/releasesButton"
+        android:layout_alignStart="@+id/releasesButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Top Movies By Major"
+        android:id="@+id/topMoviesMajorButton"
+        android:layout_below="@+id/dvdsButton"
+        android:layout_alignRight="@+id/dvdsButton"
+        android:layout_alignEnd="@+id/dvdsButton" />
 
 </RelativeLayout>

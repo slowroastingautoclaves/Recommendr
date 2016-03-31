@@ -1,6 +1,7 @@
 package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,10 +24,9 @@ import android.widget.RatingBar;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
-import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Movies;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Rating;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
-import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 import edu.gatech.slowroastingautoclaves.recommendr.presenter.MovieDetailFragment;
@@ -40,8 +40,8 @@ import edu.gatech.slowroastingautoclaves.recommendr.presenter.MovieDetailFragmen
 public class MovieDetailActivity extends AppCompatActivity {
 
     private String identifier;
+    private Movie movie;
     private User user;
-    private RInfo db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        db = new DatabaseComs();
+
+
         Intent intent = getIntent();
         String email = intent.getStringExtra("Email");
         user = UserList.getInstance().findUserByEmail(email);
@@ -84,17 +85,22 @@ public class MovieDetailActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.movie_detail_container, fragment)
                     .commit();
-            this.identifier = MovieDetailFragment.ARG_ITEM_ID;
         }
+        this.movie = Movies.ITEM_MAP.get(intent.getStringExtra("Movie"));
+        this.identifier = this.movie.toString();
+
+//        Log.i("USER EXISTS", this.user.getEmail());
+//
+//        Log.i("MOVIE EXISTS", movie.toString());
+//        Log.i("IDENTIFIER EXISTS", identifier);
 
         //Make button to show ratings.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String identifier = MovieDetailActivity.this.identifier;
                 String message = "Enter an integer rating from 0 to 100 for the movie.\n";
-                message += RatingList.getInstance().getRating(identifier);
+                message += RatingList.getInstance().getRating(MovieDetailActivity.this.identifier);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
 
                 final EditText input = new EditText(MovieDetailActivity.this);
@@ -115,39 +121,50 @@ public class MovieDetailActivity extends AppCompatActivity {
                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
-//                               if (Integer.parseInt(input.getRating().toString()) > 100) {
-//                                   input.setText("100");
-//                               }
+                               String userIn = input.getText().toString();
+                               if (userIn.length() < 1) {
+                                   dialog.dismiss();
+                                   return;
+                               }
                                double rateValue = 0;
                                if (Double.parseDouble(input.getText().toString()) > 0) {
                                    rateValue = Double.parseDouble(input.getText().toString());
                                }
-                               Rating currentRate = new Rating(identifier, MovieDetailActivity.this.user.getEmail(), MovieDetailActivity.this.user.getMajor(), rateValue);
+                               Rating currentRate = new Rating(MovieDetailActivity.this.identifier, MovieDetailActivity.this.user, rateValue);
                                if (!RatingList.getInstance().getRatings().contains(currentRate)) {
                                    RatingList.getInstance().addRating(currentRate);
+                                   RatingList.getInstance().addMovie(MovieDetailActivity.this.movie);
                                    MovieDetailActivity.this.user.addRating(currentRate);
                                } else {
                                    RatingList.getInstance().removeRating(currentRate);
-                                   RatingList.getInstance().addRating(currentRate);
                                    MovieDetailActivity.this.user.removeRating(currentRate);
+                                   RatingList.getInstance().addRating(currentRate);
+                                   RatingList.getInstance().addMovie(MovieDetailActivity.this.movie);
                                    MovieDetailActivity.this.user.addRating(currentRate);
                                }
+                               dialog.dismiss();
                                return;
                            }
                        })
                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
+                               dialog.dismiss();
                                return;
                            }
                        });
                 AlertDialog dialog = builder.create();
+                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
                 dialog.show();
-
             }
         });
-
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

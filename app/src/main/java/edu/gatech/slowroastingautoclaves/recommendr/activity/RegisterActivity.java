@@ -11,9 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
-import edu.gatech.slowroastingautoclaves.recommendr.activity.LoginActivity;
-import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
-import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
+//import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
+import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
  * Screen that allows user to register a new account.
@@ -23,10 +23,11 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView mUsernameView;
     private TextView mEmailView;
     private TextView mPasswordView;
-    private RInfo db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Get buttons and text fields.
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
@@ -43,9 +44,6 @@ public class RegisterActivity extends AppCompatActivity {
                 attemptRegister();
             }
         });
-
-        db = new DatabaseComs();
-        db.start();
 
         Button mCancelButton = (Button) findViewById(R.id.cancel);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
-     * Tries to register by checking username and password.
+     * Tries to register by checking username, email, and password and whether user exists.
      */
     private void attemptRegister() {
         // Reset errors.
@@ -109,6 +107,8 @@ public class RegisterActivity extends AppCompatActivity {
         String username = mUsernameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+
+        User currentUser = new User(username, email, password);
 
         boolean cancel = false;
         focusView = null;
@@ -131,7 +131,7 @@ public class RegisterActivity extends AppCompatActivity {
             cancel = true;
         }
 
-        // Check for a valid username.
+        //Check for a valid username.
         if (TextUtils.isEmpty(email)) {
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
@@ -147,11 +147,10 @@ public class RegisterActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a Toast to alert user that a new user profile was created.
+            // Show a Toast to alert user that a new user profile was created (or not).
             if (isEmailValid(email) && isPasswordValid(password) && isUsernameValid(username)) {
-                boolean userRegistered = db.registerUser(username, password, email);
-
-                if (userRegistered) {
+                if (!UserList.getInstance().getUsers().contains(currentUser)) {
+                    UserList.getInstance().addUser(currentUser);
                     Context context = getApplicationContext();
                     CharSequence text = "New user created.";
                     int duration = Toast.LENGTH_SHORT;
@@ -162,6 +161,7 @@ public class RegisterActivity extends AppCompatActivity {
                     mEmailView.setError("User already exists.");
                     focusView.requestFocus();
                 }
+
             } else {
                 if (!isEmailValid(email)) {
                     mEmailView.setError(getString(R.string.error_invalid_email));

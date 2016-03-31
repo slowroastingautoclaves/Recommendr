@@ -21,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,15 +35,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
-import edu.gatech.slowroastingautoclaves.recommendr.activity.RegisterActivity;
-import edu.gatech.slowroastingautoclaves.recommendr.activity.UserActivity;
-import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
-import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
+//import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
+import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via username/password.
+ * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -54,37 +53,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    //private static List<String> DUMMY_CREDENTIALS = new ArrayList<String>();
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mUsernameView;
+    private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private RInfo db;
+
+    // record login attempts
+    private short attempts;
+    private User prevAttempt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Get buttons and text fields.
+
         super.onCreate(savedInstanceState);
-        //DUMMY_CREDENTIALS.add("foo@example.com:hello");
-        //DUMMY_CREDENTIALS.add("bar@example.com:world");
-        //UserList.getInstance().addUser(new User("foo", "foo@example.com", "hello"));
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        db = new DatabaseComs();
-        db.start();
-
-        mPasswordView = (EditText) findViewById(R.id.password);
+                mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -103,7 +96,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin();
             }
         });
-
         Button mRegisterButton = (Button) findViewById(R.id.register);
         mRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -126,10 +118,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         getLoaderManager().initLoader(0, null, this);
     }
 
-    /**
-     * Asks if contacts can be read.
-     * @return true if can be read, else false
-     */
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -138,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mUsernameView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                 .setAction(android.R.string.ok, new View.OnClickListener() {
                     @Override
                     @TargetApi(Build.VERSION_CODES.M)
@@ -177,11 +165,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Reset errors.
-        mUsernameView.setError(null);
+        mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String username = mUsernameView.getText().toString();
+        String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -194,14 +182,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        // Check for a valid username.
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError("This password is too short or incorrect");
+            focusView = mEmailView;
             cancel = true;
-        } else if (!isUsernameValid(username)) {
-            mUsernameView.setError("This username is invalid.");
-            focusView = mUsernameView;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
             cancel = true;
         }
 
@@ -213,8 +201,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute();
+            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask.execute((Void) null);
+
+            // lock account if tried too many times
+            if (attempts == 3) {
+                prevAttempt.setCondition(Condition.LOCKED);
+            }
         }
     }
 
@@ -222,6 +215,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void onBackPressed() {
+        //Checks if authentication is running and cancels it, otherwise exits app as in super.
         if (mAuthTask != null) {
             mAuthTask.cancel(true);
         } else {
@@ -230,18 +224,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
-     * Checks validity of usernames.
-     * @param username is username being checked.
-     * @return true if valid, else false.
+     * Checks validity of email.
+     * @param email is email being checked.
+     * @return true if email is valid, else false
      */
-    private boolean isUsernameValid(String username) {
-        return username.length() > 0;
+    private boolean isEmailValid(String email) {
+        return email.contains("@");
     }
 
     /**
-     * Checks validity of passwords.
+     * Checks validity of password.
      * @param password is password being checked.
-     * @return true if valid, else false.
+     * @return true if password is valid, else false
      */
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
@@ -327,13 +321,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             new ArrayAdapter<>(LoginActivity.this,
                     android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mUsernameView.setAdapter(adapter);
+        mEmailView.setAdapter(adapter);
     }
 
 
-    /**
-     * Check for emails in contacts.
-     */
     private interface ProfileQuery {
         String[] PROJECTION = {
             ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -350,26 +341,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mUsername;
+        private final String mEmail;
         private final String mPassword;
 
-        UserLoginTask(String username, String password) {
-            mUsername = username;
+        UserLoginTask(String email, String password) {
+            mEmail = email;
             mPassword = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-            boolean x = db.logInUser(mUsername, mPassword);
-            Log.d("LoginActivity", "" + x);
+            // TODO: attempt authentication against a network service.
 
-            return x;
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+
+            for (User u : UserList.getInstance().getUsers()) {
+                if (u.getEmail().equals(mEmail)) {
+                    // see if tried logging into this user before
+                    if (prevAttempt != null && prevAttempt.equals(u)) {
+                        attempts++;
+                    } else {
+                        prevAttempt = u;
+                        attempts = 0;
+                    }
+
+                    // Account exists, return true if the password matches.
+                    if (u.getPassword().equals(mPassword)) {
+                        // password matches, does the account have access to app?
+                        return u.getCondition().equals(Condition.UNLOCKED);
+                    }
+                }
+            }
+            return false;
         }
 
         @Override
@@ -377,15 +385,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            Intent userIntent = new Intent(LoginActivity.this, UserActivity.class);
+            Intent userIntent;
 
             if (success) {
-                userIntent.putExtra("Username",this.mUsername);
+                if (!prevAttempt.getAdminStatus()) {
+                    //Send email to UserActivity and start UserActivity.
+                    userIntent = new Intent(LoginActivity.this, UserActivity.class);
+                } else {
+                    userIntent = new Intent(LoginActivity.this, AdminActivity.class);
+                }
+                userIntent.putExtra("Email", this.mEmail);
                 startActivity(userIntent);
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                if (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.LOCKED)) {
+                    mPasswordView.setError("This user is banned/locked.");
+                    mPasswordView.requestFocus();
+                } else {
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                }
             }
         }
 
