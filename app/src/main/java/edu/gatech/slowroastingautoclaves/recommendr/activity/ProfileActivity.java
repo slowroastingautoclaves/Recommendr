@@ -31,16 +31,14 @@ public class ProfileActivity extends AppCompatActivity {
 
         TextView usernameView = (TextView) findViewById(R.id.User);
         TextView majorView = (TextView) findViewById(R.id.major);
-        TextView descriptionView = (TextView) findViewById(R.id.description);
+
 
         if (u != null) {
             usernameView.setText(u.getUsername());
             if (u.getMajor() != null) {
                 majorView.setText(u.getMajor());
             }
-            if (u.getDescription() != null) {
-                descriptionView.setText(u.getDescription());
-            }
+
         }
 
         //Get buttons.
@@ -69,10 +67,8 @@ public class ProfileActivity extends AppCompatActivity {
      */
     private void editProfile() {
         TextView majorView = (TextView) findViewById(R.id.major);
-        TextView descriptionView = (TextView) findViewById(R.id.description);
         User u = UserList.getInstance().findUserByEmail(this.email);
         u.setMajor(majorView.getText().toString());
-        u.setDescription(descriptionView.getText().toString());
 
         //Display alert to user that profile has been updated successfully.
         Context context = getApplicationContext();
