@@ -2,7 +2,7 @@ package edu.gatech.slowroastingautoclaves.recommendr.model;
 
 import java.io.Serializable;
 
-import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
+//import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
@@ -44,7 +44,8 @@ public class Movie implements Serializable, Comparable<Movie> {
      * @return
      */
     public String getUserRating() {
-        return RatingList.getInstance().getRating(this.toString());
+       // return RatingList.getInstance().getRating(this.toString());
+        return null;
     }
 
     /**

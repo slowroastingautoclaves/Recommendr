@@ -234,6 +234,14 @@ public class DatabaseComs implements Executor, MovieInterface, UserInterface{
 
     @Override
     public void addMovie(Movie m) {
+        start();
+
+        String updateS = String. format("INSERT INTO RatedMovies"
+        + " VALUES (%s);", m.getTitle());
+
+        db.sendUpdate(updateS);
+        dbConnect();
+        closeDBComs();
 
     }
 
