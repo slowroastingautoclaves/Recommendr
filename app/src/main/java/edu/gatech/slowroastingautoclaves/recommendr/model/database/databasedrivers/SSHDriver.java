@@ -41,7 +41,7 @@ public class SSHDriver implements Runnable{
             int assinged_port = session.setPortForwardingL(lport, rhost, rport);
             Log.i("SSHDriver", "localhost:" + assinged_port + " -> " + rhost + ":" + rport + session.isConnected());
         } catch (Exception e) {
-            Log.e("SSHDriver", "Could not open tunnel: " + e.getMessage());
+            //Log.e("SSHDriver", "Could not open tunnel: " + e.getMessage());
         }
     }
 

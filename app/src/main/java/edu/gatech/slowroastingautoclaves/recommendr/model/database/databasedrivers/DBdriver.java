@@ -29,7 +29,8 @@ public class DBdriver implements Runnable {
      * Creates a driver to for connections to database
      */
     public void connectDBdriver(int opt){
-        Log.i("DBdriver", "Creating Driver");
+//        Log.i("DBdriver", "Creating Driver");
+        System.out.println("Hello");
         con = null;
         try {
 
@@ -37,9 +38,9 @@ public class DBdriver implements Runnable {
             con = DriverManager.getConnection("jdbc:mysql://localhost/recommendr",
                     DBNAME,
                     PASSWORD);
-            Log.i("DBdriver", "Hello");
+            //Log.i("DBdriver", "Hello");
             if(!con.isClosed()) {
-                Log.i("DBdriver", "Successfully connected to MySQL server using TCP/IP...");
+                //Log.i("DBdriver", "Successfully connected to MySQL server using TCP/IP...");
 
             }
 
@@ -66,8 +67,9 @@ public class DBdriver implements Runnable {
 
 
         } catch (Exception e) {
-            Log.e("DBdriver", "Error thrown while connecting or during quarry" + e.getMessage()
-                    + Log.getStackTraceString(new Exception()));
+            //Log.e("DBdriver", "Error thrown while connecting or during quarry" + e.getMessage()
+           //         + Log.getStackTraceString(new Exception()));
+            e.printStackTrace();
         }
     }
 
@@ -94,21 +96,26 @@ public class DBdriver implements Runnable {
         try{
             con.close();
             if(con.isClosed()) {
-                Log.i("DBdriver", "Connection successfully closed.");
+                //Log.i("DBdriver", "Connection successfully closed.");
+                System.out.println("closed");
             }
             else {
-                Log.e("DBdriver", "Failed to close connection.");
+               // Log.e("DBdriver", "Failed to close connection.");
+                System.out.println("not closed");
             }
         } catch(Exception e) {
             System.err.println("Exception while closing connection: ");
-            Log.e("DBdriver", e.getMessage());
+//            Log.e("DBdriver", e.getMessage());
+            e.printStackTrace();
         }
     }
     public void commit(){
         try {
             con.commit();
         } catch (Exception e) {
-            Log.e("DBDriver", e.getMessage());
+            //Log.e("DBDriver", e.getMessage());
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
     public boolean isConnected(){
