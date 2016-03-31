@@ -5,7 +5,6 @@ import android.util.Log;
 import java.sql.ResultSet;
 import java.util.concurrent.Executor;
 
-import edu.gatech.slowroastingautoclaves.recommendr.model.RInfo;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrivers.DBdriver;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrivers.SSHDriver;
 
@@ -15,7 +14,7 @@ import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrive
  * Uses DBdriver class and SSHDriver class to facilitate connections to the Database and
  * querries to the database.
  */
-public class DatabaseComs implements Executor, RInfo{
+public class DatabaseComs implements Executor{
     Thread thread;
     /**
      * Driver to connect to database.
