@@ -235,6 +235,11 @@ public class DatabaseComs implements Executor, MovieInterface, UserInterface{
     public void execute(Runnable command) {
         thread = new Thread(command);
         thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
