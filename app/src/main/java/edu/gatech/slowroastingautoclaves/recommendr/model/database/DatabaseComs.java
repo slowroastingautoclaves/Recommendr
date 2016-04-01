@@ -216,7 +216,7 @@ public class DatabaseComs implements Executor, MovieInterface, UserInterface{
     public boolean updateProfile(String userName, String major){
         db.setQuery(String.format("UPDATE profile " +
                 "SET major = '%s' " +
-                "WHERE UName = '%s';", major,userName), 1);
+                "WHERE UName = '%s';", major, userName), 1);
         dbConnect();
         //results = db.sendUpdate();
         closeDBComs();
@@ -239,7 +239,49 @@ public class DatabaseComs implements Executor, MovieInterface, UserInterface{
 
     @Override
     public List<User> getUsers() {
-        return null;
+        start();
+        String querryS = String.format("SELECT * FROM ((SELECT ev.UName, ev.Email, " +
+                "ev.password, ev.major, pen.type FROM((SELECT peep.UName, peep.Email, " +
+                "peep.Password, p.major FROM (SELECT * FROM users) as peep LEFT JOIN profile as " +
+                "p ON p.UName = peep.UName) as ev LEFT JOIN penalties as pen ON pen.UName = " +
+                "ev.UName)) UNION (SELECT UName, Email, pass as password, null as major, 'A' as " +
+                "type FROM ADMINS)) as big;");
+        db.setQuery(querryS,0);
+        dbConnect();
+        ResultSet results = db.getResultSet();
+        User toAdd = null;
+        String uName;
+        String email;
+        String psswrd;
+        String major;
+        Boolean isAdmin = false;
+        Condition con = Condition.UNLOCKED;
+        ArrayList<User> toReturn = new ArrayList<>();
+        try {
+            while(results.next()) {
+                uName = results.getString(1);
+                email = results.getString(2);
+                psswrd = results.getString(3);
+                major = results.getString(4);
+                String penalties = results.getString(5);
+                //System.out.println(uName + " " + email + " " + psswrd + " " + major + " " +penalties);
+                if(penalties == null) {
+                    con = Condition.UNLOCKED;
+                } else if (penalties.equals("A")){
+                    isAdmin = true;
+                    con = Condition.UNLOCKED;
+                } else if(penalties.equals("L")){
+                    con = Condition.LOCKED;
+                } else {
+                    con = Condition.BANNED;
+                }
+                toAdd= new User(uName,email,psswrd,con, isAdmin);
+                toReturn.add(toAdd);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
     }
 
     @Override
