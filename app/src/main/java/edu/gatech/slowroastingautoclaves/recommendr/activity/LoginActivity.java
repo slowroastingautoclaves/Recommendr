@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mUsernameView;
+    private EditText mUsernameView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
+        mUsernameView = (EditText) findViewById(R.id.username);
         populateAutoComplete();
 
                 mPasswordView = (EditText) findViewById(R.id.password);
@@ -191,7 +191,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mUsernameView.setError("This password is too short or incorrect");
             focusView = mUsernameView;
             cancel = true;
-        } else if (!isEmailValid(username)) {
+        } else if (!isUsernameValid(username)) {
             mUsernameView.setError(getString(R.string.error_invalid_email));
             focusView = mUsernameView;
             cancel = true;
@@ -230,11 +230,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * Checks validity of email.
-     * @param email is email being checked.
+     * @param username is email being checked.
      * @return true if email is valid, else false
      */
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
+    private boolean isUsernameValid(String username) {
+        return username.length() > 0;
     }
 
     /**
@@ -326,7 +326,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             new ArrayAdapter<>(LoginActivity.this,
                     android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mUsernameView.setAdapter(adapter);
+        //mUsernameView.setAdapter(adapter);
     }
 
 

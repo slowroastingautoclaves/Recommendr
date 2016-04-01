@@ -26,9 +26,9 @@ public class UserList {
         if (ourInstance == null) {
             ourInstance = new UserList();
             // make dummy users
-            ourInstance.addUser(new User("Foo", "foo@example.com", "hello"));
-            ourInstance.addUser(new User("admin", "user@admin.com", "12345", Condition.UNLOCKED, true));
-            ourInstance.addUser(new User("bad", "user@ban.com","12345", Condition.BANNED, false));
+            //ourInstance.addUser(new User("Foo", "foo@example.com", "hello"));
+            //ourInstance.addUser(new User("admin", "user@admin.com", "12345", Condition.UNLOCKED, true));
+            //ourInstance.addUser(new User("bad", "user@ban.com","12345", Condition.BANNED, false));
         }
         return ourInstance;
     }

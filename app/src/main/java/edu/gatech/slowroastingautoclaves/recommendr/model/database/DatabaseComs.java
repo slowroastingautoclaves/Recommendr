@@ -53,12 +53,12 @@ public class DatabaseComs implements Executor, MovieInterface, UserInterface{
     /**
      * Connects to server hosting database.
      */
-    public void start(){
+    public void start() {
         if (sshTunnel == null){
             sshTunnel = new SSHDriver();
             execute(sshTunnel);
 
-        }else if (!sshTunnel.isConnected()) {
+        } else if (!sshTunnel.isConnected()) {
             execute(sshTunnel);
         }
     }

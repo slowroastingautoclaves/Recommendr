@@ -36,12 +36,12 @@ public class SSHDriver implements Runnable{
             rport = 3306;
             session.setPassword("slowroasting");
             session.setConfig("StrictHostKeyChecking", "no");
-            //Log.d("SSHDriver", "Establishing server Connection...");
+            Log.d("SSHDriver", "Establishing server Connection...");
             session.connect();
             int assinged_port = session.setPortForwardingL(lport, rhost, rport);
-            //Log.i("SSHDriver", "localhost:" + assinged_port + " -> " + rhost + ":" + rport + session.isConnected());
+            Log.i("SSHDriver", "localhost:" + assinged_port + " -> " + rhost + ":" + rport + session.isConnected());
         } catch (Exception e) {
-            //Log.e("SSHDriver", "Could not open tunnel: " + e.getMessage());
+            Log.e("SSHDriver", "Could not open tunnel: " + e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class SSHDriver implements Runnable{
      */
         public static void closeSSHConnection() {
             if (session != null && session.isConnected()) {
-               // Log.i("SSHDriver","Closing SSH Connection");
+                Log.i("SSHDriver","Closing SSH Connection");
                 session.disconnect();
             }
         }
