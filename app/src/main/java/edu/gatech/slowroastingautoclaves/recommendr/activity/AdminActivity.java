@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
@@ -30,8 +32,11 @@ public class AdminActivity extends Activity{
     private String email;
     private ArrayList<User> users;
 
+    private DatabaseComs presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        presenter = new DatabaseComs();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_profile);
         this.users = new ArrayList<>();
@@ -60,8 +65,7 @@ public class AdminActivity extends Activity{
      */
     private void populateListView() {
         // create list of items
-
-        for (User u : UserList.getInstance().getUsers()) {
+        for (User u : presenter.getUsers()) {
             Log.i("PLS", u.getEmail());
             if (!u.getEmail().equals(email)) {
                 users.add(u);
@@ -119,10 +123,13 @@ public class AdminActivity extends Activity{
                         final User u = users.get(pos);
                         if (checkedId == R.id.radio) {
                             u.setCondition(Condition.UNLOCKED);
+                            presenter.unlock(u.getUsername());
                         } else if (checkedId == R.id.radio2) {
                             u.setCondition(Condition.LOCKED);
+                            presenter.lock(u.getUsername());
                         } else if (checkedId == R.id.radio3) {
                             u.setCondition(Condition.BANNED);
+                            presenter.ban(u.getUsername());
                         }
                     }
                 });

@@ -45,7 +45,7 @@ public class SearchMovieActivity extends AppCompatActivity {
     private Button mTopMoviesButton;
     private Button mTopMoviesMajorButton;
     private ImageButton mMovieSearchButton;
-    private String email;
+    private String username;
 
 
     @Override
@@ -53,7 +53,7 @@ public class SearchMovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        this.email = intent.getStringExtra("Email");
+        this.username = intent.getStringExtra("Username");
 
         setContentView(R.layout.activity_search_movie);
         queue = Volley.newRequestQueue(this);
@@ -174,7 +174,7 @@ public class SearchMovieActivity extends AppCompatActivity {
     public void changeView(ArrayList<Movie> movies) {
         Intent viewResultsIntent = new Intent(this, MovieListActivity.class);
         viewResultsIntent.putExtra("movies", movies);
-        viewResultsIntent.putExtra("Email", SearchMovieActivity.this.email);
+        viewResultsIntent.putExtra("Username", SearchMovieActivity.this.username);
         startActivity(viewResultsIntent);
         finish();
     }
@@ -183,7 +183,7 @@ public class SearchMovieActivity extends AppCompatActivity {
     public void onBackPressed() {
         //Go back to UserActivity instead of closing app.
         Intent userIntent = new Intent(this, UserActivity.class);
-        userIntent.putExtra("Email", SearchMovieActivity.this.email);
+        userIntent.putExtra("Username", SearchMovieActivity.this.username);
         startActivity(userIntent);
         finish();
     }

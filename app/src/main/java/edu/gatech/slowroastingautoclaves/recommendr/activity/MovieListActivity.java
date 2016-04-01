@@ -43,7 +43,7 @@ public class MovieListActivity extends AppCompatActivity {
      */
     private List<Movie> movies;
 
-    private String email;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class MovieListActivity extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        email = intent.getStringExtra("Email");
+        username = intent.getStringExtra("Username");
 
         movies = (List<Movie>) getIntent().getSerializableExtra("movies");
         for (Movie s : movies) {
@@ -86,7 +86,7 @@ public class MovieListActivity extends AppCompatActivity {
         //Go back to SearchMovieActivity instead of closing app.
         Movies.clear();
         Intent searchIntent = new Intent(MovieListActivity.this, SearchMovieActivity.class);
-        searchIntent.putExtra("Email", MovieListActivity.this.email);
+        searchIntent.putExtra("Username", MovieListActivity.this.username);
         startActivity(searchIntent);
         finish();
     }
@@ -154,7 +154,7 @@ public class MovieListActivity extends AppCompatActivity {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, MovieDetailActivity.class);
                         intent.putExtra(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.toString());
-                        intent.putExtra("Email", MovieListActivity.this.email);
+                        intent.putExtra("Username", MovieListActivity.this.username);
                         intent.putExtra("Movie", holder.mItem.toString());
 
                         context.startActivity(intent);

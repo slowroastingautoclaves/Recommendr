@@ -238,6 +238,11 @@ public class DatabaseComs implements Executor, MovieInterface, UserInterface{
     }
 
     @Override
+    public List<User> getUsers() {
+        return null;
+    }
+
+    @Override
     public Movie getMovie(String identifier) {
         Pattern p;
         p = Pattern.compile("(.+)(?:[ ][\\(])([0-9]+)");

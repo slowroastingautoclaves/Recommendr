@@ -1,11 +1,18 @@
 package edu.gatech.slowroastingautoclaves.recommendr.presenter;
 
+import java.util.List;
+
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 
 /**
  * Created by daernwyn on 3/28/16.
  */
 public interface UserInterface {
+    /**
+     * Gets list of all Users.
+     * @return a List of Users (implement as ArrayList).
+     */
+    List<User> getUsers();
     /**
      * Gets user given identifier.
      * @param identifier is email of user to retrieve.

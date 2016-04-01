@@ -2,6 +2,7 @@ package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -9,23 +10,27 @@ import android.widget.TextView;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
  * A profile screen that allows users to view their profile, e.g. change their major.
  */
 public class ViewProfileActivity extends AppCompatActivity {
-    private String email;
+    private String username;
+
+    private DatabaseComs presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        presenter = new DatabaseComs();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile2);
 
         Intent intent = getIntent();
-        this.email = intent.getStringExtra("Email");
+        this.username = intent.getStringExtra("Username");
 
-        User u = UserList.getInstance().findUserByEmail(this.email);
+        User u = presenter.getUser(this.username);
         TextView usernameView = (TextView) findViewById(R.id.User);
         TextView textView11 = (TextView) findViewById(R.id.textView11);
         TextView textView12 = (TextView) findViewById(R.id.textView12);
@@ -53,7 +58,7 @@ public class ViewProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent userIntent = new Intent(ViewProfileActivity.this, UserActivity.class);
-                userIntent.putExtra("Email", ViewProfileActivity.this.email);
+                userIntent.putExtra("Username", ViewProfileActivity.this.username);
                 startActivity(userIntent);
                 finish();
             }

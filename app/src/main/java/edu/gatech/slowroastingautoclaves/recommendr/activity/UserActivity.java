@@ -1,6 +1,7 @@
 package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,30 +11,29 @@ import android.widget.TextView;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
  * Screen that allows user to access user functions, e.g. editing profile.
  */
 public class UserActivity extends AppCompatActivity {
-    private String email;
+    private String username;
     private User user;
+    private DatabaseComs presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        presenter = new DatabaseComs();
         //Get buttons and text fields.
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
         Intent intent = getIntent();
-        this.email = intent.getStringExtra("Email");
+        this.username = intent.getStringExtra("Username");
 
-        for (User u: UserList.getInstance().getUsers()) {
-            if (u.getEmail().equals(email)) {
-                user = u;
-            }
-        }
+        user = presenter.getUser(username);
 
         populateListView();
 
@@ -58,7 +58,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent userIntent = new Intent(UserActivity.this, ViewProfileActivity.class);
-                userIntent.putExtra("Email", UserActivity.this.email);
+                userIntent.putExtra("Username", UserActivity.this.username);
                 startActivity(userIntent);
                 finish();
             }
@@ -70,7 +70,7 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Send email to ProfileActivity and start ProfileActivity.
                 Intent profileIntent = new Intent(UserActivity.this, ProfileActivity.class);
-                profileIntent.putExtra("Email", UserActivity.this.email);
+                profileIntent.putExtra("Username", UserActivity.this.username);
                 startActivity(profileIntent);
                 finish();
             }
@@ -81,7 +81,7 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent searchIntent = new Intent(UserActivity.this, SearchMovieActivity.class);
-                searchIntent.putExtra("Email", UserActivity.this.email);
+                searchIntent.putExtra("Username", UserActivity.this.username);
                 startActivity(searchIntent);
                 finish();
             }
@@ -89,6 +89,5 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-
     }
 }

@@ -2,6 +2,7 @@ package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,23 +12,26 @@ import android.widget.Toast;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
  * A profile screen that allows users to edit their profile, e.g. change their major.
  */
 public class ProfileActivity extends AppCompatActivity {
-    private String email;
+    private String username;
+    private DatabaseComs presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        presenter = new DatabaseComs();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
         Intent intent = getIntent();
-        this.email = intent.getStringExtra("Email");
+        this.username = intent.getStringExtra("Username");
 
-        User u = UserList.getInstance().findUserByEmail(this.email);
+        User u = presenter.getUser(this.username);
 
         TextView usernameView = (TextView) findViewById(R.id.User);
         TextView majorView = (TextView) findViewById(R.id.major);
@@ -55,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent userIntent = new Intent(ProfileActivity.this, UserActivity.class);
-                userIntent.putExtra("Email", ProfileActivity.this.email);
+                userIntent.putExtra("Username", ProfileActivity.this.username);
                 startActivity(userIntent);
                 finish();
             }
@@ -67,8 +71,9 @@ public class ProfileActivity extends AppCompatActivity {
      */
     private void editProfile() {
         TextView majorView = (TextView) findViewById(R.id.major);
-        User u = UserList.getInstance().findUserByEmail(this.email);
+        User u = presenter.getUser(this.username);
         u.setMajor(majorView.getText().toString());
+        presenter.updateProfile(u.getUsername(), u.getMajor());
 
         //Display alert to user that profile has been updated successfully.
         Context context = getApplicationContext();

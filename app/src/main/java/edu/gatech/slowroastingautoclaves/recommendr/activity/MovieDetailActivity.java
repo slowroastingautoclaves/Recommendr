@@ -27,6 +27,7 @@ import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Movies;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Rating;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 import edu.gatech.slowroastingautoclaves.recommendr.presenter.MovieDetailFragment;
@@ -43,8 +44,11 @@ public class MovieDetailActivity extends AppCompatActivity {
     private Movie movie;
     private User user;
 
+    private DatabaseComs presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        presenter = new DatabaseComs();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
@@ -53,8 +57,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String email = intent.getStringExtra("Email");
-        user = UserList.getInstance().findUserByEmail(email);
+        String username = intent.getStringExtra("Username");
+        user = presenter.getUser(username);
 
 
         // Do NOT show the Up button in the action bar.
@@ -131,15 +135,14 @@ public class MovieDetailActivity extends AppCompatActivity {
                                    rateValue = Double.parseDouble(input.getText().toString());
                                }
                                Rating currentRate = new Rating(MovieDetailActivity.this.identifier, MovieDetailActivity.this.user, rateValue);
-                               if (!RatingList.getInstance().getRatings().contains(currentRate)) {
-                                   RatingList.getInstance().addRating(currentRate);
-                                   RatingList.getInstance().addMovie(MovieDetailActivity.this.movie);
+                               if (!presenter.getMovieRating(identifier).equals("")) {
+                                   presenter.addRating(currentRate);
+                                   presenter.addMovie(MovieDetailActivity.this.movie);
                                    MovieDetailActivity.this.user.addRating(currentRate);
                                } else {
-                                   RatingList.getInstance().removeRating(currentRate);
+                                   presenter.removeRating(currentRate);
                                    MovieDetailActivity.this.user.removeRating(currentRate);
-                                   RatingList.getInstance().addRating(currentRate);
-                                   RatingList.getInstance().addMovie(MovieDetailActivity.this.movie);
+                                   presenter.addRating(currentRate);
                                    MovieDetailActivity.this.user.addRating(currentRate);
                                }
                                dialog.dismiss();

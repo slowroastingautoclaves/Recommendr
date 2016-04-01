@@ -2,6 +2,7 @@ package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 //import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
@@ -24,8 +26,11 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView mEmailView;
     private TextView mPasswordView;
 
+    private DatabaseComs presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        presenter = new DatabaseComs();
         //Get buttons and text fields.
 
         super.onCreate(savedInstanceState);
@@ -149,8 +154,8 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             // Show a Toast to alert user that a new user profile was created (or not).
             if (isEmailValid(email) && isPasswordValid(password) && isUsernameValid(username)) {
-                if (!UserList.getInstance().getUsers().contains(currentUser)) {
-                    UserList.getInstance().addUser(currentUser);
+                if (! (presenter.getUser(username) == null)) {
+                    presenter.addUser(currentUser);
                     Context context = getApplicationContext();
                     CharSequence text = "New user created.";
                     int duration = Toast.LENGTH_SHORT;

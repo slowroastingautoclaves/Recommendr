@@ -38,7 +38,8 @@ import edu.gatech.slowroastingautoclaves.recommendr.R;
 //import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
-import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.DatabaseComs;
+//import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -58,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -67,6 +68,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private short attempts;
     private User prevAttempt;
 
+    private DatabaseComs presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Get buttons and text fields.
@@ -74,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
 
                 mPasswordView = (EditText) findViewById(R.id.password);
@@ -108,6 +111,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        this.presenter = new DatabaseComs();
     }
 
     private void populateAutoComplete() {
@@ -126,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(mUsernameView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                 .setAction(android.R.string.ok, new View.OnClickListener() {
                     @Override
                     @TargetApi(Build.VERSION_CODES.M)
@@ -165,11 +169,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Reset errors.
-        mEmailView.setError(null);
+        mUsernameView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+        String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -183,13 +187,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError("This password is too short or incorrect");
-            focusView = mEmailView;
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError("This password is too short or incorrect");
+            focusView = mUsernameView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        } else if (!isEmailValid(username)) {
+            mUsernameView.setError(getString(R.string.error_invalid_email));
+            focusView = mUsernameView;
             cancel = true;
         }
 
@@ -201,12 +205,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);
 
             // lock account if tried too many times
             if (attempts == 3) {
                 prevAttempt.setCondition(Condition.LOCKED);
+                presenter.lock(prevAttempt.getUsername());
             }
         }
     }
@@ -321,7 +326,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             new ArrayAdapter<>(LoginActivity.this,
                     android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        mUsernameView.setAdapter(adapter);
     }
 
 
@@ -341,11 +346,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mUsername;
         private final String mPassword;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
+        UserLoginTask(String username, String password) {
+            mUsername = username;
             mPassword = password;
         }
 
@@ -360,8 +365,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            for (User u : UserList.getInstance().getUsers()) {
-                if (u.getEmail().equals(mEmail)) {
+            User u = presenter.getUser(mUsername);
+
+                if (u != null && u.getUsername().equals(mUsername)) {
                     // see if tried logging into this user before
                     if (prevAttempt != null && prevAttempt.equals(u)) {
                         attempts++;
@@ -376,7 +382,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         return u.getCondition().equals(Condition.UNLOCKED);
                     }
                 }
-            }
             return false;
         }
 
@@ -394,11 +399,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 } else {
                     userIntent = new Intent(LoginActivity.this, AdminActivity.class);
                 }
-                userIntent.putExtra("Email", this.mEmail);
+                userIntent.putExtra("Username", this.mUsername);
                 startActivity(userIntent);
                 finish();
             } else {
-                if (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.LOCKED)) {
+                if (presenter.getUser(this.mUsername).getCondition().equals(Condition.BANNED) || presenter.getUser(this.mUsername).getCondition().equals(Condition.LOCKED)) {
                     mPasswordView.setError("This user is banned/locked.");
                     mPasswordView.requestFocus();
                 } else {
