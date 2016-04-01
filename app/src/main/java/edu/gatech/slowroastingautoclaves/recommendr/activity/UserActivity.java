@@ -52,6 +52,8 @@ public class UserActivity extends AppCompatActivity {
         mPlaceholderDone.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                RatingList.getInstance().saveRatings(new File(UserActivity.this.getFilesDir(), RatingList.RATINGS), new File(UserActivity.this.getFilesDir(), RatingList.MOVIES));
+                UserList.getInstance().saveUsers(new File(UserActivity.this.getFilesDir(), UserList.USERS));
                 Intent userIntent = new Intent(UserActivity.this, LoginActivity.class);
                 startActivity(userIntent);
                 finish();
@@ -99,6 +101,7 @@ public class UserActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         RatingList.getInstance().saveRatings(new File(this.getFilesDir(), RatingList.RATINGS), new File(this.getFilesDir(), RatingList.MOVIES));
+        UserList.getInstance().saveUsers(new File(this.getFilesDir(), UserList.USERS));
         super.onBackPressed();
     }
 }

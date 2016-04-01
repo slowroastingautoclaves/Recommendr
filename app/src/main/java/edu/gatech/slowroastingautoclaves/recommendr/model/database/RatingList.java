@@ -44,6 +44,12 @@ public class RatingList {
 
 
     public ArrayList<Rating> getRatings() {
+        if (this.ratings == null) {
+            this.ratings = new ArrayList<Rating>();
+        }
+        if (this.movies == null) {
+            this.movies = new HashSet<Movie>();
+        }
         return this.ratings;
     }
 
@@ -52,10 +58,22 @@ public class RatingList {
      * @param m is rating to be added.
      */
     public void addRating(Rating m) {
+        if (this.ratings == null) {
+            this.ratings = new ArrayList<Rating>();
+        }
+        if (this.movies == null) {
+            this.movies = new HashSet<Movie>();
+        }
         this.ratings.add(m);
     }
 
     public void addMovie(Movie m) {
+        if (this.ratings == null) {
+            this.ratings = new ArrayList<Rating>();
+        }
+        if (this.movies == null) {
+            this.movies = new HashSet<Movie>();
+        }
         this.movies.add(m);
     }
 
@@ -73,6 +91,12 @@ public class RatingList {
      * @return the average rating
      */
     public String getRating(String identifier) {
+        if (this.ratings == null) {
+            this.ratings = new ArrayList<Rating>();
+        }
+        if (this.movies == null) {
+            this.movies = new HashSet<Movie>();
+        }
         double rating = 0;
         int counter = 0;
         for (Rating r : this.getInstance().getRatings()) {
@@ -91,6 +115,12 @@ public class RatingList {
      * @return the average rating
      */
     public String getRatingByMajor(String identifier, String major) {
+        if (this.ratings == null) {
+            this.ratings = new ArrayList<Rating>();
+        }
+        if (this.movies == null) {
+            this.movies = new HashSet<Movie>();
+        }
         double rating = 0;
         int counter = 0;
         for (Rating r : this.ratings) {
@@ -109,6 +139,12 @@ public class RatingList {
      * @return an ArrayList<Movie> that is sorted by ratings
      */
     public ArrayList<Movie> getTopMovies(String filter, String parameter) {
+        if (this.ratings == null) {
+            this.ratings = new ArrayList<Rating>();
+        }
+        if (this.movies == null) {
+            this.movies = new HashSet<Movie>();
+        }
         if (filter.equals("null")) {
             ArrayList<Movie> out = new ArrayList<>();
             for (Movie m : this.movies) {

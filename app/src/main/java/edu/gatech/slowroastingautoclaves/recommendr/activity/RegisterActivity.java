@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 //import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
@@ -59,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
         mDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                UserList.getInstance().saveUsers(new File(RegisterActivity.this.getFilesDir(), UserList.USERS));
                 Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
                 finish();
@@ -149,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             // Show a Toast to alert user that a new user profile was created (or not).
             if (isEmailValid(email) && isPasswordValid(password) && isUsernameValid(username)) {
-                if (!UserList.getInstance().getUsers().contains(currentUser)) {
+                if (UserList.getInstance().getUsers() == null || !UserList.getInstance().getUsers().contains(currentUser)) {
                     UserList.getInstance().addUser(currentUser);
                     Context context = getApplicationContext();
                     CharSequence text = "New user created.";

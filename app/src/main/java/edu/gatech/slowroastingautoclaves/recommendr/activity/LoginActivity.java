@@ -402,7 +402,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(userIntent);
                 finish();
             } else {
-                if (UserList.getInstance().getUsers() != null && UserList.getInstance().getUsers().size() > 0 && (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.LOCKED))) {
+                if (UserList.getInstance().getUsers() != null && UserList.getInstance().getUsers().size() > 0 && UserList.getInstance().findUserByEmail(this.mEmail) == null) {
+                    mPasswordView.setError("This user does not exist.");
+                    mPasswordView.requestFocus();
+                } else if (UserList.getInstance().getUsers() != null && UserList.getInstance().getUsers().size() > 0 && (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.LOCKED))) {
                     mPasswordView.setError("This user is banned/locked.");
                     mPasswordView.requestFocus();
                 } else {

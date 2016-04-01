@@ -46,6 +46,9 @@ public class UserList {
     }
 
     public ArrayList<User> getUsers() {
+        if (this.users == null) {
+            this.users = new ArrayList<User>();
+        }
         return this.users;
     }
 
@@ -54,6 +57,9 @@ public class UserList {
      * @param u is user to be added.
      */
     public void addUser(User u) {
+        if (this.users == null) {
+            this.users = new ArrayList<User>();
+        }
         this.users.add(u);
     }
 
@@ -71,6 +77,9 @@ public class UserList {
      * @return the user with matching email address.
      */
     public User findUserByEmail(String email) {
+        if (this.users == null) {
+            this.users = new ArrayList<User>();
+        }
         for (User u : this.users) {
             if (u.getEmail().equals(email)) {
                 return u;
