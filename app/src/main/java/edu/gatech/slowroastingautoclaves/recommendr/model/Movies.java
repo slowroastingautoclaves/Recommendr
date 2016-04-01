@@ -1,5 +1,6 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Map;
 /**
  * Represents a monostate List of Movie objects.
  */
-public class Movies {
+public class Movies implements Serializable {
     /**
      * List of Movie objects.
      */

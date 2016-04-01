@@ -1,11 +1,12 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Represents a user that has a username, an email, a password, and a condition.
  */
-public class User {
+public class User implements Serializable {
     private String username, email, password, major, description;
     private Condition condition;
     private boolean adminStatus;

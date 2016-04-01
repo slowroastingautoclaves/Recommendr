@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import java.io.File;
+
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
+import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
 /**
@@ -34,6 +37,8 @@ public class UserActivity extends AppCompatActivity {
                 user = u;
             }
         }
+
+        RatingList.getInstance().loadRatings(new File(this.getFilesDir(), RatingList.RATINGS), new File(this.getFilesDir(), RatingList.MOVIES));
 
         populateListView();
 
@@ -89,6 +94,11 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
+    }
 
+    @Override
+    public void onBackPressed() {
+        RatingList.getInstance().saveRatings(new File(this.getFilesDir(), RatingList.RATINGS), new File(this.getFilesDir(), RatingList.MOVIES));
+        super.onBackPressed();
     }
 }

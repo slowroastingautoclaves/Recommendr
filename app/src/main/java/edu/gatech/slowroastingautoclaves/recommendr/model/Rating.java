@@ -1,9 +1,11 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model;
 
+import java.io.Serializable;
+
 /**
  * Represents a rating for a movie that tracks the user and major that made the rating.
  */
-public class Rating {
+public class Rating implements Serializable {
     private String identifier;
     private User user;
     private double rating;

@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +109,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        UserList.getInstance().loadUsers(new File(this.getFilesDir(), UserList.USERS));
     }
 
     private void populateAutoComplete() {
@@ -219,6 +222,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (mAuthTask != null) {
             mAuthTask.cancel(true);
         } else {
+            UserList.getInstance().saveUsers(new File(this.getFilesDir(), UserList.USERS));
             super.onBackPressed();
         }
     }
@@ -398,7 +402,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(userIntent);
                 finish();
             } else {
-                if (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.LOCKED)) {
+                if (UserList.getInstance().getUsers() != null && UserList.getInstance().getUsers().size() > 0 && (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.LOCKED))) {
                     mPasswordView.setError("This user is banned/locked.");
                     mPasswordView.requestFocus();
                 } else {
