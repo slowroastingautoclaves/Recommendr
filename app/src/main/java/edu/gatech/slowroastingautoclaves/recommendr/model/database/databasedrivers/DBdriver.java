@@ -51,14 +51,14 @@ public class DBdriver implements Runnable {
                     resultSet = sendQuery(query);
                 }
             } catch (Exception e){
-
+                e.printStackTrace();
             }
             try{
                 if (opt == 1) {
                     result = sendUpdate(query);
                 }
             } catch (Exception e){
-
+                e.printStackTrace();
             }
 
 
@@ -143,7 +143,7 @@ public class DBdriver implements Runnable {
         try{
             Statement st = con.createStatement();
             results = st.executeQuery(query);
-        } catch(Exception e) {
+        } catch(SQLException e) {
             Log.e("DBdriver", "Exception while executing Query: " + Log.getStackTraceString(new Exception()));
             results = null;
         }
@@ -160,7 +160,7 @@ public class DBdriver implements Runnable {
         try{
             Statement st = con.createStatement();
             results = st.executeUpdate(query);
-        } catch(Exception e) {
+        } catch(SQLException e) {
             e.printStackTrace();
             Log.e("DBdriver", "Exception while executing Query: " + Log.getStackTraceString(new Exception()));
             results = -1;

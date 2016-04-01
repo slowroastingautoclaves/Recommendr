@@ -35,8 +35,9 @@ public class Movie implements Serializable, Comparable<Movie> {
     public void setRating(String rating) {
         if (rating.length() > 0) {
             this.rating = "Rating: " + rating;
+        } else {
+            this.rating = "No rating found.";
         }
-        this.rating = "No rating found.";
     }
 
     /**

@@ -1,12 +1,19 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model.database;
 
+import android.content.pm.ResolveInfo;
 import android.util.Log;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Movies;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Rating;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.presenter.MovieInterface;
@@ -15,6 +22,9 @@ import edu.gatech.slowroastingautoclaves.recommendr.presenter.UserInterface;
 
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrivers.DBdriver;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.databasedrivers.SSHDriver;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Joshua Jibilian on 2/14/2016.
@@ -229,7 +239,38 @@ public class DatabaseComs implements Executor, MovieInterface, UserInterface{
 
     @Override
     public Movie getMovie(String identifier) {
-        return null;
+        Pattern p;
+        p = Pattern.compile("(.+)(?:[ ][\\(])([0-9]+)");
+        Matcher m = p.matcher(identifier);
+        m.find();
+        String movie = m.group(1);
+        String year = m.group(2);
+
+        Movie toReturn = new Movie();
+
+        String querryS = String.format("SELECT description, " +
+                "(SELECT AVG(rating) FROM MovieRatings " +
+                "WHERE Movie = '%s' " +
+                "and MovieYear = '%s') as rating " +
+                "FROM RatedMovies WHERE Movie = '%s' " +
+                "and MovieYear = '%s';", movie, year, movie, year);
+
+        db.setQuery(querryS, 0);
+        dbConnect();
+
+        ResultSet results = db.getResultSet();
+        try {
+            if(results.next()){
+                toReturn.setYear(year);
+                toReturn.setTitle(movie);
+                toReturn.setDescription(results.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeDBComs();
+
+        return toReturn;
     }
 
     @Override
@@ -237,72 +278,219 @@ public class DatabaseComs implements Executor, MovieInterface, UserInterface{
         start();
 
         String updateS = String. format("INSERT INTO RatedMovies"
-        + " VALUES ('%s');", m.getTitle());
+                + " VALUES ('%s', '%s');", m.getTitle(), m.getYear());
         db.setQuery(updateS, 1);
         dbConnect();
 
-        closeDBComs();
+        closeAll();
 
     }
 
     @Override
     public void addRating(Rating r) {
         start();
-        String updateS = String.format("INSERT INTO MovieRatings ('%s', '%s',%d );", r.getIdentifier(),
-                    r.getUser(), r.getRating());
+
+        String updateS = String.format("INSERT INTO MovieRatings VALUES('%s', '%s', %.2f );", r.getIdentifier(),
+                r.getUserName(), r.getRating());
+
+        System.out.println(updateS);
 
         db.setQuery(updateS, 1);
         dbConnect();
-        closeDBComs();
+        closeAll();
     }
 
     @Override
     public void removeRating(Rating r) {
+        start();
+
+        String updateS = String.format("DELETE FROM MovieRatings WHERE Movie = '%s' AND ratedBy = '%s';", r.getIdentifier(),
+                r.getUserName());
+        db.setQuery(updateS,1);
+        dbConnect();
+        closeAll();
 
     }
 
     @Override
     public String getMovieRating(String identifier) {
-        return null;
+        start();
+
+        String updateS = String.format("SELECT AVG(rating) FROM MovieRatings WHERE Movie = '%s';", identifier);
+
+        db.setQuery(updateS, 0);
+
+        dbConnect();
+
+        ResultSet results = db.getResultSet();
+        String toReturn = "";
+        try {
+            if(results.next()) {
+                toReturn = Float.toString(results.getFloat(1));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
+
+
     }
 
     @Override
     public List<Movie> getTopMovies(String filter, String parameter) {
-        return null;
+        start();
+        String querryS = "";
+        if (filter.equals("null")){
+            querryS = "select Movie, AVG(rating) as 'average' from " +
+                    "MovieRatings GROUP BY Movie ORDER BY average DESC;";
+            ;
+        } else {
+            querryS = String.format("SELECT z.Movie, avg(z.rating) as average," +
+                    " z.description, z.MovieYear FROM ((SELECT * FROM profile " +
+                    "WHERE major = '%s') as y inner join " +
+                    "(SELECT MovieRatings.Movie, MovieRatings.RatedBy, MovieRatings.rating, " +
+                    "RatedMovies.description, RatedMovies.MovieYear FROM RatedMovies " +
+                    "INNER JOIN MovieRatings ON MovieRatings.Movie = RatedMovies.Movie)" +
+                    "as z on y.UName = z.ratedBy) GROUP BY z.Movie ORDER BY average;", parameter);
+        }
+
+        db.setQuery(querryS, 0);
+        dbConnect();
+        Movies.clear();
+        Movie toAdd;
+        ArrayList<Movie> toReturn = new ArrayList<>();
+        ResultSet results = db.getResultSet();
+        try {
+            while (results.next()){
+                toAdd = new Movie();
+                toAdd.setTitle(results.getString(1));
+                System.out.println(Float.toString(results.getFloat(2)));
+                toAdd.setRating(Float.toString(results.getFloat(2)));
+                toAdd.setDescription(results.getString(3));
+                toAdd.setYear(results.getString(4));
+                toReturn.add(toAdd);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
     }
 
     @Override
     public User getUser(String identifier) {
-        return null;
+        start();
+        String querryS = String.format("SELECT * FROM ((SELECT ev.UName, ev.Email, " +
+                "ev.password, ev.major, pen.type FROM((SELECT peep.UName, peep.Email, " +
+                "peep.Password, p.major FROM (SELECT * FROM users) as peep LEFT JOIN profile as " +
+                "p ON p.UName = peep.UName) as ev LEFT JOIN penalties as pen ON pen.UName = " +
+                "ev.UName)) UNION (SELECT UName, Email, pass as password, null as major, 'A' as " +
+                "type FROM ADMINS)) as big WHERE UName = '%s';", identifier);
+        db.setQuery(querryS,0);
+        dbConnect();
+        ResultSet results = db.getResultSet();
+        User toReturn = null;
+        String uName;
+        String email;
+        String psswrd;
+        String major;
+        Boolean isAdmin = false;
+        Condition con = Condition.UNLOCKED;
+
+        try {
+            if(results.next()) {
+                uName = results.getString(1);
+                email = results.getString(2);
+                psswrd = results.getString(3);
+                major = results.getString(4);
+                String penalties = results.getString(5);
+                System.out.println(uName + " " + email + " " + psswrd + " " + major + " " +penalties);
+                if(penalties == null) {
+                    con = Condition.UNLOCKED;
+                } else if (penalties.equals("A")){
+                    isAdmin = true;
+                } else if(penalties.equals("L")){
+                    con = Condition.LOCKED;
+                } else {
+                    con = Condition.BANNED;
+                }
+                toReturn= new User(uName,email,psswrd,con, isAdmin);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+
     }
 
     @Override
     public void addUser(User u) {
+        start();
+        String querryS = String.format("INSERT INTO users VALUES ('%s', '%s', '%s')", u.getUsername(),
+                u.getEmail(), u.getPassword());
+
+        System.out.println(querryS);
+
+        db.setQuery(querryS, 1);
+        dbConnect();
+        closeDBComs();
 
     }
 
     @Override
     public void removeUser(String identifier) {
-
+        start();
+        String querryS = String.format("DELETE FROM users WHERE UName = '%s';", identifier);
+        db.setQuery(querryS, 1);
+        dbConnect();
+        closeDBComs();
     }
 
     @Override
     public void lock(String identifier) {
-
+        User badPerson = getUser(identifier);
+        if (badPerson.getCondition() != Condition.BANNED) {
+            start();
+            String querryS = String.format("INSERT INTO penalties VALUES ('%s', 'L');", identifier);
+            db.setQuery(querryS, 1);
+            dbConnect();
+            closeDBComs();
+        }
     }
 
     @Override
     public void ban(String identifier) {
-
+        start();
+        String querryS = String.format("INSERT INTO penalties VALUES ('%s', 'B');", identifier);
+        db.setQuery(querryS, 1);
+        dbConnect();
+        int result = db.getIntResult();
+        closeDBComs();
+        if (result == 0){
+             querryS = String.format("UPDATE penalties SET type = 'B' WHERE UName = '%s';", identifier);
+            db.setQuery(querryS,1);
+            dbConnect();
+            closeDBComs();
+        }
     }
 
     @Override
     public void unlock(String identifier) {
+        User badPerson = getUser(identifier);
+        if (badPerson.getCondition() != Condition.BANNED) {
+        unban(identifier);
+
+        }
 
     }
 
     @Override
     public void unban(String identifier) {
-
+            start();
+            String querryS = String.format("DELETE FROM penalties WHERE UName = '%s';", identifier);
+            db.setQuery(querryS, 1);
+            dbConnect();
+            closeDBComs();
     }
 }

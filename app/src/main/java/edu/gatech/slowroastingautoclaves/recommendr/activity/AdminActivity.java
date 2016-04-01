@@ -19,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
-import edu.gatech.slowroastingautoclaves.recommendr.model.Conditions;
+import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
 
@@ -99,9 +99,9 @@ public class AdminActivity extends Activity{
                 User u = users.get(position);
                 username.setText(u.getUsername());
                 RadioButton rb;
-                if (u.getCondition() == Conditions.UNLOCKED) {
+                if (u.getCondition() == Condition.UNLOCKED) {
                     rb = (RadioButton) convertView.findViewById(R.id.radio);
-                } else if (u.getCondition() == Conditions.LOCKED) {
+                } else if (u.getCondition() == Condition.LOCKED) {
                     rb = (RadioButton) convertView.findViewById(R.id.radio2);
                 } else {
                     rb = (RadioButton) convertView.findViewById(R.id.radio3);
@@ -118,11 +118,11 @@ public class AdminActivity extends Activity{
                         Log.i("inside", "method");
                         final User u = users.get(pos);
                         if (checkedId == R.id.radio) {
-                            u.setCondition(Conditions.UNLOCKED);
+                            u.setCondition(Condition.UNLOCKED);
                         } else if (checkedId == R.id.radio2) {
-                            u.setCondition(Conditions.LOCKED);
+                            u.setCondition(Condition.LOCKED);
                         } else if (checkedId == R.id.radio3) {
-                            u.setCondition(Conditions.BANNED);
+                            u.setCondition(Condition.BANNED);
                         }
                     }
                 });

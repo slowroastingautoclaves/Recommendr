@@ -8,9 +8,9 @@ import java.util.ArrayList;
  */
 public class User {
     private String username, email, password, major, description;
-    private Conditions condition;
+    private Condition condition;
     private boolean adminStatus;
-    //private Conditions condition;
+    //private Condition condition;
     private ArrayList<Rating> userRatings;
 
     // constructor for creating new user
@@ -20,10 +20,10 @@ public class User {
         this.password = password;
         this.userRatings = new ArrayList<>();
         this.adminStatus = false;
-        this.condition = Conditions.UNLOCKED;
+        this.condition = Condition.UNLOCKED;
     }
 
-    public User(String username, String email, String password, Conditions condition) {
+    public User(String username, String email, String password, Condition condition) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -32,11 +32,11 @@ public class User {
         this.adminStatus = false;
     }
 
-    public User(String username, String email, String password, Conditions conditions, boolean adminStatus) {
+    public User(String username, String email, String password, Condition condition, boolean adminStatus) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.condition = conditions;
+        this.condition = condition;
         this.userRatings = new ArrayList<>();
         this.adminStatus = adminStatus;
     }
@@ -61,15 +61,15 @@ public class User {
      * Gets this user's condition
      * @return the condition
      */
-    public Conditions getCondition() {
+    public Condition getCondition() {
         return this.condition;
     }
 
     /**
-     * sets the user's conditions
+     * sets the user's condition
      */
-    public void setCondition(Conditions conditions) {
-        this.condition = conditions;
+    public void setCondition(Condition condition) {
+        this.condition = condition;
     }
 
     /**
@@ -149,14 +149,14 @@ public class User {
      * Get's the user's condition
      * @return the condition of the user
      */
-//    public Conditions getCondition() {
+//    public Condition getCondition() {
 //        return this.condition;
 //    }
 
     /*
      * Set condition for the user
      */
-//    public void setCondition(Conditions condition) {
+//    public void setCondition(Condition condition) {
 //        this.condition = condition;
 //    }
 

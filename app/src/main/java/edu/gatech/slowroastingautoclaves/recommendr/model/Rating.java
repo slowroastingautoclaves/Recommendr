@@ -45,6 +45,7 @@ public class Rating {
     public String getUser() {
         return this.user.getEmail();
     }
+    public String getUserName(){ return this.user.getUsername();}
 
     @Override
     public boolean equals(Object o) {
