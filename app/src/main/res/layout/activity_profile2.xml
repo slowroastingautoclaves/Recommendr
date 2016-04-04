@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="EDIT PROFILE"
+        android:text="YOUR PROFILE"
         android:id="@+id/textView7"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
@@ -71,9 +71,10 @@
         android:layout_height="wrap_content"
         android:text="Exit"
         android:id="@+id/exit"
-        android:layout_above="@+id/textView6"
-        android:layout_alignLeft="@+id/textView12"
-        android:layout_alignStart="@+id/textView12" />
+        android:layout_below="@+id/textView10"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -108,5 +109,14 @@
         android:layout_alignRight="@+id/textView7"
         android:layout_alignEnd="@+id/textView7"
         android:layout_above="@+id/exit" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:id="@+id/edit_profile"
+        android:layout_alignTop="@+id/exit"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

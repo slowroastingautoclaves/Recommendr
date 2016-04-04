@@ -117,7 +117,6 @@ public class AdminActivity extends Activity{
 
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        Log.i("inside", "method");
                         final User u = users.get(pos);
                         if (checkedId == R.id.radio) {
                             u.setCondition(Condition.UNLOCKED);

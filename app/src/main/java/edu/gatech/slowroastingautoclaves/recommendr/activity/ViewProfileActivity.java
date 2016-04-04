@@ -47,6 +47,20 @@ public class ViewProfileActivity extends AppCompatActivity {
         }
 
 
+        // edit profile
+        Button mEditProfile = (Button) findViewById(R.id.edit_profile);
+        mEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Send email to ProfileActivity and start ProfileActivity.
+                Intent profileIntent = new Intent(ViewProfileActivity.this, ProfileActivity.class);
+                profileIntent.putExtra("Email", ViewProfileActivity.this.email);
+                startActivity(profileIntent);
+                finish();
+            }
+        });
+
+
         //Exit button.
         Button mExitButton = (Button) findViewById(R.id.exit);
         mExitButton.setOnClickListener(new View.OnClickListener() {

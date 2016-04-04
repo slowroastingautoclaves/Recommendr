@@ -71,6 +71,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        /*
         Button mEditProfile = (Button) findViewById(R.id.edit_profile);
         mEditProfile.setOnClickListener(new OnClickListener() {
             @Override
@@ -82,6 +83,7 @@ public class UserActivity extends AppCompatActivity {
                 finish();
             }
         });
+        */
 
         Button mStartSearchButton = (Button) findViewById(R.id.startSearchButton);
         mStartSearchButton.setOnClickListener(new OnClickListener() {
@@ -96,6 +98,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
+
     }
 
     @Override
