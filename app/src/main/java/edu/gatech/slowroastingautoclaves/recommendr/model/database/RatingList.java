@@ -64,6 +64,20 @@ public final class RatingList {
     }
 
     /**
+     * Gets the list of rated movies stored currently.
+     * @return a Set of movies.
+     */
+    public Set<Movie> getMovies() {
+        if (this.ratings == null) {
+            this.ratings = new ArrayList<>();
+        }
+        if (this.movies == null) {
+            this.movies = new HashSet<>();
+        }
+        return this.movies;
+    }
+
+    /**
      * Adds rating to this list of ratings.
      * @param m is rating to be added.
      */
@@ -161,7 +175,7 @@ public final class RatingList {
                 boolean valid = false;
                 int counter = 0;
                 for (Rating r : this.ratings) {
-                    if (r.getIdentifier().equals(m.toString()) && r.getMajor().equals(parameter)) {
+                    if (r.getIdentifier().equals(m.toString()) && r.getMajor() != null && r.getMajor().equals(parameter)) {
                         valid = true;
                         counter++;
                         rating = ((r.getRating()) + rating) / counter;
