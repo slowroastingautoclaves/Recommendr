@@ -25,6 +25,9 @@ public class TopMoviesUnitTest {
     @Before
     public void setUp() {
         rl = RatingList.getInstance();
+        rl.getMovies().clear();
+        rl.getRatings().clear();
+
         Movie m1 = new Movie();
         m1.setTitle("Lion King");
         Movie m2 = new Movie();
