@@ -40,11 +40,6 @@ public class SearchMovieActivity extends AppCompatActivity {
     private String response;
 
     private SearchView mMovieSearchView;
-    private Button mRecentReleaseButton;
-    private Button mRecentDVDsButton;
-    private Button mTopMoviesButton;
-    private Button mTopMoviesMajorButton;
-    private ImageButton mMovieSearchButton;
     private String email;
 
 
@@ -59,35 +54,35 @@ public class SearchMovieActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
 
         this.mMovieSearchView = (SearchView) findViewById(R.id.movieSearchView);
-        this.mMovieSearchButton = (ImageButton) findViewById(R.id.movieSearchButton);
+        ImageButton mMovieSearchButton = (ImageButton) findViewById(R.id.movieSearchButton);
         mMovieSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSearchRequested();
             }
         });
-        this.mRecentReleaseButton = (Button) findViewById(R.id.releasesButton);
+        Button mRecentReleaseButton = (Button) findViewById(R.id.releasesButton);
         mRecentReleaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getRecentReleases();
             }
         });
-        this.mRecentDVDsButton = (Button) findViewById(R.id.dvdsButton);
+        Button mRecentDVDsButton = (Button) findViewById(R.id.dvdsButton);
         mRecentDVDsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getRecentDVDs();
             }
         });
-        this.mTopMoviesButton = (Button) findViewById(R.id.topMoviesButton);
+        Button mTopMoviesButton = (Button) findViewById(R.id.topMoviesButton);
         mTopMoviesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getTopMovies("null");
             }
         });
-        this.mTopMoviesMajorButton = (Button) findViewById(R.id.topMoviesMajorButton);
+        Button mTopMoviesMajorButton = (Button) findViewById(R.id.topMoviesMajorButton);
         mTopMoviesMajorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,8 +103,7 @@ public class SearchMovieActivity extends AppCompatActivity {
         String query = mMovieSearchView.getQuery().toString().replace(" ", "+");
 
         url += ("&q=" + query + "&page_limit=50");
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject resp) {
                         //handle a valid response coming back.  Getting this string mainly for debug
@@ -123,7 +117,7 @@ public class SearchMovieActivity extends AppCompatActivity {
                         try {
                             array = resp.getJSONArray("movies");
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                           Log.e("SearchMovieActivity", e.getMessage());
                         }
                         assert array != null;
                         //From that object, we extract the array of actual data labeled result
@@ -146,7 +140,7 @@ public class SearchMovieActivity extends AppCompatActivity {
 
                             } catch (JSONException e) {
                                 Log.d("VolleyApp", "Failed to get JSON object");
-                                e.printStackTrace();
+                                Log.e("SearchMovieActivity", e.getMessage());
                             }
                         }
                         //once we have all data, then go to list screen
@@ -169,7 +163,7 @@ public class SearchMovieActivity extends AppCompatActivity {
 
     /**
      * Changes view to Master/Detail list with given list of movies.
-     * @param movies
+     * @param movies is list of movies to show in {@code MovieListActivity}.
      */
     public void changeView(ArrayList<Movie> movies) {
         Intent viewResultsIntent = new Intent(this, MovieListActivity.class);
@@ -194,8 +188,7 @@ public class SearchMovieActivity extends AppCompatActivity {
     public void getRecentReleases() {
         String url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json?apikey=yedukp76ffytfuy24zsqk7f5";
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject resp) {
                         //handle a valid response coming back.  Getting this string mainly for debug
@@ -209,7 +202,7 @@ public class SearchMovieActivity extends AppCompatActivity {
                         try {
                             array = resp.getJSONArray("movies");
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("SearchMovieActivity", e.getMessage());
                         }
                         assert array != null;
                         //From that object, we extract the array of actual data labeled result
@@ -223,7 +216,6 @@ public class SearchMovieActivity extends AppCompatActivity {
                                 JSONObject jsonObject = array.getJSONObject(i);
                                 JSONObject ratingsJSON = jsonObject.getJSONObject("ratings");
                                 Movie m = new Movie();
-                                assert jsonObject != null;
                                 m.setTitle(jsonObject.optString("title"));
                                 m.setYear(jsonObject.optString("year"));
                                 m.setDescription(jsonObject.optString("synopsis"));
@@ -234,7 +226,7 @@ public class SearchMovieActivity extends AppCompatActivity {
 
                             } catch (JSONException e) {
                                 Log.d("VolleyApp", "Failed to get JSON object");
-                                e.printStackTrace();
+                                Log.e("SearchMovieActivity", e.getMessage());
                             }
                         }
                         //once we have all data, then go to list screen
@@ -260,8 +252,7 @@ public class SearchMovieActivity extends AppCompatActivity {
     public void getRecentDVDs() {
         String url = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?apikey=yedukp76ffytfuy24zsqk7f5";
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject resp) {
                         //handle a valid response coming back.  Getting this string mainly for debug
@@ -275,7 +266,7 @@ public class SearchMovieActivity extends AppCompatActivity {
                         try {
                             array = resp.getJSONArray("movies");
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("SearchMovieActivity", e.getMessage());
                         }
                         assert array != null;
                         //From that object, we extract the array of actual data labeled result
@@ -298,7 +289,7 @@ public class SearchMovieActivity extends AppCompatActivity {
 
                             } catch (JSONException e) {
                                 Log.d("VolleyApp", "Failed to get JSON object");
-                                e.printStackTrace();
+                                Log.e("SearchMovieActivity", e.getMessage());
                             }
                         }
                         //once we have all data, then go to list screen
@@ -359,13 +350,11 @@ public class SearchMovieActivity extends AppCompatActivity {
                                 return;
                             }
                             changeView(out);
-                            return;
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            return;
                         }
                     });
             AlertDialog dialog = builder.create();

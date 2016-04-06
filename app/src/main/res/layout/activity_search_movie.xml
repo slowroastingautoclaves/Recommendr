@@ -61,7 +61,8 @@
         android:id="@+id/movieSearchButton"
         android:layout_below="@+id/movieSearchView"
         android:layout_centerHorizontal="true"
-        android:background="@android:drawable/ic_menu_search" />
+        android:background="@android:drawable/ic_menu_search"
+        android:contentDescription="@+id/movieSearchButton"/>
 
     <Button
         android:layout_width="wrap_content"

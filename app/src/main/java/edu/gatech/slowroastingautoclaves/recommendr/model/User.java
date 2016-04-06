@@ -149,7 +149,7 @@ public class User implements Serializable {
     }
 
     /**
-     * Get's the user's condition
+     * Gets the user's condition
      * @return the condition of the user
      */
 //    public Condition getCondition() {
@@ -165,12 +165,12 @@ public class User implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+        if (!(o instanceof User)) {
+            return false;
+        }
         //Users are equal if they have the same email.
         User compare = (User) o;
-        if (compare.getEmail().equals(this.getEmail())) {
-            return true;
-        }
-        return false;
+        return compare.getEmail().equals(this.getEmail());
     }
 
     @Override

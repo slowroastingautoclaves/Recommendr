@@ -38,11 +38,6 @@ public class MovieListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
-    /**
-     * List of Movie objects
-     */
-    private List<Movie> movies;
-
     private String email;
 
     @Override
@@ -75,7 +70,11 @@ public class MovieListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         email = intent.getStringExtra("Email");
 
-        movies = (List<Movie>) getIntent().getSerializableExtra("movies");
+        /*
+      List of Movie objects
+     */
+        //noinspection unchecked
+        List<Movie> movies = (List<Movie>) getIntent().getSerializableExtra("movies");
         for (Movie s : movies) {
             Movies.addItem(s);
         }
@@ -109,7 +108,7 @@ public class MovieListActivity extends AppCompatActivity {
      * @param recyclerView view to set up with correct items from list
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(Movies.ITEMS));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter());
     }
 
     /**
@@ -121,8 +120,8 @@ public class MovieListActivity extends AppCompatActivity {
 
         private final List<Movie> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<Movie> items) {
-            mValues = items;
+        public SimpleItemRecyclerViewAdapter() {
+            mValues = Movies.ITEMS;
         }
 
         @Override

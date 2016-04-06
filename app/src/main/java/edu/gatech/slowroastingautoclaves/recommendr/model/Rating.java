@@ -50,11 +50,11 @@ public class Rating implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        Rating compare = (Rating) o;
-        if (compare.getUser().equals(this.user.getEmail()) && compare.getIdentifier().equals(this.identifier)) {
-            return true;
+        if (!(o instanceof Rating)) {
+            return false;
         }
-        return false;
+        Rating compare = (Rating) o;
+        return compare.getUser().equals(this.user.getEmail()) && compare.getIdentifier().equals(this.identifier);
     }
 
     @Override

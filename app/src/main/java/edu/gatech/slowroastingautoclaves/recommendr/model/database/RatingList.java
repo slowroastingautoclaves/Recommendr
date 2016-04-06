@@ -1,6 +1,5 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model.database;
 
-import android.content.Context;
 import android.util.Log;
 
 import java.io.File;
@@ -20,7 +19,7 @@ import edu.gatech.slowroastingautoclaves.recommendr.model.Rating;
 /**
  * A singleton list of users used to store user data locally so that all activities have access.
  */
-public class RatingList {
+public final class RatingList {
     public static final String RATINGS = "ratings.bin";
     public static final String MOVIES = "movies.bin";
 
@@ -45,10 +44,10 @@ public class RatingList {
 
     public ArrayList<Rating> getRatings() {
         if (this.ratings == null) {
-            this.ratings = new ArrayList<Rating>();
+            this.ratings = new ArrayList<>();
         }
         if (this.movies == null) {
-            this.movies = new HashSet<Movie>();
+            this.movies = new HashSet<>();
         }
         return this.ratings;
     }
@@ -59,20 +58,20 @@ public class RatingList {
      */
     public void addRating(Rating m) {
         if (this.ratings == null) {
-            this.ratings = new ArrayList<Rating>();
+            this.ratings = new ArrayList<>();
         }
         if (this.movies == null) {
-            this.movies = new HashSet<Movie>();
+            this.movies = new HashSet<>();
         }
         this.ratings.add(m);
     }
 
     public void addMovie(Movie m) {
         if (this.ratings == null) {
-            this.ratings = new ArrayList<Rating>();
+            this.ratings = new ArrayList<>();
         }
         if (this.movies == null) {
-            this.movies = new HashSet<Movie>();
+            this.movies = new HashSet<>();
         }
         this.movies.add(m);
     }
@@ -92,14 +91,14 @@ public class RatingList {
      */
     public String getRating(String identifier) {
         if (this.ratings == null) {
-            this.ratings = new ArrayList<Rating>();
+            this.ratings = new ArrayList<>();
         }
         if (this.movies == null) {
-            this.movies = new HashSet<Movie>();
+            this.movies = new HashSet<>();
         }
         double rating = 0;
         int counter = 0;
-        for (Rating r : this.getInstance().getRatings()) {
+        for (Rating r : getInstance().getRatings()) {
             if (r.getIdentifier().equals(identifier)) {
                 counter++;
                 rating = ((r.getRating()) + rating) / counter;
@@ -116,10 +115,10 @@ public class RatingList {
      */
     public String getRatingByMajor(String identifier, String major) {
         if (this.ratings == null) {
-            this.ratings = new ArrayList<Rating>();
+            this.ratings = new ArrayList<>();
         }
         if (this.movies == null) {
-            this.movies = new HashSet<Movie>();
+            this.movies = new HashSet<>();
         }
         double rating = 0;
         int counter = 0;
@@ -140,10 +139,10 @@ public class RatingList {
      */
     public ArrayList<Movie> getTopMovies(String filter, String parameter) {
         if (this.ratings == null) {
-            this.ratings = new ArrayList<Rating>();
+            this.ratings = new ArrayList<>();
         }
         if (this.movies == null) {
-            this.movies = new HashSet<Movie>();
+            this.movies = new HashSet<>();
         }
         if (filter.equals("null")) {
             ArrayList<Movie> out = new ArrayList<>();
@@ -201,11 +200,13 @@ public class RatingList {
             // assuming we saved our top level object, we read it back in with one line of code.
             if (this.ratings == null) {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(ratings));
+                //noinspection unchecked
                 this.ratings = (ArrayList<Rating>) in.readObject();
                 in.close();
             }
             if (this.movies == null) {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(movies));
+                //noinspection unchecked
                 this.movies = (Set<Movie>) in.readObject();
                 in.close();
             }

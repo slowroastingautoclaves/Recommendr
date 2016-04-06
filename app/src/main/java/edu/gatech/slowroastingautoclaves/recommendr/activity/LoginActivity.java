@@ -336,7 +336,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
+        // --Commented out by Inspection (4/4/16, 2:50 AM):int IS_PRIMARY = 1;
     }
 
     /**

@@ -9,17 +9,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Set;
 
-import edu.gatech.slowroastingautoclaves.recommendr.model.Condition;
-import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
-import edu.gatech.slowroastingautoclaves.recommendr.model.Rating;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 
 /**
  * A singleton list of users used to store user data locally so that all activities have access.
  */
-public class UserList {
+public final class UserList {
     public static final String USERS = "users.bin";
     //Has instance of itself (singleton) and ArrayList<User> of User objects.
     private static UserList ourInstance = null;
@@ -47,7 +43,7 @@ public class UserList {
 
     public ArrayList<User> getUsers() {
         if (this.users == null) {
-            this.users = new ArrayList<User>();
+            this.users = new ArrayList<>();
         }
         return this.users;
     }
@@ -58,7 +54,7 @@ public class UserList {
      */
     public void addUser(User u) {
         if (this.users == null) {
-            this.users = new ArrayList<User>();
+            this.users = new ArrayList<>();
         }
         this.users.add(u);
     }
@@ -78,7 +74,7 @@ public class UserList {
      */
     public User findUserByEmail(String email) {
         if (this.users == null) {
-            this.users = new ArrayList<User>();
+            this.users = new ArrayList<>();
         }
         for (User u : this.users) {
             if (u.getEmail().equals(email)) {
@@ -98,6 +94,7 @@ public class UserList {
             // assuming we saved our top level object, we read it back in with one line of code.
             if (this.users == null) {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(users));
+                //noinspection unchecked
                 this.users = (ArrayList<User>) in.readObject();
                 Log.i("UserList", "Users loaded.");
                 in.close();

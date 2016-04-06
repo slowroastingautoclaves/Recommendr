@@ -14,7 +14,6 @@ import edu.gatech.slowroastingautoclaves.recommendr.activity.MovieListActivity;
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Movies;
-import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
 
 /**
  * A fragment representing a single Movie detail screen.
@@ -33,7 +32,6 @@ public class MovieDetailFragment extends Fragment {
      * The Movie content this fragment is presenting.
      */
     private Movie mItem;
-    private Movie movie;
 
 
     /**
@@ -74,7 +72,4 @@ public class MovieDetailFragment extends Fragment {
         return rootView;
     }
 
-    public Movie getMovie() {
-        return this.mItem;
-    }
 }

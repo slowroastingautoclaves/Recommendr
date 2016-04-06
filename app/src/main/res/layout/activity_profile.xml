@@ -112,6 +112,7 @@
         android:hint="Description"
         android:layout_below="@+id/textView10"
         android:layout_alignLeft="@+id/major"
+        android:layout_alignStart="@id/major"
         android:layout_toLeftOf="@+id/save"
         android:layout_toStartOf="@+id/save" />
 </RelativeLayout>

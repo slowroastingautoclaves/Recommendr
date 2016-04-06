@@ -1,15 +1,17 @@
 package edu.gatech.slowroastingautoclaves.recommendr.model;
 
-import java.io.Serializable;
+import android.support.annotation.NonNull;
 
-import edu.gatech.slowroastingautoclaves.recommendr.model.database.RatingList;
-import edu.gatech.slowroastingautoclaves.recommendr.model.database.UserList;
+import java.io.Serializable;
 
 /**
  * Represents a Movie object.
  */
 public class Movie implements Serializable, Comparable<Movie> {
-    private String title, year, description, rating, userRating;
+    private String title;
+    private String year;
+    private String description;
+    private String rating;
     private double userScore;
 
     /**
@@ -37,14 +39,6 @@ public class Movie implements Serializable, Comparable<Movie> {
             this.rating = "Rating: " + rating;
         }
         this.rating = "No rating found.";
-    }
-
-    /**
-     * Gets rating for this movie as found in {@Code RatingList}.
-     * @return
-     */
-    public String getUserRating() {
-        return RatingList.getInstance().getRating(this.toString());
     }
 
     /**
@@ -113,11 +107,11 @@ public class Movie implements Serializable, Comparable<Movie> {
 
     @Override
     public boolean equals(Object o) {
-        Movie compare = (Movie) o;
-        if (compare.toString().equals(this.toString())) {
-            return true;
+        if (! (o instanceof Movie)) {
+            return false;
         }
-        return false;
+        Movie compare = (Movie) o;
+        return compare.toString().equals(this.toString());
     }
 
     @Override
@@ -126,7 +120,7 @@ public class Movie implements Serializable, Comparable<Movie> {
     }
 
     @Override
-    public int compareTo(Movie m) {
+    public int compareTo(@NonNull Movie m) {
         if (m.getScore() - this.getScore() == 0.0) {
             return this.getTitle().compareTo(m.getTitle());
         }

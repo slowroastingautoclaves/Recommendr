@@ -104,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
-        View focusView = null;
+        View focusView;
 
         // Store values at the time of the login attempt.
         String username = mUsernameView.getText().toString();

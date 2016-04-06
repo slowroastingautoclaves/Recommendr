@@ -15,15 +15,15 @@
             android:text="adminName"
             android:id="@+id/title"
             android:layout_gravity="center_horizontal"
-            android:textSize="35dp" />
+            android:textSize="35sp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:text="Log out"
-            android:id="@+id/admin_logout"
-            android:onClick="adminLogout"/>
+            android:id="@+id/admin_logout"/>
     </LinearLayout>
 
     <SearchView
