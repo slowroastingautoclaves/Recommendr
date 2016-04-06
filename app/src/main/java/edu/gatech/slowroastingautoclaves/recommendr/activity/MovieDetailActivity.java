@@ -96,13 +96,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
 
                 final EditText input = new EditText(MovieDetailActivity.this);
-//                final RatingBar input = new RatingBar(MovieDetailActivity.this);
-//                input.setLayoutParams(new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT));
-//                input.setStepSize(0.5f);
-//                input.setMax(5);
-//                input.setNumStars(5);
-//                input.setRating(2.0f);
-//                input.setId(0);
 
                 input.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
                 input.setHint("Type rating from 0.0 - 100.0");
@@ -122,7 +115,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                                if (Double.parseDouble(input.getText().toString()) > 0) {
                                    rateValue = Double.parseDouble(input.getText().toString());
                                }
-                               Rating currentRate = new Rating(MovieDetailActivity.this.identifier, MovieDetailActivity.this.user, rateValue);
+                               Rating currentRate = new Rating(MovieDetailActivity.this.identifier,
+                                       MovieDetailActivity.this.user, rateValue);
                                if (!RatingList.getInstance().getRatings().contains(currentRate)) {
                                    RatingList.getInstance().addRating(currentRate);
                                    RatingList.getInstance().addMovie(MovieDetailActivity.this.movie);

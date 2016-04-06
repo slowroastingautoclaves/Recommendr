@@ -120,6 +120,9 @@ public class MovieListActivity extends AppCompatActivity {
 
         private final List<Movie> mValues;
 
+        /**
+         * Constructor for a recycler view that is used to populate list of movies.
+         */
         public SimpleItemRecyclerViewAdapter() {
             mValues = Movies.ITEMS;
         }
@@ -176,6 +179,10 @@ public class MovieListActivity extends AppCompatActivity {
             public final TextView mContentView;
             public Movie mItem;
 
+            /**
+             * Holds the required information about a movie.
+             * @param view is the view to set the information about.
+             */
             public ViewHolder(View view) {
                 super(view);
                 mView = view;

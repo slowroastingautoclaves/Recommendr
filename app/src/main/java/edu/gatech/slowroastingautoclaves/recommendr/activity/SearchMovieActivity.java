@@ -103,21 +103,24 @@ public class SearchMovieActivity extends AppCompatActivity {
         String query = mMovieSearchView.getQuery().toString().replace(" ", "+");
 
         url += ("&q=" + query + "&page_limit=50");
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject resp) {
-                        //handle a valid response coming back.  Getting this string mainly for debug
+                        //handle a valid response coming back.
+                        // Getting this string mainly for debug
                         response = resp.toString();
                         //printing first 500 chars of the response.  Only want to do this for debug
                         //TextView view = (TextView) findViewById(R.id.textView2);
                         //view.setText(response.substring(0, 500));
 
-                        //Now we parse the information.  Looking at the format, everything encapsulated in RestResponse object
+                        //Now we parse the information.  Looking at the format,
+                        // everything encapsulated in RestResponse object
                         JSONArray array = null;
                         try {
                             array = resp.getJSONArray("movies");
                         } catch (JSONException e) {
-                           Log.e("SearchMovieActivity", e.getMessage());
+                            Log.e("SearchMovieActivity", e.getMessage());
                         }
                         assert array != null;
                         //From that object, we extract the array of actual data labeled result
@@ -146,7 +149,7 @@ public class SearchMovieActivity extends AppCompatActivity {
                         //once we have all data, then go to list screen
                         changeView(movies);
                     }
-                }, new Response.ErrorListener() {
+            }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -188,7 +191,8 @@ public class SearchMovieActivity extends AppCompatActivity {
     public void getRecentReleases() {
         String url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json?apikey=yedukp76ffytfuy24zsqk7f5";
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject resp) {
                         //handle a valid response coming back.  Getting this string mainly for debug
@@ -252,7 +256,8 @@ public class SearchMovieActivity extends AppCompatActivity {
     public void getRecentDVDs() {
         String url = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?apikey=yedukp76ffytfuy24zsqk7f5";
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject resp) {
                         //handle a valid response coming back.  Getting this string mainly for debug
@@ -309,8 +314,12 @@ public class SearchMovieActivity extends AppCompatActivity {
         queue.add(jsObjRequest);
     }
 
+    /**
+     * Gets the top rated movies and opens a new Activity to show those movies.
+     * @param filter is the filter to use.
+     */
     public void getTopMovies(String filter) {
-        if (filter.equals("null")) {
+        if ("null".equals(filter)) {
             ArrayList<Movie> out = RatingList.getInstance().getTopMovies("null", "null");
             if (out == null) {
                 Context context = getApplicationContext();
@@ -321,7 +330,7 @@ public class SearchMovieActivity extends AppCompatActivity {
             } else {
                 changeView(out);
             }
-        } else if (filter.equals("major")) {
+        } else if ("major".equals(filter)) {
             String message = "Enter a major to filter movie recommendations by.\n";
             AlertDialog.Builder builder = new AlertDialog.Builder(SearchMovieActivity.this);
 

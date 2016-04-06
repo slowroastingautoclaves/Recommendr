@@ -71,6 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextView majorView = (TextView) findViewById(R.id.major);
         TextView descriptionView = (TextView) findViewById(R.id.description);
         User u = UserList.getInstance().findUserByEmail(this.email);
+        //noinspection ConstantConditions
         u.setMajor(majorView.getText().toString());
         u.setDescription(descriptionView.getText().toString());
 

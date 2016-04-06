@@ -22,6 +22,9 @@ public final class UserList {
 
     private ArrayList<User> users;
 
+    /**
+     * UserList constructor.
+     */
     private UserList() {
         users = null;
     }
@@ -41,6 +44,10 @@ public final class UserList {
         return ourInstance;
     }
 
+    /**
+     * Gets the list of users.
+     * @return the list of users.
+     */
     public ArrayList<User> getUsers() {
         if (this.users == null) {
             this.users = new ArrayList<>();
@@ -84,6 +91,11 @@ public final class UserList {
         return null;
     }
 
+    /**
+     * Loads the users stored in a file, if any.
+     * @param users is the users file.
+     * @return true if successfully loaded, else false.
+     */
     public boolean loadUsers(File users) {
         boolean success = true;
         try {
@@ -110,6 +122,11 @@ public final class UserList {
         return success;
     }
 
+    /**
+     * Saves the current users in a file.
+     * @param users is users file.
+     * @return true if successfully saved, else false.
+     */
     public boolean saveUsers(File users) {
         boolean success = true;
         try {

@@ -14,6 +14,13 @@ public class User implements Serializable {
     private ArrayList<Rating> userRatings;
 
     // constructor for creating new user
+
+    /**
+     * Constructor for a User object.
+     * @param username is username.
+     * @param email is email.
+     * @param password is password.
+     */
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
@@ -23,6 +30,13 @@ public class User implements Serializable {
         this.condition = Condition.UNLOCKED;
     }
 
+    /**
+     * Constructor for a User object.
+     * @param username is username.
+     * @param email is email.
+     * @param password is password.
+     * @param condition is condition (banned, locked, unlocked).
+     */
     public User(String username, String email, String password, Condition condition) {
         this.username = username;
         this.email = email;
@@ -32,6 +46,14 @@ public class User implements Serializable {
         this.adminStatus = false;
     }
 
+    /**
+     * Constructor for a User object.
+     * @param username is username.
+     * @param email is email.
+     * @param password is password.
+     * @param condition is condition (banned, locked, unlocked).
+     * @param adminStatus is admin status.
+     */
     public User(String username, String email, String password, Condition condition, boolean adminStatus) {
         this.username = username;
         this.email = email;
@@ -67,6 +89,7 @@ public class User implements Serializable {
 
     /**
      * sets the user's condition
+     * @param condition is the condition to set.
      */
     public void setCondition(Condition condition) {
         this.condition = condition;
@@ -127,18 +150,35 @@ public class User implements Serializable {
         return this.description;
     }
 
+    /**
+     * Adds a rating.
+     * @param r is rating to add.
+     */
     public void addRating(Rating r) {
         this.userRatings.add(r);
     }
 
+    /**
+     * Removes a rating.
+     * @param r is rating to remove.
+     */
     public void removeRating(Rating r) {
         this.userRatings.remove(r);
     }
 
+    /**
+     * Gets all the ratings for this user.
+     * @return an ArrayList<Rating> object.
+     */
     public ArrayList<Rating> getRatings() {
         return this.userRatings;
     }
 
+    /**
+     * Gets this user's rating for a movie.
+     * @param identifier is movie identifier.
+     * @return a String representing this User's rating.
+     */
     public String getRating(String identifier) {
         for (Rating r : this.userRatings) {
             if (r.getIdentifier().equals(identifier)) {

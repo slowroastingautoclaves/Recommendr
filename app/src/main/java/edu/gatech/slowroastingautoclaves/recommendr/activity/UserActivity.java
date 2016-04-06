@@ -40,8 +40,6 @@ public class UserActivity extends AppCompatActivity {
 
         RatingList.getInstance().loadRatings(new File(this.getFilesDir(), RatingList.RATINGS), new File(this.getFilesDir(), RatingList.MOVIES));
 
-        populateListView();
-
         TextView name = (TextView) findViewById(R.id.name);
         name.setText(user.getUsername());
 
@@ -95,10 +93,6 @@ public class UserActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    private void populateListView() {
-
     }
 
     @Override

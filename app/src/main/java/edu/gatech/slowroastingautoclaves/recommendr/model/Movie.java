@@ -110,7 +110,7 @@ public class Movie implements Serializable, Comparable<Movie> {
         if (! (o instanceof Movie)) {
             return false;
         }
-        Movie compare = (Movie) o;
+        final Movie compare = (Movie) o;
         return compare.toString().equals(this.toString());
     }
 

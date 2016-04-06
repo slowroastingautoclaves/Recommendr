@@ -6,7 +6,7 @@ import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Rating;
 
 /**
- * Created by daernwyn on 3/28/16.
+ * Is an interface that interacts with and presents information about rated movies.
  */
 public interface MovieInterface {
     /**

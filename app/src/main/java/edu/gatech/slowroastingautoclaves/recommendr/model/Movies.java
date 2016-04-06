@@ -34,7 +34,7 @@ public class Movies implements Serializable {
      * @param position is index of Movie List to get Movie from.
      * @return the Movie description.
      */
-    private static String makeDetails(int position) {
+    public static String makeDetails(int position) {
         return ITEMS.get(position).getDescription();
     }
 

@@ -29,11 +29,18 @@ public final class RatingList {
 
     private Set<Movie> movies;
 
+    /**
+     * Constructor for RatingList.
+     */
     private RatingList() {
         ratings = null;
         movies = null;
     }
 
+    /**
+     * Singleton instance method.
+     * @return the instance.
+     */
     public static RatingList getInstance() {
         if (ourInstance == null) {
             ourInstance = new RatingList();
@@ -42,6 +49,10 @@ public final class RatingList {
     }
 
 
+    /**
+     * Gets all the ratings stored currently.
+     * @return an ArrayList of ratings.
+     */
     public ArrayList<Rating> getRatings() {
         if (this.ratings == null) {
             this.ratings = new ArrayList<>();
@@ -66,6 +77,10 @@ public final class RatingList {
         this.ratings.add(m);
     }
 
+    /**
+     * Adds a movie to the list of rated movies.
+     * @param m is Movie to add.
+     */
     public void addMovie(Movie m) {
         if (this.ratings == null) {
             this.ratings = new ArrayList<>();
@@ -108,30 +123,6 @@ public final class RatingList {
     }
 
     /**
-     * Gets average rating for a movie from ratings from users of a specified major.
-     * @param identifier the movie identifier.
-     * @param major the major.
-     * @return the average rating
-     */
-    public String getRatingByMajor(String identifier, String major) {
-        if (this.ratings == null) {
-            this.ratings = new ArrayList<>();
-        }
-        if (this.movies == null) {
-            this.movies = new HashSet<>();
-        }
-        double rating = 0;
-        int counter = 0;
-        for (Rating r : this.ratings) {
-            if (r.getIdentifier().equals(identifier) && r.getMajor().equals(major)) {
-                counter++;
-                rating = ((r.getRating()) + rating) / counter;
-            }
-        }
-        return "Average User Rating: " + Double.toString(rating);
-    }
-
-    /**
      * Gets the top movies sorted by user ratings (ratings from the Recommendr system only).
      * @param filter is filter to use
      * @param parameter is filter parameter
@@ -144,7 +135,7 @@ public final class RatingList {
         if (this.movies == null) {
             this.movies = new HashSet<>();
         }
-        if (filter.equals("null")) {
+        if ("null".equals(filter)) {
             ArrayList<Movie> out = new ArrayList<>();
             for (Movie m : this.movies) {
                 double rating = 0;
@@ -163,7 +154,7 @@ public final class RatingList {
             }
             Collections.sort(out);
             return out;
-        } else if (filter.equals("major")) {
+        } else if ("major".equals(filter)) {
             ArrayList<Movie> out = new ArrayList<>();
             for (Movie m : this.movies) {
                 double rating = 0;
@@ -190,6 +181,12 @@ public final class RatingList {
         return null;
     }
 
+    /**
+     * Method to read stored ratings if any exist.
+     * @param ratings is the ratings file.
+     * @param movies is the movies file.
+     * @return true if successfully read ratings, else false.
+     */
     public boolean loadRatings(File ratings, File movies) {
         boolean success = true;
         try {
@@ -221,6 +218,12 @@ public final class RatingList {
         return success;
     }
 
+    /**
+     * Method to save the ratings as a file.
+     * @param ratings is the ratings file.
+     * @param movies is the movies file.
+     * @return true if successfully saved, else false.
+     */
     public boolean saveRatings(File ratings, File movies) {
         boolean success = true;
         try {

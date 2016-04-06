@@ -3,7 +3,7 @@ package edu.gatech.slowroastingautoclaves.recommendr.presenter;
 import edu.gatech.slowroastingautoclaves.recommendr.model.User;
 
 /**
- * Created by daernwyn on 3/28/16.
+ * Represents an interface that manages and presents all the user accounts and their data.
  */
 public interface UserInterface {
     /**

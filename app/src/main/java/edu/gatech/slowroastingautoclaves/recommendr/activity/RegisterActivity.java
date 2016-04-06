@@ -178,6 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
                     mUsernameView.setError("This username is invalid.");
                     focusView = mUsernameView;
                 }
+                //noinspection ConstantConditions
                 focusView.requestFocus();
             }
         }

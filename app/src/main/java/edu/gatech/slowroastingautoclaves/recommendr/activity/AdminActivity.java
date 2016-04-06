@@ -36,18 +36,18 @@ public class AdminActivity extends Activity{
         setContentView(R.layout.admin_profile);
         this.users = new ArrayList<>();
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         this.email = intent.getStringExtra("Email");
-        TextView title = (TextView) findViewById(R.id.title);
+        final TextView title = (TextView) findViewById(R.id.title);
         title.setText(email);
 
         populateListView();
 
-        Button mPlaceholderDone = (Button) findViewById(R.id.admin_logout);
+        final Button mPlaceholderDone = (Button) findViewById(R.id.admin_logout);
         mPlaceholderDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent userIntent = new Intent(AdminActivity.this, LoginActivity.class);
+                final Intent userIntent = new Intent(AdminActivity.this, LoginActivity.class);
                 startActivity(userIntent);
                 finish();
             }
@@ -68,10 +68,10 @@ public class AdminActivity extends Activity{
             }
         }
         //build adapter
-        ArrayAdapter<User> adapter = new ArrayAdapterItem<>(this);
+        final ArrayAdapter<User> adapter = new ArrayAdapterItem<>(this);
 
         //configure listview
-        ListView list = (ListView) findViewById(R.id.listView);
+        final ListView list = (ListView) findViewById(R.id.listView);
         list.setAdapter(adapter);
     }
 
@@ -83,6 +83,10 @@ public class AdminActivity extends Activity{
 
         private Context mContext;
 
+        /**
+         * Constructor for an ArrayAdapterItem that contains a list of users.
+         * @param mContext is the context for this adapter.
+         */
         public ArrayAdapterItem(Context mContext) {
 
             super(mContext, R.layout.user_detail);
@@ -93,10 +97,10 @@ public class AdminActivity extends Activity{
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 // inflate the layout
-                LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+                final LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
                 convertView = inflater.inflate(R.layout.user_detail, parent, false);
-                TextView username = (TextView) convertView.findViewById(R.id.textView15);
-                User u = users.get(position);
+                final TextView username = (TextView) convertView.findViewById(R.id.textView15);
+                final User u = users.get(position);
                 username.setText(u.getUsername());
                 RadioButton rb;
                 if (u.getCondition() == Condition.UNLOCKED) {
@@ -110,7 +114,7 @@ public class AdminActivity extends Activity{
 
                 // create radio group listener to record any changes
                 final int pos = position;
-                RadioGroup radioGroup = (RadioGroup) convertView.findViewById(R.id.radio_group);
+                final RadioGroup radioGroup = (RadioGroup) convertView.findViewById(R.id.radio_group);
                 radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
                     @Override

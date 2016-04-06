@@ -10,6 +10,12 @@ public class Rating implements Serializable {
     private User user;
     private double rating;
 
+    /**
+     * Constructor for Rating.
+     * @param identifier is identifier.
+     * @param user is user.
+     * @param rating is rating.
+     */
     public Rating(String identifier, User user, double rating) {
         this.identifier = identifier;
         this.user = user;

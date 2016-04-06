@@ -76,7 +76,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
 
                 mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -90,18 +89,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        final Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
-        Button mRegisterButton = (Button) findViewById(R.id.register);
+        final Button mRegisterButton = (Button) findViewById(R.id.register);
         mRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                final Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(registerIntent);
                 finish();
             }
@@ -111,49 +110,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
 
         UserList.getInstance().loadUsers(new File(this.getFilesDir(), UserList.USERS));
-    }
-
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                .setAction(android.R.string.ok, new View.OnClickListener() {
-                    @Override
-                    @TargetApi(Build.VERSION_CODES.M)
-                    public void onClick(View v) {
-                        requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                    }
-                });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
     }
 
 
@@ -172,8 +128,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -247,6 +203,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * Shows the progress UI and hides the login form.
+     * @param show is whether to show or hide the progress spinner
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
@@ -254,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+            final int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
             mLoginFormView.animate().setDuration(shortAnimTime).alpha(
@@ -300,7 +257,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
+        final List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
@@ -321,7 +278,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
+        final ArrayAdapter<String> adapter =
             new ArrayAdapter<>(LoginActivity.this,
                     android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
@@ -348,6 +305,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
 
+        /**
+         * Constructor for a UserLoginTask object representing an asyncrhonous task.
+         * @param email is email to attempt using.
+         * @param password is password to attempt using.
+         */
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
@@ -355,11 +317,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
             try {
                 // Simulate network access.
-                Thread.sleep(2000);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 return false;
             }
@@ -405,7 +365,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (UserList.getInstance().getUsers() != null && UserList.getInstance().getUsers().size() > 0 && UserList.getInstance().findUserByEmail(this.mEmail) == null) {
                     mPasswordView.setError("This user does not exist.");
                     mPasswordView.requestFocus();
-                } else if (UserList.getInstance().getUsers() != null && UserList.getInstance().getUsers().size() > 0 && (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.LOCKED))) {
+                } else //noinspection ConstantConditions,ConstantConditions
+                    if (UserList.getInstance().getUsers() != null && UserList.getInstance().getUsers().size() > 0 && (UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.BANNED) || UserList.getInstance().findUserByEmail(this.mEmail).getCondition().equals(Condition.LOCKED))) {
                     mPasswordView.setError("This user is banned/locked.");
                     mPasswordView.requestFocus();
                 } else {
