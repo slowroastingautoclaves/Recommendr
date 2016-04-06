@@ -52,28 +52,28 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:id="@+id/options"
+            android:weightSum="2"
             android:layout_below="@id/tvMajor">
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="View Profile"
-                android:id="@+id/VProfile"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit Profile"
-                android:id="@+id/edit_profile"/>
+                android:id="@+id/VProfile"
+                android:layout_margin="10dp"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Search Movie"
-                android:id="@+id/startSearchButton"/>
+                android:id="@+id/startSearchButton"
+                android:layout_margin="10dp"
+                android:layout_weight="1"/>
 
 
         </LinearLayout>
