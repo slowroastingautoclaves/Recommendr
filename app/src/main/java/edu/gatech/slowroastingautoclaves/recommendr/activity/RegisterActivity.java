@@ -56,17 +56,6 @@ public class RegisterActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        Button mDoneButton = (Button) findViewById(R.id.done);
-        mDoneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserList.getInstance().saveUsers(new File(RegisterActivity.this.getFilesDir(), UserList.USERS));
-                Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(loginIntent);
-                finish();
-            }
-        });
     }
 
     /**
@@ -159,6 +148,24 @@ public class RegisterActivity extends AppCompatActivity {
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
+                    // wait a few seconds for the user to comprehend message
+                    Thread wait = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(3000);
+                            } catch (Exception e) {
+                                e.getLocalizedMessage();
+                            }
+                        }
+                    });
+
+                    // save and go back to login screen
+                    UserList.getInstance().saveUsers(new File(RegisterActivity.this.getFilesDir(), UserList.USERS));
+                    Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                    finish();
+
                 } else {
                     focusView = mEmailView;
                     mEmailView.setError("User already exists.");
