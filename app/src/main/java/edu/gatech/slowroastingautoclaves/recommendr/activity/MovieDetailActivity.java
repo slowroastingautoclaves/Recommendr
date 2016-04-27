@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -14,13 +16,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
@@ -42,6 +62,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private String identifier;
     private Movie movie;
     private User user;
+    private String response;
+    private RequestQueue queue;
+    private String posterURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +73,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-
-
         Intent intent = getIntent();
         String email = intent.getStringExtra("Email");
         user = UserList.getInstance().findUserByEmail(email);
 
+        queue = Volley.newRequestQueue(this);
 
         // Do NOT show the Up button in the action bar.
         // Will be using back button to navigate instead.
@@ -90,7 +112,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         this.identifier = this.movie.toString();
 
         final Button rate = (Button) findViewById(R.id.submit);
-
         final RatingBar rating = (RatingBar) findViewById(R.id.ratingBar);
 
         // handle listener
@@ -127,7 +148,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                     MovieDetailActivity.this.user.addRating(currentRate);
                 }
 
-
                 // tell user that rating has been recorded
                 CharSequence text = "Your rating has been recorded";
                 int duration = Toast.LENGTH_SHORT;
@@ -136,70 +156,76 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
         });
 
+        ImageView imageView = (ImageView) findViewById(R.id.movie_poster);
 
-        /*
-        //Make button to show ratings.
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String message = "Enter an integer rating from 0 to 100 for the movie.\n";
-                message += RatingList.getInstance().getRating(MovieDetailActivity.this.identifier);
-                AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+        getPoster();
+        try {
+            URL url = new URL(posterURL);
+            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            imageView.setImageBitmap(bmp);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-                final EditText input = new EditText(MovieDetailActivity.this);
+    private void setPosterURL(String url) {
+        posterURL = url;
+    }
 
-                input.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
-                input.setHint("Type rating from 0.0 - 100.0");
-
-                builder.setMessage(message)
-                       .setTitle("Rate Movie")
-                       .setView(input)
-                       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                               String userIn = input.getText().toString();
-                               if (userIn.length() < 1) {
-                                   dialog.dismiss();
-                                   return;
-                               }
-                               double rateValue = 0;
-                               if (Double.parseDouble(input.getText().toString()) > 0) {
-                                   rateValue = Double.parseDouble(input.getText().toString());
-                               }
-                               Rating currentRate = new Rating(MovieDetailActivity.this.identifier,
-                                       MovieDetailActivity.this.user, rateValue);
-                               if (!RatingList.getInstance().getRatings().contains(currentRate)) {
-                                   RatingList.getInstance().addRating(currentRate);
-                                   RatingList.getInstance().addMovie(MovieDetailActivity.this.movie);
-                                   MovieDetailActivity.this.user.addRating(currentRate);
-                               } else {
-                                   RatingList.getInstance().removeRating(currentRate);
-                                   MovieDetailActivity.this.user.removeRating(currentRate);
-                                   RatingList.getInstance().addRating(currentRate);
-                                   RatingList.getInstance().addMovie(MovieDetailActivity.this.movie);
-                                   MovieDetailActivity.this.user.addRating(currentRate);
-                               }
-                               dialog.dismiss();
-                           }
-                       })
-                       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                               dialog.dismiss();
-                           }
-                       });
-                AlertDialog dialog = builder.create();
-                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+    private void getPoster() {
+        String url = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=yedukp76ffytfuy24zsqk7f5";
+        String query = this.movie.getTitle().replace(" ", "+");
+        url += ("&q=" + query + "&page_limit=1");
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onCancel(DialogInterface dialog) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
+                    public void onResponse(JSONObject resp) {
+                        //handle a valid response coming back.  Getting this string mainly for debug
+                        response = resp.toString();
+                        Log.i("resp", response.toString());
+
+                        //Now we parse the information.  Looking at the format, everything encapsulated in RestResponse object
+                        JSONArray array = null;
+                        try {
+                            array = resp.getJSONArray("movies");
+                        } catch (JSONException e) {
+                            Log.e("SearchMovieActivity", e.getMessage());
+                        }
+                        assert array != null;
+                        //From that object, we extract the array of actual data labeled result
+                        // (NOT IN ROTTEN TOMATOES)
+                        //JSONArray array = obj1.optJSONArray("result");
+
+                            try {
+                                //for each array element, we have to create an object
+                                JSONObject jsonObject = array.getJSONObject(0);
+                                JSONObject posterJSON = jsonObject.getJSONObject("posters");
+                                setPosterURL(posterJSON.get("original").toString());
+
+//                                Movie m = new Movie();
+//                                m.setDescription(jsonObject.optString("original"));
+//                                m.setRating(ratingsJSON.optString("critics_rating"));
+                                //save the object for later
+
+
+                            } catch (JSONException e) {
+                                Log.d("VolleyApp", "Failed to get JSON object");
+                                Log.e("MovieDetailActivity", e.getMessage());
+                            }
+                        }
+                        //once we have all data, then go to list screen
+                        //changeView(movies);
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                response = "JSon Request Failed!!";
             }
         });
-        */
+        //this actually queues up the async response with Volley
+        queue.add(jsObjRequest);
     }
 
 
