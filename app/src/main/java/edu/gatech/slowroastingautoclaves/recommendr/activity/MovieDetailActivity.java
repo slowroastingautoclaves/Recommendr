@@ -1,18 +1,26 @@
 package edu.gatech.slowroastingautoclaves.recommendr.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.text.InputType;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.Toast;
 
 import edu.gatech.slowroastingautoclaves.recommendr.R;
 import edu.gatech.slowroastingautoclaves.recommendr.model.Movie;
@@ -81,11 +89,55 @@ public class MovieDetailActivity extends AppCompatActivity {
         this.movie = Movies.ITEM_MAP.get(intent.getStringExtra("Movie"));
         this.identifier = this.movie.toString();
 
-//        Log.i("USER EXISTS", this.user.getEmail());
-//
-//        Log.i("MOVIE EXISTS", movie.toString());
-//        Log.i("IDENTIFIER EXISTS", identifier);
+        final Button rate = (Button) findViewById(R.id.submit);
 
+        final RatingBar rating = (RatingBar) findViewById(R.id.ratingBar);
+
+        // handle listener
+        rating.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final LayerDrawable layerDrawable = (LayerDrawable) rating.getProgressDrawable();
+                DrawableCompat.setTint(DrawableCompat.wrap(layerDrawable.getDrawable(2)), Color.YELLOW);
+                return false;
+            }
+
+        });
+
+        // record data and do not allow user to make another rating
+        rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rating.setEnabled(false);
+                rate.setEnabled(false);
+
+                double rateValue = rating.getRating() * 25;
+                Rating currentRate = new Rating(MovieDetailActivity.this.identifier,
+                        MovieDetailActivity.this.user, rateValue);
+
+                if (!RatingList.getInstance().getRatings().contains(currentRate)) {
+                    RatingList.getInstance().addRating(currentRate);
+                    RatingList.getInstance().addMovie(MovieDetailActivity.this.movie);
+                    MovieDetailActivity.this.user.addRating(currentRate);
+                } else {
+                    RatingList.getInstance().removeRating(currentRate);
+                    MovieDetailActivity.this.user.removeRating(currentRate);
+                    RatingList.getInstance().addRating(currentRate);
+                    RatingList.getInstance().addMovie(MovieDetailActivity.this.movie);
+                    MovieDetailActivity.this.user.addRating(currentRate);
+                }
+
+
+                // tell user that rating has been recorded
+                CharSequence text = "Your rating has been recorded";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(rate.getContext(), text, duration);
+                toast.show();
+            }
+        });
+
+
+        /*
         //Make button to show ratings.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +199,9 @@ public class MovieDetailActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+        */
     }
+
 
 
     @Override

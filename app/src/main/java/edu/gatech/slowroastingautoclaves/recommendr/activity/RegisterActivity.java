@@ -148,7 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
-                    // wait a few seconds for the user to comprehend message
+                    // wait a few seconds    for the user to comprehend message
                     Thread wait = new Thread(new Runnable() {
                         @Override
                         public void run() {
